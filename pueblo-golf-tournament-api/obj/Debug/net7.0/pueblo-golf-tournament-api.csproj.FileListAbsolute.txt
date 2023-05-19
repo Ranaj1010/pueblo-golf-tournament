@@ -58,3 +58,4 @@
 /Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/obj/Debug/net7.0/pueblo-golf-tournament-api.pdb
 /Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/obj/Debug/net7.0/pueblo-golf-tournament-api.genruntimeconfig.cache
 /Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/obj/Debug/net7.0/ref/pueblo-golf-tournament-api.dll
+/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/bin/Debug/net7.0/pueblo-golf-tournament-api.staticwebassets.runtime.json

@@ -47,12 +47,19 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
-        [HttpPost("acount")]
+        [HttpPost("account")]
         public async Task<ActionResult<RegisteredAccountDto>> RegisterTeam(RegisterAccountDto payload)
         {
             var response = await _registrationModule.RegisterAccount(payload);
 
             return response.Data != null ? Ok(response) : BadRequest(response);
+        }
+        [HttpPost("team-images")]
+        public async Task<ActionResult<RegisteredTeamImagesDto>> RegisterTeamImages([FromForm]RegistrationTeamImagesDto payload)
+        {
+            var response = await _registrationModule.RegisterTeamsImages(payload);
+
+            return response.LogoImageUrl != "" && response.PaymentImageUrl != "" ? Ok(response) : BadRequest(response);
         }
 
     }

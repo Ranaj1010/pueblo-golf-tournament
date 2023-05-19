@@ -1,11 +1,12 @@
+using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
 
 namespace pueblo_golf_tournament_api.Modules.Lookups
 {
     public interface ILookupModule
     {
-        Task<LookupTournamentsDto> LookupTournaments();
-        Task<LookupDivisionsDto> LookupDivisions();
+        Task<LookupTournamentsDto> LookupTournaments(LookupTournamentsRequestDto payload);
+        Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload);
         Task<LookupHomeClubsDto> LookupHomeClubs();
     }
 }

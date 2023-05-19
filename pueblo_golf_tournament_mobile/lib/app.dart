@@ -1,37 +1,55 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/account-registration-success-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/add-member-screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/landing-screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/login-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/account-registration-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/splash-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/register-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/register-team-success.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/registration-success-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/tournament-detail-screen.dart';
 
-import 'bindings/initial-binding.dart';
-import 'configs/theme-configs.dart';
+import 'configurations/bindings.dart';
 
 class App extends StatelessWidget {
-  // final CameraDescription cameraDescription;
-  // const MyApp({Key? key, required this.cameraDescription}) : super(key: key);
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Pueblo Golf Tournament',
-      initialBinding: InitialBinding(),
-      theme: CompanyTheme.getTheme(),
-      initialRoute: '/',
-      supportedLocales: [
-        const Locale("en"),
-        const Locale("es"),
-      ],
+      title: 'Flutter Demo',
+      initialBinding: AppBindings(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        useMaterial3: true,
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: const TextStyle(fontSize: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(
+              width: 0,
+              style: BorderStyle.none,
+            ),
+          ),
+          filled: true,
+          contentPadding: EdgeInsets.all(16),
+          fillColor: Color.fromARGB(255, 233, 233, 233),
+        ),
+      ),
       routes: {
-        '/': (context) => const SplashScreen(),
-        '/login': (context) => const LoginScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/account-registration': (context) => const AccountRegistrationScreen(),
-        '/account-registration-success': (context) =>
-            const AccountRegistrationSuccessScreen(),
+        "/": (context) => LandingScreen(),
+        "/login": (context) => LoginScreen(),
+        "/register": (context) => RegisterScreen(),
+        "/home": (context) => HomeScreen(),
+        "/registration-success": (context) => RegistrationSuccessScreen(),
+        "/tournament-details": (context) => TournamentDetailScreen(),
+        "/register-team": (context) => RegisterTeamScreen(),
+        "/registration-add-member": (context) => AddMemberScreen(),
+        "/registration-team-success": (context) =>
+            RegistrationTeamSuccessScreen()
       },
     );
   }

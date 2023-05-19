@@ -1,6 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.pueblo_golf_tournament_mobile">
-   <application
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
         android:label="pueblo_golf_tournament_mobile"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

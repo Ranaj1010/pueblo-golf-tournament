@@ -22,7 +22,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
         {
             var response = await _authModule.Login(payload);
 
-            return response.Authenticated ? Ok(response) : BadRequest(response);
+            return response.Authenticated ? Ok(response) : Unauthorized(response);
         }
     }
 }

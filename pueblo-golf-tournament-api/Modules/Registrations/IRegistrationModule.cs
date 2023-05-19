@@ -10,5 +10,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         Task<RegisteredTeamDto> RegisterTeam(RegisterTeamDto payload);
         Task<RegisteredAccountDto> RegisterAccount(RegisterAccountDto payload);
         Task<RegisteredHomeClubDto> RegisterHomeClub(RegisterHomeClubDto payload);
+        Task<RegisteredTeamImagesDto> RegisterTeamsImages(RegistrationTeamImagesDto payload);
     }
 }

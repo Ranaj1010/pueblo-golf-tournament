@@ -38,7 +38,7 @@ namespace pueblo_golf_tournament_api.Extensions
                         break;
                     }
                 }
-                if (!passwordHasSpecialCharacters)
+                if (passwordHasSpecialCharacters)
                     return false;
                 if (!password.Any(char.IsUpper))
                     return false;

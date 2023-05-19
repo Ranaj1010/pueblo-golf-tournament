@@ -1,11 +1,54 @@
 {
   "Version": 1,
-  "Hash": "ErxfKK5N300nCdMrzk3GRKqIVCtMgDPRvROm74wkNL4=",
+  "Hash": "drlhydoj1TKcxvkiYaFLiVWRWNgPAJrR1jhiun/uL1E=",
   "Source": "pueblo-golf-tournament-api",
   "BasePath": "_content/pueblo-golf-tournament-api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "pueblo-golf-tournament-api/wwwroot",
+      "Source": "pueblo-golf-tournament-api",
+      "ContentRoot": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/",
+      "BasePath": "_content/pueblo-golf-tournament-api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/images/logos/c38699a5-a0ed-4286-b0b6-164062e94315.jpg",
+      "SourceId": "pueblo-golf-tournament-api",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/",
+      "BasePath": "_content/pueblo-golf-tournament-api",
+      "RelativePath": "images/logos/c38699a5-a0ed-4286-b0b6-164062e94315.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/logos/c38699a5-a0ed-4286-b0b6-164062e94315.jpg"
+    },
+    {
+      "Identity": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/images/payments/75192b5a-296f-4fa1-9845-9f2246e21e73.jpg",
+      "SourceId": "pueblo-golf-tournament-api",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/",
+      "BasePath": "_content/pueblo-golf-tournament-api",
+      "RelativePath": "images/payments/75192b5a-296f-4fa1-9845-9f2246e21e73.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/payments/75192b5a-296f-4fa1-9845-9f2246e21e73.jpg"
+    }
+  ]
 }

@@ -1,7 +1,9 @@
 using AutoMapper;
 using pueblo_golf_tournament_api.Data;
 using pueblo_golf_tournament_api.Dto;
+using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
+using pueblo_golf_tournament_api.Entities;
 using pueblo_golf_tournament_api.Services.Accounts;
 using pueblo_golf_tournament_api.Services.Divisions;
 using pueblo_golf_tournament_api.Services.HomeClubs;
@@ -39,16 +41,23 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _accountService = accountService;
         }
 
-        public async Task<LookupDivisionsDto> LookupDivisions()
+        public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
         {
             var response = new LookupDivisionsDto();
 
-            var data = await _divisionService.ListAsync();
+            var data = new List<Division>();
+
+            data = await _divisionService.ListAsync();
+
+            if (payload.tournamentId != null && payload.tournamentId != 0)
+            {
+                data = await _divisionService.ListAsync(division => division.TournamentId.Equals(payload.tournamentId));
+            }
 
             response.Data = _mapper.Map<List<DivisionDto>>(data);
             response.Message = $"{data.Count} items found.";
 
-            return response; ;
+            return response;
         }
 
         public async Task<LookupHomeClubsDto> LookupHomeClubs()
@@ -63,7 +72,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             return response;
         }
 
-        public async Task<LookupTournamentsDto> LookupTournaments()
+        public async Task<LookupTournamentsDto> LookupTournaments(LookupTournamentsRequestDto payload)
         {
             var response = new LookupTournamentsDto();
 

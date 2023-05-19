@@ -7,19 +7,21 @@ part of 'tournament.dart';
 // **************************************************************************
 
 Tournament _$TournamentFromJson(Map<String, dynamic> json) => Tournament(
-      json['name'] as String?,
-      json['bannerPhoto'] as String?,
-      DateTime.parse(json['startDate'] as String),
-      DateTime.parse(json['endDate'] as String),
-      json['venuePlace'] as String?,
-      json['venueAddress'] as String?,
-      json['venueCity'] as String?,
-      json['venueCountry'] as String?,
-      json['numberOfSlots'] as int,
+      name: json['name'] as String,
+      bannerPhoto: json['bannerPhoto'] as String?,
+      startDate: DateTime.parse(json['startDate'] as String),
+      endDate: DateTime.parse(json['endDate'] as String),
+      venuePlace: json['venuePlace'] as String?,
+      venueAddress: json['venueAddress'] as String?,
+      venueCity: json['venueCity'] as String?,
+      venueCountry: json['venueCountry'] as String?,
+      numberOfSlots: json['numberOfSlots'] as int,
+      id: json['id'] as int,
     );
 
 Map<String, dynamic> _$TournamentToJson(Tournament instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'name': instance.name,
       'bannerPhoto': instance.bannerPhoto,
       'startDate': instance.startDate.toIso8601String(),

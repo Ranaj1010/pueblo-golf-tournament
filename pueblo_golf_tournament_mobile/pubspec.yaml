@@ -1,6 +1,5 @@
 name: pueblo_golf_tournament_mobile
 description: A new Flutter project.
-
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -12,13 +11,15 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # build by specifying --build-name and --build-number, respectively.
 # In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.5 <3.0.0"
+  sdk: '>=3.0.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -34,23 +35,15 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  json_annotation: ^4.8.1
   get: ^4.6.5
   get_storage: ^2.1.1
-  flutter_spinkit: ^5.1.0
-  currency_text_input_formatter: ^2.1.8
-  flutter_flavor: ^3.0.3
-  money_formatter: ^0.0.3
   http: ^0.13.4
-  injector: ^2.0.0
-  build_runner: ^2.0.5
-  json_serializable: ^6.3.1
   intl: ^0.17.0
-  camera: ^0.10.3+2
-  path_provider: ^2.0.13
-  path: ^1.8.1
-  flutter_localization: ^0.1.10
-  fl_chart: ^0.55.2
-
+  flutter_flavor: ^3.0.3
+  blur: ^3.0.0
+  path_provider: ^2.0.8
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +55,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.2
+  json_serializable: ^6.6.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -76,11 +71,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/logo-named.png
-    - assets/logo-only.png
-    - assets/logo-golf-big.png
-    - assets/background-tournament.png
-    - assets/registration-success.png
+    - assets/tournament-background.png
+  #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

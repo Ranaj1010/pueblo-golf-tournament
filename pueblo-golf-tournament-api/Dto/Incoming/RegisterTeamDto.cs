@@ -11,9 +11,9 @@ namespace pueblo_golf_tournament_api.Dto.Incoming
             TeamCaptain = new TeamCaptainRegistration();
         }
         public long TournamentId { get; set; }
-        public long HomeClubId { get; set; }
         public long DivisionId { get; set; }
         public TeamRawDto Team { get; set; }
+        public PaymentDto Payment { get; set; }
         public TeamCaptainRegistration TeamCaptain { get; set; }
         public List<RegisterPlayerDto> Members { get; set; }
     }
