@@ -12,6 +12,7 @@ using pueblo_golf_tournament_api.Extensions;
 using pueblo_golf_tournament_api.Services.Accounts;
 using pueblo_golf_tournament_api.Services.Divisions;
 using pueblo_golf_tournament_api.Services.HomeClubs;
+using pueblo_golf_tournament_api.Services.Payments;
 using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
@@ -28,12 +29,13 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         private readonly IHomeClubService _homeClubService;
         private readonly IRegistrationService _registrationService;
         private readonly IPlayerService _playerService;
+        private readonly IPaymentService _paymentService;
         private readonly IPersonService _personService;
         private readonly ITeamService _teamService;
         private readonly IAccountService _accountService;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public RegisterationModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public RegisterationModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -45,6 +47,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             _teamService = teamService;
             _personService = personService;
             _accountService = accountService;
+            _paymentService = paymentService;
         }
 
 
@@ -238,6 +241,13 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         response.Data.Members.Add(_mapper.Map<PlayerDto>(addedTeamMember));
                     }
 
+                    var payment = await _paymentService.AddAsync(new Payment
+                    {
+                        PaymentDate = DateTime.Now,
+                        PaymentMethod = payload.Payment.PaymentMethod,
+                        ReferrenceId = payload.Payment.ReferrenceId
+                    });
+
                     var registration = new Registration
                     {
                         TeamId = team.Id,
@@ -246,9 +256,9 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         TournamentId = payload.TournamentId,
                         RegistrationDate = DateTime.Now,
                         Status = Utilities.Enums.RegistrationStatusEnum.Pending,
-                        
+                        PaymentId = payment.Id
                     };
-
+                    
 
                     var registeredTeam = await _registrationService.AddAsync(registration);
 
@@ -276,7 +286,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         public async Task<RegisteredTeamImagesDto> RegisterTeamsImages(RegistrationTeamImagesDto payload)
         {
             var response = new RegisteredTeamImagesDto();
-            
+
             try
             {
 
@@ -312,6 +322,24 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                 response.PaymentImageUrl = paymentFileName;
                 response.LogoImageUrl = logoFileName;
+
+                var registration = await _registrationService.GetAsync(registration => registration.TeamId.Equals(payload.TeamId));
+
+                if (registration != null)
+                {
+                    var team = await _teamService.GetAsync(team => team.Id.Equals(payload.TeamId));
+                    team.LogoUrl = logoFileName;
+
+                    var updatedTeam = await _teamService.UpdateAsync(team);
+
+                    var payment = await _paymentService.GetAsync(payment => payment.Id.Equals(registration.PaymentId));
+
+                    payment.PaymentReferrencePhoto = paymentFileName;
+                    var updatedPayment = await _paymentService.UpdateAsync(payment);
+
+                    Console.WriteLine($"Payment updated : {updatedPayment}");
+                    Console.WriteLine($"Team updated : {updatedTeam}");
+                }
 
                 return response;
             }
