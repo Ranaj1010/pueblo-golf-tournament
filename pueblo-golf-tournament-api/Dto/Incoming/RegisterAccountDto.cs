@@ -8,5 +8,6 @@ namespace pueblo_golf_tournament_api.Dto.Incoming
         public PersonRawDto? Person { get; set; }
         [Required]
         public AccountRawDto? Account { get; set; }
+        public PlayerRawDto? Player { get; set; }
     }
 }

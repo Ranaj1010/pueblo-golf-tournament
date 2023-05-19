@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
 using pueblo_golf_tournament_api.Modules.Lookups;
 
@@ -17,17 +18,17 @@ namespace pueblo_golf_tournament_api.Controllers.V1
         }
 
         [HttpPost("tournament")]
-        public async Task<ActionResult<LookupTournamentsDto>> LookupTournaments()
+        public async Task<ActionResult<LookupTournamentsDto>> LookupTournaments(LookupTournamentsRequestDto payload)
         {
-            var response = await _lookupModule.LookupTournaments();
+            var response = await _lookupModule.LookupTournaments(payload);
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("divisions")]
-        public async Task<ActionResult<LookupDivisionsDto>> LookupDivisions()
+        public async Task<ActionResult<LookupDivisionsDto>> LookupDivisions(LookupDivisionRequestDto payload)
         {
-            var response = await _lookupModule.LookupDivisions();
+            var response = await _lookupModule.LookupDivisions(payload);
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
@@ -39,7 +40,5 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
-
-
     }
 }

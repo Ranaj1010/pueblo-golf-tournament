@@ -31,14 +31,17 @@ namespace pueblo_golf_tournament_api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("AccounType")
+                        .HasColumnType("integer");
+
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -70,10 +73,10 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -103,7 +106,7 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("City")
                         .HasColumnType("text");
@@ -112,7 +115,7 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -137,13 +140,13 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("text");
@@ -168,10 +171,10 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ContactNumber")
                         .HasColumnType("text");
@@ -180,7 +183,7 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("text");
@@ -211,10 +214,10 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<double>("DivisionId")
                         .HasColumnType("double precision");
@@ -222,11 +225,9 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<double>("Handicap")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("HomeClubId")
-                        .HasColumnType("double precision");
-
-                    b.Property<long?>("HomeClubId1")
-                        .HasColumnType("bigint");
+                    b.Property<string>("HomeClub")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<double>("PersonId")
                         .HasColumnType("double precision");
@@ -248,8 +249,6 @@ namespace pueblo_golf_tournament_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HomeClubId1");
-
                     b.HasIndex("PersonId1");
 
                     b.HasIndex("TeamId1");
@@ -269,10 +268,10 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("DivisionId")
                         .HasColumnType("bigint");
@@ -281,7 +280,7 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("RegistrationDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -314,10 +313,10 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("LogoUrl")
                         .HasColumnType("text");
@@ -342,16 +341,16 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ArchivedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("BannerPhoto")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -360,7 +359,7 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("VenueAddress")
                         .HasColumnType("text");
@@ -403,10 +402,6 @@ namespace pueblo_golf_tournament_api.Migrations
 
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Player", b =>
                 {
-                    b.HasOne("pueblo_golf_tournament_api.Entities.HomeClub", "HomeClub")
-                        .WithMany()
-                        .HasForeignKey("HomeClubId1");
-
                     b.HasOne("pueblo_golf_tournament_api.Entities.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId1");
@@ -414,8 +409,6 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.HasOne("pueblo_golf_tournament_api.Entities.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId1");
-
-                    b.Navigation("HomeClub");
 
                     b.Navigation("Person");
 

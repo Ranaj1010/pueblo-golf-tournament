@@ -17,6 +17,7 @@ using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.Tournaments;
+using pueblo_golf_tournament_api.Utilities.Enums;
 
 namespace pueblo_golf_tournament_api.Modules.Registrations
 {
@@ -51,6 +52,15 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         {
             var response = new RegisteredAccountDto();
 
+            var existingUsername = await _accountService.GetAsync(account => account.Username.Equals(payload.Account!.Username));
+
+            if (existingUsername != null)
+            {
+                response.Data = null;
+                response.Message = "Invalid Input. Username already exists.";
+                return response;
+            }
+
             if (String.IsNullOrWhiteSpace(payload.Person!.FirstName))
             {
                 response.Data = null;
@@ -75,7 +85,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             if (!ValidatorExtensions.ValidEmail(payload.Person!.EmailAddress!))
             {
                 response.Data = null;
-                response.Message = "Invalid Mobile Number.";
+                response.Message = "Invalid Email Address.";
                 return response;
             }
 
@@ -89,7 +99,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             if (!ValidatorExtensions.ValidPassword(payload.Account!.Password!))
             {
                 response.Data = null;
-                response.Message = "Invalid Password. Make sure not to use special any characters.";
+                response.Message = "Invalid Password. Make sure not to use any special characters.";
                 return response;
             }
 
@@ -98,9 +108,20 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             var account = _mapper.Map<Account>(payload.Account);
             account.PersonId = person.Id;
             account.Password = HashExtensions.GetHash(account.Password!);
+            account.AccounType = AccountTypeEnum.User;
+
+            var player = _mapper.Map<Player>(payload.Player);
+            player.PersonId = person.Id;
+
+            var createdPlayer = await _playerService.AddAsync(player);
 
             var registeredAccount = await _accountService.AddAsync(account);
-            response.Data = _mapper.Map<PersonDto>(person);
+            response.Data = new RegisteredAccountDataDto
+            {
+                Person = _mapper.Map<PersonDto>(person),
+                Player = _mapper.Map<PlayerDto>(createdPlayer)
+            };
+
             response.Message = "Congratulations. You have successfully registered your account.";
 
             return response;
@@ -193,7 +214,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                     teamCaptainAsPlayer.TeamId = team.Id;
                     teamCaptainAsPlayer.PersonId = payload.TeamCaptain.PersonId;
-                    teamCaptainAsPlayer.HomeClubId = payload.HomeClubId;
+                    teamCaptainAsPlayer.HomeClub = payload.TeamCaptain.PlayerDetails.HomeClub;
                     teamCaptainAsPlayer.DivisionId = payload.DivisionId;
                     teamCaptainAsPlayer.PlayerType = Utilities.Enums.PlayerTypeEnum.Captain;
 
@@ -208,7 +229,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                         player.TeamId = team.Id;
                         player.PersonId = person.Id;
-                        player.HomeClubId = payload.HomeClubId;
+                        player.HomeClub = player.HomeClub;
                         player.DivisionId = payload.DivisionId;
                         player.PlayerType = Utilities.Enums.PlayerTypeEnum.Member;
 
@@ -225,6 +246,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         TournamentId = payload.TournamentId,
                         RegistrationDate = DateTime.Now,
                         Status = Utilities.Enums.RegistrationStatusEnum.Pending,
+                        
                     };
 
 
@@ -246,6 +268,55 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             catch (System.Exception ex)
             {
                 response.Data = null;
+                response.Message = $"Registration Failed. {ex.Message}";
+                return response;
+            }
+        }
+
+        public async Task<RegisteredTeamImagesDto> RegisterTeamsImages(RegistrationTeamImagesDto payload)
+        {
+            var response = new RegisteredTeamImagesDto();
+            
+            try
+            {
+
+                if (payload.LogoImageFile == null || payload.LogoImageFile.Length == 0)
+                {
+                    response.Message = "Please send the Team Logo";
+                    return response;
+                }
+
+                if (payload.PaymentImageFile == null || payload.PaymentImageFile.Length == 0)
+                {
+                    response.Message = "Please send the Payment Screenshot";
+                    return response;
+                }
+
+                //create unique name for file
+                var paymentFileName = Guid.NewGuid().ToString() + Path.GetExtension(payload.PaymentImageFile.FileName);
+                var logoFileName = Guid.NewGuid().ToString() + Path.GetExtension(payload.LogoImageFile.FileName);
+
+                //set file url
+                var savePaymentPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/payments", paymentFileName);
+                var saveLogoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/logos", logoFileName);
+
+                using (var stream = new FileStream(savePaymentPath, FileMode.Create))
+                {
+                    payload.PaymentImageFile.CopyTo(stream);
+                }
+
+                using (var stream = new FileStream(saveLogoPath, FileMode.Create))
+                {
+                    payload.LogoImageFile.CopyTo(stream);
+                }
+
+                response.PaymentImageUrl = paymentFileName;
+                response.LogoImageUrl = logoFileName;
+
+                return response;
+            }
+            catch (System.Exception ex)
+            {
                 response.Message = $"Registration Failed. {ex.Message}";
                 return response;
             }

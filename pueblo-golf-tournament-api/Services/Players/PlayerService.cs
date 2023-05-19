@@ -67,7 +67,7 @@ namespace pueblo_golf_tournament_api.Services.Players
                 existingData.Handicap = entity.Handicap;
                 existingData.WorldHandicapSystemId = entity.WorldHandicapSystemId;
                 existingData.DivisionId = entity.DivisionId;
-                existingData.HomeClubId = entity.HomeClubId;
+                existingData.HomeClub = entity.HomeClub;
                 existingData.PlayerType = entity.PlayerType;
                 existingData.TeamId = entity.TeamId;
 

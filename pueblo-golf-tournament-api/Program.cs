@@ -3,7 +3,7 @@ using pueblo_golf_tournament_api.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 var allowedOrigin = "AllowedOrigin";
 // Add services to the container.
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
@@ -21,14 +21,32 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.UseCors(allowedOrigin);
+
+    app.Run("http://127.0.0.1:5000");
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
-app.UseAuthorization();
+    app.UseHttpsRedirection();
 
-app.MapControllers();
+    app.UseAuthorization();
 
-app.UseCors(allowedOrigin);
+    app.MapControllers();
 
-app.Run();
+    app.UseCors(allowedOrigin);
+
+    app.Run();
+}
+
+

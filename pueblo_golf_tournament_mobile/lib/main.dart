@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import 'app.dart';
-import 'configs/flavor-config.dart';
+import 'configurations/flavors.dart';
 
 void main() async {
   DevFlavorConfig().startSetup();
