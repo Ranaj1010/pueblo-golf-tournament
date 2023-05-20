@@ -236,6 +236,11 @@ class RegisterTeamScreen extends StatelessWidget {
                   child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
+                          style: ButtonStyle(
+                              foregroundColor:
+                                  const MaterialStatePropertyAll(Colors.white),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Theme.of(context).primaryColor)),
                           onPressed: () => controller.registerTeam(),
                           child: const Text("Register Team"))),
                 )

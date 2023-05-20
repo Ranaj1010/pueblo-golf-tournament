@@ -24,8 +24,26 @@ class RegistrationScreenController extends GetxController {
   var handicapTextController = TextEditingController();
   var peekPassword = false.obs;
   var peekConfirmPassword = false.obs;
-
+  var isReady = false.obs;
   final registrationController = Get.find<RegistrationController>();
+
+  var isRegistering = false.obs;
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    firstNameTextController.addListener(enableRegisterButton);
+    lastNameTextController.addListener(enableRegisterButton);
+    birthDateTextController.addListener(enableRegisterButton);
+    contactTextController.addListener(enableRegisterButton);
+    emailAddressTextController.addListener(enableRegisterButton);
+    usernameTextController.addListener(enableRegisterButton);
+    passwordTextController.addListener(enableRegisterButton);
+    confirmPasswordTextController.addListener(enableRegisterButton);
+    whsIdController.addListener(enableRegisterButton);
+    handicapTextController.addListener(enableRegisterButton);
+  }
 
   void togglePeek() {
     peekPassword(!peekPassword.value);
@@ -35,7 +53,21 @@ class RegistrationScreenController extends GetxController {
     peekConfirmPassword(!peekConfirmPassword.value);
   }
 
+  enableRegisterButton() {
+    isReady(firstNameTextController.text.isNotEmpty &&
+        lastNameTextController.text.isNotEmpty &&
+        birthDateTextController.text.isNotEmpty &&
+        contactTextController.text.isNotEmpty &&
+        emailAddressTextController.text.isNotEmpty &&
+        whsIdController.text.isNotEmpty &&
+        handicapTextController.text.isNotEmpty &&
+        usernameTextController.text.isNotEmpty &&
+        passwordTextController.text.isNotEmpty &&
+        confirmPasswordTextController.text.isNotEmpty);
+  }
+
   void register() async {
+    isRegistering(true);
     var person = PersonDto(
       firstName: firstNameTextController.text,
       middleName: middleNameTextController.text,
@@ -69,5 +101,6 @@ class RegistrationScreenController extends GetxController {
     if (response.data == null) {
       Get.snackbar("Failed", "Failed to register account");
     }
+    isRegistering(false);
   }
 }

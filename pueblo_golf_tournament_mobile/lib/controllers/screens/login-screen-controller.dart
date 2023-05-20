@@ -9,14 +9,29 @@ class LoginScreenController extends GetxController {
   var usernameTextController = TextEditingController();
   var passwordTextController = TextEditingController();
   var peekPassword = false.obs;
-
+  var isLoggingIn = false.obs;
+  var isReady = false.obs;
   final authenticationController = Get.find<AuthenticationController>();
+
+  @override
+  void onInit() {
+    // TODO: implement onInit
+    super.onInit();
+    usernameTextController.addListener(enableLoginButton);
+    passwordTextController.addListener(enableLoginButton);
+  }
+
+  enableLoginButton() {
+    isReady(usernameTextController.text.isNotEmpty &&
+        passwordTextController.text.isNotEmpty);
+  }
 
   void togglePeek() {
     peekPassword(!peekPassword.value);
   }
 
   void signIn() async {
+    isLoggingIn(true);
     var response = await authenticationController.login(AuthenticateLoginDto(
         username: usernameTextController.text,
         password: passwordTextController.text));
@@ -30,5 +45,6 @@ class LoginScreenController extends GetxController {
     if (!response.authenticated) {
       Get.snackbar("Login Failed", response.message);
     }
+    isLoggingIn(false);
   }
 }

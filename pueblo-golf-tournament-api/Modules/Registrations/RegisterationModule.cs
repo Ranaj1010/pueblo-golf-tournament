@@ -212,18 +212,8 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                 if (team != null)
                 {
-                    var teamCaptainAsPlayer = _mapper.Map<Player>(payload.TeamCaptain.PlayerDetails);
                     var teamMembersAsPlayers = _mapper.Map<List<RegisterPlayerDto>>(payload.Members);
 
-                    teamCaptainAsPlayer.TeamId = team.Id;
-                    teamCaptainAsPlayer.PersonId = payload.TeamCaptain.PersonId;
-                    teamCaptainAsPlayer.HomeClub = payload.TeamCaptain.PlayerDetails.HomeClub;
-                    teamCaptainAsPlayer.DivisionId = payload.DivisionId;
-                    teamCaptainAsPlayer.PlayerType = Utilities.Enums.PlayerTypeEnum.Captain;
-
-                    var addedTeamCaptain = await _playerService.AddAsync(teamCaptainAsPlayer);
-
-                    response.Data!.TeamCaptain = _mapper.Map<PlayerDto>(addedTeamCaptain);
 
                     foreach (var member in teamMembersAsPlayers)
                     {
@@ -234,6 +224,8 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         player.PersonId = person.Id;
                         player.HomeClub = player.HomeClub;
                         player.DivisionId = payload.DivisionId;
+                        player.WorldHandicapSystemId = player.WorldHandicapSystemId;
+                        player.Handicap = player.Handicap;
                         player.PlayerType = Utilities.Enums.PlayerTypeEnum.Member;
 
                         var addedTeamMember = await _playerService.AddAsync(player);
@@ -248,10 +240,12 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         ReferrenceId = payload.Payment.ReferrenceId
                     });
 
+                    var teamCaptain = await _playerService.GetAsync(player => player.PersonId.Equals(payload.TeamCaptain.PersonId));
+
                     var registration = new Registration
                     {
                         TeamId = team.Id,
-                        TeamCaptainId = addedTeamCaptain.Id,
+                        TeamCaptainId = teamCaptain.Id,
                         DivisionId = payload.DivisionId,
                         TournamentId = payload.TournamentId,
                         RegistrationDate = DateTime.Now,
@@ -268,7 +262,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         response.Message = "Registration Failed.";
                         return response;
                     }
-
+                    response.Data.TeamCaptain = _mapper.Map<PlayerDto>(teamCaptain);
                     response.Data.Registration = _mapper.Map<RegistrationDto>(registeredTeam);
                 }
 

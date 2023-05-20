@@ -20,7 +20,7 @@ class AlphaFlavorConfig {
   AlphaFlavorConfig();
   startSetup() {
     var variables = {
-      "baseUrl": "127.0.0.1:5000",
+      "baseUrl": "172.104.102.236:5064",
     };
 
     return FlavorConfig(
@@ -35,7 +35,7 @@ class BetaFlavorConfig {
   BetaFlavorConfig();
   startSetup() {
     var variables = {
-      "baseUrl": "127.0.0.1:5000",
+      "baseUrl": "172.104.102.236:5064",
     };
 
     return FlavorConfig(
