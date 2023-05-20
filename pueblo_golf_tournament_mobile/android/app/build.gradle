@@ -61,6 +61,33 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "flavors"
+    productFlavors {
+        dev {
+            resValue "string", "app_name", "Pueblo Golf Dev"
+            dimension "flavors"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        alpha {
+            resValue "string", "app_name", "Pueblo Golf Alpha"
+            dimension "flavors"
+            applicationIdSuffix ".alpha"
+            versionNameSuffix "-alpha"
+        }
+        beta {
+            resValue "string", "app_name", "Pueblo Golf Beta"
+            dimension "flavors"
+            applicationIdSuffix ".beta"
+            versionNameSuffix "-beta"
+        }
+        prod {
+            resValue "string", "app_name", "Pueblo Golf"
+            dimension "flavors"
+        }
+    }
+
 }
 
 flutter {

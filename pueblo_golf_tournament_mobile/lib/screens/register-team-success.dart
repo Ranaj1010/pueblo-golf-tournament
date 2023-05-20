@@ -12,12 +12,45 @@ class RegistrationTeamSuccessScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Column(children: [
-        Text("Registration Success"),
-        ElevatedButton(
-            onPressed: () => controller.goBackToTournamentDetails(),
-            child: Text("Go back"))
-      ]),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Center(
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Padding(
+              padding: EdgeInsets.all(30),
+              child: Image(
+                image: AssetImage("assets/success-image.png"),
+                height: 200,
+              ),
+            ),
+            const Text(
+              "Congratulations!",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w900, fontSize: 30),
+            ),
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                "Your Registration is now submitted. Please wait for the confirmation from the tournament's organizer.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 18),
+              ),
+            ),
+            SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        padding: MaterialStatePropertyAll(EdgeInsets.all(16.0)),
+                        foregroundColor:
+                            const MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).primaryColor)),
+                    onPressed: () => controller.goBackToTournamentDetails(),
+                    child: const Text("Go back"))),
+          ]),
+        ),
+      ),
     );
   }
 }
