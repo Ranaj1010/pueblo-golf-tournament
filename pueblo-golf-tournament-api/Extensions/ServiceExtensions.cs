@@ -81,7 +81,7 @@ namespace pueblo_golf_tournament_api.Extensions
 
             services.AddCors(options =>
             {
-                options.AddPolicy(allowedOrigin, policy => policy.WithOrigins("http://localhost:3000","http://localhost:63612").AllowAnyHeader().AllowAnyMethod());
+                options.AddPolicy(allowedOrigin, policy => policy.WithOrigins("http://localhost:3000","http://localhost:63612", "http://localhost:64461").AllowAnyHeader().AllowAnyMethod());
             });
         }
     }

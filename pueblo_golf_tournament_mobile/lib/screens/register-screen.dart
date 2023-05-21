@@ -12,12 +12,6 @@ class RegisterScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(title: Text("Register"), actions: []),
         body: Stack(children: [
-          Image(
-            fit: BoxFit.fill,
-            image: AssetImage("assets/background-landing.png"),
-            width: double.infinity,
-            height: double.infinity,
-          ),
           Obx(
             () => SingleChildScrollView(
                 child: Padding(
@@ -29,11 +23,14 @@ class RegisterScreen extends StatelessWidget {
                     "Create your Account!",
                     style: TextStyle(fontWeight: FontWeight.w900, fontSize: 35),
                   ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Text(
-                      "Basic",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                  SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: Text(
+                        "Basic",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                   TextField(

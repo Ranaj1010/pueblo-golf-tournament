@@ -34,9 +34,10 @@ class RegistrationController extends GetxController {
     print(body);
 
     var response = await httpController.post("$controller$endpoint", body);
-
-    var parsedData = RegisteredAccountDto.fromJson(jsonDecode(response.body));
     print(response.statusCode);
+    print(response.reasonPhrase);
+    var parsedData = RegisteredAccountDto.fromJson(jsonDecode(response.body));
+
     print(parsedData.message);
     return response.statusCode == 200
         ? parsedData
