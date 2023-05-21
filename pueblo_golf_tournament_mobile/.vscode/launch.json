@@ -1,0 +1,54 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "DEV: Flutter for web",
+			"type": "dart",
+			"request": "launch",
+			"program": "lib/main.dart",
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+		},
+		{
+			"name": "ALPHA: Flutter for web",
+			"type": "dart",
+			"request": "launch",
+			"program": "lib/environments/alpha.dart",
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+		},
+		{
+			"name": "BETA: Flutter for web",
+			"type": "dart",
+			"request": "launch",
+			"program": "lib/environments/staging.dart",
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+		},
+		{
+			"name": "PROD: Flutter for web",
+			"type": "dart",
+			"request": "launch",
+			"program": "lib/environments/prod.dart",
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+		},
+
+		{
+			"name": "pueblo_golf_tournament_mobile",
+			"request": "launch",
+			"type": "dart"
+		},
+		{
+			"name": "pueblo_golf_tournament_mobile (profile mode)",
+			"request": "launch",
+			"type": "dart",
+			"flutterMode": "profile"
+		},
+		{
+			"name": "pueblo_golf_tournament_mobile (release mode)",
+			"request": "launch",
+			"type": "dart",
+			"flutterMode": "release"
+		}
+	]
+}

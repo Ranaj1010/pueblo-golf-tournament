@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 mixin HttpServiceMixin {
   // do some stuff
@@ -20,7 +20,8 @@ class HttpServiceController extends GetxController with HttpServiceMixin {
   };
 
   HttpServiceController() {
-    baseUrl = FlavorConfig.instance.variables["baseUrl"];
+    baseUrl =
+        FlavorConfig.instance.variables["baseUrl"] ?? dotenv.env["BASE_URL"];
   }
 
   @override
@@ -36,6 +37,7 @@ class HttpServiceController extends GetxController with HttpServiceMixin {
   @override
   Future<http.Response> post(String endpoint, dynamic body) async {
     var url = Uri.http(baseUrl, endpoint);
+    print(url);
     return await http.post(url, body: body, headers: headers);
   }
 
