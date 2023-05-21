@@ -18,6 +18,11 @@ class AuthenticationController extends GetxController {
     var response = await httpController.post(
         "$controller$endpoint", jsonEncode(payload.toJson()));
 
+    print(response.statusCode);
+
+    print(response.reasonPhrase);
+    print(response.body);
+
     var parsedData = AuthenticationLoginDto.fromJson(jsonDecode(response.body));
 
     if (response.statusCode == 200) {

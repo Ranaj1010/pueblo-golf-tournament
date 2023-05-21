@@ -36,7 +36,8 @@
 		{
 			"name": "pueblo_golf_tournament_mobile",
 			"request": "launch",
-			"type": "dart"
+			"type": "dart",
+			"args": ["--flavor", "dev", "-t", "lib/main.dart"]
 		},
 		{
 			"name": "pueblo_golf_tournament_mobile (profile mode)",

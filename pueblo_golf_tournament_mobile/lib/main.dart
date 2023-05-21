@@ -1,11 +1,28 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/cupertino.dart';
 
-import '../app.dart';
-import '../configurations/flavors.dart';
+import 'app.dart';
+import 'configurations/flavors.dart';
 
-Future main() async {
-  await dotenv.load(fileName: ".env");
-  DevFlavorConfig().startSetup();
+void main() {
+  const env = String.fromEnvironment('env');
+
+  switch (env) {
+    case "dev":
+      DevFlavorConfig().startSetup();
+      break;
+    case "alpha":
+      AlphaFlavorConfig().startSetup();
+      break;
+    case "beta":
+      BetaFlavorConfig().startSetup();
+      break;
+    case "prod":
+      ProdFlavorConfig().startSetup();
+      break;
+    default:
+      DevFlavorConfig().startSetup();
+      break;
+  }
+
   runApp(const App());
 }
