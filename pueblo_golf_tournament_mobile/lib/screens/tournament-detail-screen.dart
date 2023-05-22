@@ -96,6 +96,59 @@ class TournamentDetailScreen extends StatelessWidget {
                                       )),
                                 ),
                               ),
+                              controller.registeredRegistration.value != null
+                                  ? Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(5, 20, 5, 10),
+                                      child: Text(
+                                        "Your Team",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ))
+                                  : Padding(padding: EdgeInsets.all(0)),
+                              controller.registeredRegistration.value != null
+                                  ? SizedBox(
+                                      width: double.infinity,
+                                      child: Card(
+                                        elevation: 10,
+                                        child: Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: ListTile(
+                                              leading: Icon(Icons.group),
+                                              title: Text(
+                                                controller.registeredTeam.value!
+                                                    .name!,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              subtitle: Text(
+                                                controller.registeredDivision
+                                                    .value!.name,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w300),
+                                              ),
+                                              trailing: Text(
+                                                controller.registeredRegistration
+                                                            .value!.status ==
+                                                        0
+                                                    ? "Pending"
+                                                    : "Confirmed",
+                                                style: TextStyle(
+                                                    color: controller
+                                                                .registeredRegistration
+                                                                .value!
+                                                                .status ==
+                                                            0
+                                                        ? Color.fromARGB(
+                                                            255, 228, 138, 19)
+                                                        : Colors.green),
+                                              ),
+                                            )),
+                                      ),
+                                    )
+                                  : Padding(padding: EdgeInsets.all(0)),
                               Padding(
                                   padding: EdgeInsets.fromLTRB(5, 20, 5, 10),
                                   child: Text(
@@ -108,10 +161,11 @@ class TournamentDetailScreen extends StatelessWidget {
                                       child: Text("No divisions found."),
                                     )
                                   : Padding(
-                                      padding: EdgeInsets.all(0),
+                                      padding: const EdgeInsets.all(0),
                                       child: SizedBox(
                                         width: double.infinity,
                                         child: Card(
+                                            surfaceTintColor: Colors.white,
                                             elevation: 10,
                                             child: Column(
                                               children: [

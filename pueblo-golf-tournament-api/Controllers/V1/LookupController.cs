@@ -40,5 +40,12 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
+        [HttpPost("tournament-team")]
+        public async Task<ActionResult<LookupTournamentTeamResponseDto>> LookupTournamentTeam(LookupTournamentTeamRequestDto payload)
+        {
+            var response = await _lookupModule.LookupTournamentTeam(payload.TournamentId, payload.TeamCaptainId);
+
+            return Ok(response);
+        }
     }
 }

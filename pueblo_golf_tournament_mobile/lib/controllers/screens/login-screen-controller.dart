@@ -35,6 +35,7 @@ class LoginScreenController extends GetxController {
     var response = await authenticationController.login(AuthenticateLoginDto(
         username: usernameTextController.text,
         password: passwordTextController.text));
+    isLoggingIn(false);
 
     if (response.authenticated) {
       usernameTextController.clear();
@@ -45,6 +46,5 @@ class LoginScreenController extends GetxController {
     if (!response.authenticated) {
       Get.snackbar("Login Failed", response.message);
     }
-    isLoggingIn(false);
   }
 }

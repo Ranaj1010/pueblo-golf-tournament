@@ -235,14 +235,28 @@ class RegisterTeamScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                   child: SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                              foregroundColor:
-                                  const MaterialStatePropertyAll(Colors.white),
-                              backgroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).primaryColor)),
-                          onPressed: () => controller.registerTeam(),
-                          child: const Text("Register Team"))),
+                      child: ElevatedButton.icon(
+                        onPressed: controller.isRegistering.value ||
+                                !controller.isReady.value
+                            ? null
+                            : () => controller.registerTeam(),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.all(16.0)),
+                        icon: controller.isRegistering.value
+                            ? Container(
+                                width: 24,
+                                height: 24,
+                                padding: const EdgeInsets.all(2.0),
+                                child: const CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 3,
+                                ),
+                              )
+                            : const Icon(Icons.app_registration),
+                        label: const Text('Register'),
+                      )),
                 )
               ],
             ),

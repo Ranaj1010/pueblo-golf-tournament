@@ -9,35 +9,35 @@
 			"type": "dart",
 			"request": "launch",
 			"program": "lib/main.dart",
-			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security","--dart-define=env=dev"]
 		},
 		{
 			"name": "ALPHA: Flutter for web",
 			"type": "dart",
 			"request": "launch",
 			"program": "lib/environments/alpha.dart",
-			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security","--dart-define=env=alpha"]
 		},
 		{
 			"name": "BETA: Flutter for web",
 			"type": "dart",
 			"request": "launch",
 			"program": "lib/environments/staging.dart",
-			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security","--dart-define=env=beta"]
 		},
 		{
 			"name": "PROD: Flutter for web",
 			"type": "dart",
 			"request": "launch",
 			"program": "lib/environments/prod.dart",
-			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security"]
+			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security", "--dart-define=env=prod"]
 		},
 
 		{
 			"name": "pueblo_golf_tournament_mobile",
 			"request": "launch",
 			"type": "dart",
-			"args": ["--flavor", "dev", "-t", "lib/main.dart"]
+			"args": ["--flavor", "dev", "-t", "lib/environments/dev.dart", "--dart-define=env=dev"]
 		},
 		{
 			"name": "pueblo_golf_tournament_mobile (profile mode)",

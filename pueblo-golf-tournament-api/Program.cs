@@ -30,7 +30,7 @@ if (app.Environment.IsDevelopment())
 
     app.UseCors(allowedOrigin);
 
-    app.Run("http://127.0.0.1:5000");
+    app.Run("http://127.0.0.1:5001");
 }
 
 if (!app.Environment.IsDevelopment())

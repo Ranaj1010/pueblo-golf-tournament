@@ -64,6 +64,7 @@ namespace pueblo_golf_tournament_api.Services.Payments
 
                 existingData.ReferrenceId = entity.ReferrenceId;
                 existingData.PaymentMethod = entity.PaymentMethod;
+                existingData.PaymentReferrencePhoto = entity.PaymentReferrencePhoto;
 
                 _dbContext.Payments.Update(existingData);
 

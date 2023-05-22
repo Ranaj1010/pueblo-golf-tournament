@@ -94,6 +94,7 @@ class RegistrationController extends GetxController {
     var responseData = await response.stream.toBytes();
     var responseString = String.fromCharCodes(responseData);
 
+    print("Team Id: ${teamId.toString()}");
     print(request.url);
     print(responseString);
     print(response.statusCode);
