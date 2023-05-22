@@ -95,7 +95,7 @@ class RegisterTeamScreenController extends GetxController {
             tournamentDetailsController.selectedTournament.value!.id.toInt(),
         divisionId:
             tournamentDetailsController.selectedDivision.value!.id.toInt()));
-    isRegistering(false);
+
     if (response.data != null) {
       //GO TO SUCCESS
 
@@ -107,8 +107,14 @@ class RegisterTeamScreenController extends GetxController {
           logoImage.value!);
 
       if (imagesUpload) {
+        isRegistering(false);
         Get.offNamed("/registration-team-success");
       }
+    }
+
+    if (response.data == null) {
+      isRegistering(false);
+      Get.snackbar("Registration Failed", response.message);
     }
   }
 }
