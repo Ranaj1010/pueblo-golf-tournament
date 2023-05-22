@@ -107,9 +107,14 @@ class RegisterTeamScreenController extends GetxController {
           logoImage.value!);
 
       if (imagesUpload) {
+        isRegistering(false);
         Get.offNamed("/registration-team-success");
       }
     }
-    isRegistering(false);
+
+    if (response.data == null) {
+      isRegistering(false);
+      Get.snackbar("Registration Failed", response.message);
+    }
   }
 }
