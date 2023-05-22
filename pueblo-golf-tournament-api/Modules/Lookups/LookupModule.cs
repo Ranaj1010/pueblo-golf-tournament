@@ -83,5 +83,33 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
 
             return response;
         }
+
+        public async Task<LookupTournamentTeamResponseDto> LookupTournamentTeam(long tournamentId, long teamCaptainId)
+        {
+            var response = new LookupTournamentTeamResponseDto();
+
+            var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == tournamentId);
+            var registrations = await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId && registration.TeamCaptainId == teamCaptainId);
+            
+            if(registrations.Count == 0) {
+                response.Message = "No registration found for Team Captain";
+            }
+
+            if (registrations.Count > 0)
+            {
+                var registration = registrations.Last();
+                var team = await _teamService.GetAsync(team => team.Id == registration.TeamId);
+                var division = await _divisionService.GetAsync(division => division.Id == registration.DivisionId);
+                response.Tournament = _mapper.Map<TournamentDto>(tournament);
+                response.Division = _mapper.Map<DivisionDto>(division);
+                response.Team = _mapper.Map<TeamDto>(team);
+                response.Registration = _mapper.Map<RegistrationDto>(registration);
+                response.TournamentId = tournamentId;
+                response.Message = "Registration found.";
+            }
+
+            return response;
+        }
+
     }
 }

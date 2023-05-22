@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -15,7 +16,8 @@ class RegisterTeamScreenController extends GetxController {
   var teamTextController = TextEditingController();
   var paymentMethodTextController = TextEditingController();
   var referrenceIdTextController = TextEditingController();
-
+  var isRegistering = false.obs;
+  var isReady = false.obs;
   final registrationController = Get.find<RegistrationController>();
   final tournamentDetailsController =
       Get.find<TournamentDetailsScreenController>();
@@ -24,6 +26,9 @@ class RegisterTeamScreenController extends GetxController {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
+    teamTextController.addListener(enableRegisterButton);
+    paymentMethodTextController.addListener(enableRegisterButton);
+    referrenceIdTextController.addListener(enableRegisterButton);
   }
 
   var members = <TeamMemberRawDto>[].obs;
@@ -36,6 +41,14 @@ class RegisterTeamScreenController extends GetxController {
     Get.toNamed("/registration-add-member");
   }
 
+  enableRegisterButton() {
+    isReady(teamTextController.text.isNotEmpty &&
+        paymentMethodTextController.text.isNotEmpty &&
+        referrenceIdTextController.text.isNotEmpty &&
+        paymentImage.value != null &&
+        logoImage.value != null);
+  }
+
   Future getPaymentScrenshot() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) {
@@ -44,7 +57,7 @@ class RegisterTeamScreenController extends GetxController {
 
     final imageTemp = File(image.path);
     paymentImage(imageTemp);
-
+    enableRegisterButton();
     update();
   }
 
@@ -56,11 +69,12 @@ class RegisterTeamScreenController extends GetxController {
 
     final imageTemp = File(image.path);
     logoImage(imageTemp);
-
+    enableRegisterButton();
     update();
   }
 
   void registerTeam() async {
+    isRegistering(true);
     var team = TeamRawDto(name: teamTextController.text, logoUrl: "");
     var teamCaptain = TeamCaptainRawDto(
         personId: authenticationController
@@ -81,12 +95,16 @@ class RegisterTeamScreenController extends GetxController {
             tournamentDetailsController.selectedTournament.value!.id.toInt(),
         divisionId:
             tournamentDetailsController.selectedDivision.value!.id.toInt()));
-
+    isRegistering(false);
     if (response.data != null) {
       //GO TO SUCCESS
 
+      print(jsonEncode(response.data));
+
       var imagesUpload = await registrationController.registerTeamImages(
-          response.data!.team.id, paymentImage.value!, logoImage.value!);
+          response.data!.registration.teamId,
+          paymentImage.value!,
+          logoImage.value!);
 
       if (imagesUpload) {
         Get.offNamed("/registration-team-success");

@@ -28,7 +28,7 @@ class HttpServiceController extends GetxController with HttpServiceMixin {
   Future<http.Response> get(String endpoint) async {
     return await http
         .get(Uri.parse(baseUrl + endpoint), headers: headers)
-        .timeout(Duration(minutes: 3));
+        .timeout(const Duration(minutes: 3));
   }
 
   @override
@@ -36,7 +36,7 @@ class HttpServiceController extends GetxController with HttpServiceMixin {
       await http
           .delete(Uri(host: baseUrl, path: endpoint),
               body: body, headers: headers)
-          .timeout(Duration(minutes: 3));
+          .timeout(const Duration(minutes: 3));
 
   @override
   Future<http.Response> post(String endpoint, dynamic body) async {
@@ -44,13 +44,13 @@ class HttpServiceController extends GetxController with HttpServiceMixin {
     print(url);
     return await http
         .post(url, body: body, headers: headers)
-        .timeout(Duration(minutes: 3));
+        .timeout(const Duration(minutes: 3));
   }
 
   @override
   Future<http.Response> put(String endpoint, dynamic body) async {
     return await http
         .put(Uri(host: baseUrl, path: endpoint), body: body, headers: headers)
-        .timeout(Duration(minutes: 3));
+        .timeout(const Duration(minutes: 3));
   }
 }

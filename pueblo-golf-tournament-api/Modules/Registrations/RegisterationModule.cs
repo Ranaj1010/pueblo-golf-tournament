@@ -214,7 +214,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                 {
                     var teamMembersAsPlayers = _mapper.Map<List<RegisterPlayerDto>>(payload.Members);
 
-
                     foreach (var member in teamMembersAsPlayers)
                     {
                         var person = _personService.AddAsync(_mapper.Map<Person>(member.PersonalDetails));
@@ -252,7 +251,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         Status = Utilities.Enums.RegistrationStatusEnum.Pending,
                         PaymentId = payment.Id
                     };
-                    
+
 
                     var registeredTeam = await _registrationService.AddAsync(registration);
 
@@ -283,6 +282,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
             try
             {
+                
 
                 if (payload.LogoImageFile == null || payload.LogoImageFile.Length == 0)
                 {
@@ -314,26 +314,30 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                     payload.LogoImageFile.CopyTo(stream);
                 }
 
+                Console.WriteLine($"TEAM ID:{payload.TeamId}");
+
+                var registration = await _registrationService.GetAsync(registration => registration.TeamId == payload.TeamId);
+
+
+                var team = await _teamService.GetAsync(team => team.Id == payload.TeamId);
+                team.LogoUrl = logoFileName;
+
+                Console.WriteLine($"TEAM NAME: {team.Name}");
+
+                var updatedTeam = await _teamService.UpdateAsync(team);
+
+                var payment = await _paymentService.GetAsync(payment => payment.Id == registration.PaymentId);
+
+                payment.PaymentReferrencePhoto = paymentFileName;
+
+                var updatedPayment = await _paymentService.UpdateAsync(payment);
+
+                Console.WriteLine($"Payment updated : {updatedPayment}");
+                Console.WriteLine($"Team updated : {updatedTeam}");
+
+
                 response.PaymentImageUrl = paymentFileName;
                 response.LogoImageUrl = logoFileName;
-
-                var registration = await _registrationService.GetAsync(registration => registration.TeamId.Equals(payload.TeamId));
-
-                if (registration != null)
-                {
-                    var team = await _teamService.GetAsync(team => team.Id.Equals(payload.TeamId));
-                    team.LogoUrl = logoFileName;
-
-                    var updatedTeam = await _teamService.UpdateAsync(team);
-
-                    var payment = await _paymentService.GetAsync(payment => payment.Id.Equals(registration.PaymentId));
-
-                    payment.PaymentReferrencePhoto = paymentFileName;
-                    var updatedPayment = await _paymentService.UpdateAsync(payment);
-
-                    Console.WriteLine($"Payment updated : {updatedPayment}");
-                    Console.WriteLine($"Team updated : {updatedTeam}");
-                }
 
                 return response;
             }

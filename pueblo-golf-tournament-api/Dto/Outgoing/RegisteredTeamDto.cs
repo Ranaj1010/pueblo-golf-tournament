@@ -8,7 +8,7 @@ namespace pueblo_golf_tournament_api.Dto.Outgoing
         {
             Data = new RegisteredTeamDataDto();
         }
-        public RegisteredTeamDataDto? Data { get; set; }
+        public RegisteredTeamDataDto Data { get; set; }
     }
     public class RegisteredTeamDataDto
     {

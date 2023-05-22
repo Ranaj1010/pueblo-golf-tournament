@@ -70,6 +70,7 @@ namespace pueblo_golf_tournament_api.Services.Players
                 existingData.HomeClub = entity.HomeClub;
                 existingData.PlayerType = entity.PlayerType;
                 existingData.TeamId = entity.TeamId;
+                existingData.PersonId = entity.PersonId;
 
                 _dbContext.Players.Update(existingData);
 
