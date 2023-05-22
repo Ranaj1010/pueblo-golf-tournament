@@ -51,7 +51,7 @@ class AddMemberScreen extends StatelessWidget {
                     context: context,
                     initialDate: DateTime.now(), //get today's date
                     firstDate: DateTime(
-                        2000), //DateTime.now() - not to allow to choose before today.
+                        1900), //DateTime.now() - not to allow to choose before today.
                     lastDate: DateTime(2101));
 
                 if (pickedDate != null) {
@@ -92,8 +92,8 @@ class AddMemberScreen extends StatelessWidget {
             TextField(
               controller: controller.whsIdController,
               decoration: const InputDecoration(
-                hintText: 'World Handicap System ID',
-              ),
+                  hintText: 'World Handicap System ID',
+                  helperText: "If no WHS, type '0'"),
             ),
             TextField(
               controller: controller.handicapTextController,
