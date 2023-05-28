@@ -7,6 +7,7 @@ using pueblo_golf_tournament_api.Entities;
 using pueblo_golf_tournament_api.Modules.Authentications;
 using pueblo_golf_tournament_api.Modules.Lookups;
 using pueblo_golf_tournament_api.Modules.Registrations;
+using pueblo_golf_tournament_api.Modules.Uploads;
 using pueblo_golf_tournament_api.Services.Accounts;
 using pueblo_golf_tournament_api.Services.Divisions;
 using pueblo_golf_tournament_api.Services.HomeClubs;
@@ -15,6 +16,7 @@ using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
+using pueblo_golf_tournament_api.Services.TournamentPlayers;
 using pueblo_golf_tournament_api.Services.Tournaments;
 
 namespace pueblo_golf_tournament_api.Extensions
@@ -62,12 +64,14 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<ITournamentPlayerService, TournamentPlayerService>();
             #endregion
 
             #region Modules
             services.AddTransient<IRegistrationModule, RegisterationModule>();
             services.AddTransient<ILookupModule, LookupModule>();
             services.AddTransient<IAuthModule, AuthModule>();
+            services.AddTransient<IUploadModule, UploadModule>();
             #endregion
         }
 

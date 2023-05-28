@@ -45,6 +45,7 @@ dependencies:
   path_provider: ^2.0.8
   image_picker: ^0.8.4+4
   flutter_dotenv: ^5.0.2
+  currency_text_input_formatter: ^2.1.8
 
 
 dev_dependencies:
@@ -77,6 +78,16 @@ flutter:
     - assets/golf-logo.png
     - assets/success-image.png
     - assets/background-landing.png
+    - assets/login-screen-image.png
+    - assets/sample-avatar.png
+    - assets/default-tournament-background.png
+    - assets/sign-up-screen-image.png
+    - assets/register-team-screen-image.png
+    - assets/add-member-screen-image.png
+    - assets/gcash.png
+    - assets/bank.png
+    - assets/creditcard.png
+    - assets/bankdeposit.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

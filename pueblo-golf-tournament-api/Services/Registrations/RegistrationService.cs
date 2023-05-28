@@ -68,8 +68,6 @@ namespace pueblo_golf_tournament_api.Services.Registrations
                 existingData.PaymentId = entity.PaymentId;
                 existingData.TeamId = entity.TeamId;
                 existingData.TournamentId = entity.TournamentId;
-                existingData.DivisionId = entity.DivisionId;
-
                 _dbContext.Registrations.Update(existingData);
 
                 await _dbContext.SaveChangesAsync();

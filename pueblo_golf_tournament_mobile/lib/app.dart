@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/add-member-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/home-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/landing-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/login-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/register-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/register-team-success.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/registration-success-screen.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/tournament-detail-screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/add-team-member-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/home-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/landing-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/register-new-player-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/setup-player-profile-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/sign-in-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/sign-up-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/tournament-details-screen/screen.dart';
 
 import 'configurations/bindings.dart';
 
@@ -23,7 +24,8 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       initialBinding: AppBindings(),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 72, 109, 44)),
         useMaterial3: true,
         inputDecorationTheme: InputDecorationTheme(
           hintStyle: const TextStyle(fontSize: 16),
@@ -41,15 +43,15 @@ class App extends StatelessWidget {
       ),
       routes: {
         "/": (context) => LandingScreen(),
-        "/login": (context) => LoginScreen(),
-        "/register": (context) => RegisterScreen(),
+        "/signin": (context) => SignInScreen(),
+        "/signup": (context) => SignUpScreen(),
         "/home": (context) => HomeScreen(),
-        "/registration-success": (context) => RegistrationSuccessScreen(),
         "/tournament-details": (context) => TournamentDetailScreen(),
         "/register-team": (context) => RegisterTeamScreen(),
-        "/registration-add-member": (context) => AddMemberScreen(),
-        "/registration-team-success": (context) =>
-            RegistrationTeamSuccessScreen()
+        "/add-member": (context) => AddTeamMemberScreen(),
+        "/register-player": (context) => RegisterNewPlayerScreen(),
+        "/setup-player-profile": (context) => SetupPlayerProfileScreen(),
+        "/registered-team-details": (context) => RegisteredTeamDetailsScreen()
       },
     );
   }

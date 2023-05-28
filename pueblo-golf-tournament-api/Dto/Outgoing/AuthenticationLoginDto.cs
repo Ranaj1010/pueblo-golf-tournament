@@ -14,8 +14,8 @@ namespace pueblo_golf_tournament_api.Dto.Outgoing
     }
     public class AuthenticatedUserData
     {
-        public PersonDto PersonalDetails { get; set; }
-        public PlayerDto PlayerDetails { get; set; }
+        public PersonDto? PersonalDetails { get; set; }
+        public AccountDto? Account { get; set; }
         public string Username { get; set; } = "";
     }
 }

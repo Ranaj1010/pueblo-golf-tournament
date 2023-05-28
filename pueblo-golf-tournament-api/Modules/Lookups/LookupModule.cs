@@ -1,4 +1,6 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using pueblo_golf_tournament_api.Data;
 using pueblo_golf_tournament_api.Dto;
 using pueblo_golf_tournament_api.Dto.Incoming;
@@ -72,6 +74,81 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             return response;
         }
 
+        public async Task<LookupPlayerProfileResponseDto> LookupPlayerProfile(string playerExternalId)
+        {
+            var response = new LookupPlayerProfileResponseDto();
+            var player = await _playerService.GetAsync(player => player.PlayerExternalId == playerExternalId);
+
+            if (player == null)
+            {
+                response.Profile = null;
+                response.Message = "Player not found.";
+                return response;
+            }
+
+            if (player != null)
+            {
+                var person = await _personService.GetAsync(person => person.Id == player.PersonId);
+                var profile = new PlayerProfile
+                {
+                    Person = _mapper.Map<PersonDto>(person),
+                    Player = _mapper.Map<PlayerDto>(player)
+                };
+                response.Profile = profile;
+                response.Message = "Profile found.";
+
+            }
+
+
+            return response;
+        }
+
+        public async Task<LookupPlayerProfileResponseDto> LookupPlayerProfileByPersonId(long personId)
+        {
+            var response = new LookupPlayerProfileResponseDto();
+            var player = await _playerService.GetAsync(player => player.PersonId == personId);
+
+            if (player == null)
+            {
+                response.Profile = null;
+                response.Message = "Player not found.";
+                return response;
+            }
+
+            if (player != null)
+            {
+                var person = await _personService.GetAsync(person => person.Id == player.PersonId);
+                var profile = new PlayerProfile
+                {
+                    Person = _mapper.Map<PersonDto>(person),
+                    Player = _mapper.Map<PlayerDto>(player)
+                };
+                response.Profile = profile;
+                response.Message = "Profile found.";
+
+            }
+            return response;
+        }
+
+        public async Task<LookupTournamentDetailsResponseDto> LookupTournamentDetails(LookupTournamentDetailsDto payload)
+        {
+            var response = new LookupTournamentDetailsResponseDto();
+
+            var data = await _tournamentService.GetAsync(tournament => tournament.Id == payload.TournamentId);
+
+            if (data == null)
+            {
+
+                response.Tournament = null;
+                response.Message = "Tournament not found.";
+            }
+
+            response.Tournament = _mapper.Map<TournamentDto>(data);
+            response.Message = "Tournament found.";
+
+            return response;
+        }
+
         public async Task<LookupTournamentsDto> LookupTournaments(LookupTournamentsRequestDto payload)
         {
             var response = new LookupTournamentsDto();
@@ -87,23 +164,59 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         public async Task<LookupTournamentTeamResponseDto> LookupTournamentTeam(long tournamentId, long teamCaptainId)
         {
             var response = new LookupTournamentTeamResponseDto();
-
+            Console.WriteLine($"TEAM CAPTAIN: {teamCaptainId}");
+            Console.WriteLine($"TOURNAMENT : {tournamentId}");
             var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == tournamentId);
             var registrations = await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId && registration.TeamCaptainId == teamCaptainId);
-            
-            if(registrations.Count == 0) {
+
+            if (registrations.Count == 0)
+            {
                 response.Message = "No registration found for Team Captain";
             }
 
             if (registrations.Count > 0)
             {
-                var registration = registrations.Last();
-                var team = await _teamService.GetAsync(team => team.Id == registration.TeamId);
-                var division = await _divisionService.GetAsync(division => division.Id == registration.DivisionId);
+                foreach (var registration in registrations)
+                {
+                    var team = await _teamService.GetAsync(team => team.Id == registration.TeamId);
+
+                    var player = await _dbContext.Players.SingleOrDefaultAsync(result => result.Id == team.TeamCaptainId);
+                    var person = await _dbContext.Persons.SingleOrDefaultAsync(result => result.Id == player.PersonId);
+                    var teamCaptainProfile = new PlayerProfile
+                    {
+                        Person = _mapper.Map<PersonDto>(person),
+                        Player = _mapper.Map<PlayerDto>(player)
+                    };
+                    var tournamentPlayers = _dbContext.TournamentPlayers.Where(player => player.TournamentId == tournamentId && player.TeamId == team.Id)
+                                                .Join(_dbContext.Players, tournament => tournament.PlayerId, player => player.Id, (tournamentPlayer, player) => new { tournamentPlayer, player });
+                    var memberProfiles = tournamentPlayers.Join(_dbContext.Persons, player => player.player.PersonId, person => person.Id, (player, person) => new PlayerProfile
+                    {
+                        Person = _mapper.Map<PersonDto>(person),
+                        Player = _mapper.Map<PlayerDto>(new Player{
+                            PlayerType = player.tournamentPlayer.PlayerType,
+                            HomeClub = player.player.HomeClub,
+                            Handicap = player.player.Handicap,
+                            PersonId = player.player.PersonId,
+                            PlayerExternalId = player.player.PlayerExternalId,
+                            WorldHandicapSystemId = player.player.WorldHandicapSystemId,
+                            Id = player.player.Id
+                        })
+                    });
+
+                    var payment = await _dbContext.Payments.SingleOrDefaultAsync(payment => payment.Id == registration.PaymentId);
+
+                    response.RegisteredTeams.Add(new RegisteredTeam
+                    {
+                        Registration = _mapper.Map<RegistrationDto>(registration),
+                        Team = _mapper.Map<TeamDto>(team),
+                        CaptainProfile = teamCaptainProfile!,
+                        MemberProfiles = memberProfiles.ToList(),
+                        Payment = _mapper.Map<PaymentDto>(payment)
+                        
+                    });
+                }
+
                 response.Tournament = _mapper.Map<TournamentDto>(tournament);
-                response.Division = _mapper.Map<DivisionDto>(division);
-                response.Team = _mapper.Map<TeamDto>(team);
-                response.Registration = _mapper.Map<RegistrationDto>(registration);
                 response.TournamentId = tournamentId;
                 response.Message = "Registration found.";
             }

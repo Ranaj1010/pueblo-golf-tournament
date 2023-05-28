@@ -15,13 +15,9 @@ namespace pueblo_golf_tournament_api.Dto.Outgoing
         public RegisteredTeamDataDto()
         {
             Team = new TeamDto();
-            TeamCaptain = new PlayerDto();
-            Members = new List<PlayerDto>();
             Registration = new RegistrationDto();
         }
         public RegistrationDto Registration { get; set; }
         public TeamDto Team { get; set; }
-        public PlayerDto TeamCaptain { get; set; }
-        public List<PlayerDto> Members { get; set; }
     }
 }

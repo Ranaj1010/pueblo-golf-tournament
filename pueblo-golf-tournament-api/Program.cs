@@ -20,7 +20,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    
     app.UseSwaggerUI();
+
+    app.UseStaticFiles();
 
     app.UseHttpsRedirection();
 
@@ -30,13 +33,16 @@ if (app.Environment.IsDevelopment())
 
     app.UseCors(allowedOrigin);
 
-    app.Run("http://127.0.0.1:5001");
+    app.Run(builder.Configuration.GetSection("BaseUrl").Value);
 }
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+
     app.UseSwaggerUI();
+
+    app.UseStaticFiles();
 
     app.UseHttpsRedirection();
 
