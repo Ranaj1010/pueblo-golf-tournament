@@ -9,9 +9,9 @@ namespace pueblo_golf_tournament_api.Dto
         public long? TeamId { get; set; }
         public long TeamCaptainId { get; set; }
         public long? TournamentId { get; set; }
-        public long? DivisionId { get; set; }
         public RegistrationStatusEnum Status { get; set; }
         public DateTime RegistrationDate { get; set; }
+        public bool IsPayed { get; set; }
         public long? PaymentId { get; set; }
         public virtual Payment? Payment { get; set; }
     }
@@ -20,7 +20,7 @@ namespace pueblo_golf_tournament_api.Dto
         public long? TeamId { get; set; }
         public long TeamCaptainId { get; set; }
         public long? TournamentId { get; set; }
-        public long? DivisionId { get; set; }
+        public bool IsPayed { get; set; }
         public RegistrationStatusEnum Status { get; set; }
         public DateTime RegistrationDate { get; set; }
     }

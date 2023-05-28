@@ -9,4 +9,10 @@ namespace pueblo_golf_tournament_api.Dto
         public string? ReferrenceId { get; set; }
         public DateTime PaymentDate { get; set; }
     }
+
+    public class PaymentRawDto  {
+        public string? PaymentMethod { get; set; }
+        public string? ReferrenceId { get; set; }
+        public DateTime PaymentDate { get; set; }
+    }
 }

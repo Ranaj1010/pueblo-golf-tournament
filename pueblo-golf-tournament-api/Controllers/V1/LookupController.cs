@@ -24,6 +24,14 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
+       
+        [HttpPost("tournament-details")]
+        public async Task<ActionResult<LookupTournamentDetailsResponseDto>> LookupTournamentDetails(LookupTournamentDetailsDto payload)
+        {
+            var response = await _lookupModule.LookupTournamentDetails(payload);
+
+            return response.Tournament != null ? Ok(response) : BadRequest(response);
+        }
 
         [HttpPost("divisions")]
         public async Task<ActionResult<LookupDivisionsDto>> LookupDivisions(LookupDivisionRequestDto payload)
@@ -44,6 +52,20 @@ namespace pueblo_golf_tournament_api.Controllers.V1
         public async Task<ActionResult<LookupTournamentTeamResponseDto>> LookupTournamentTeam(LookupTournamentTeamRequestDto payload)
         {
             var response = await _lookupModule.LookupTournamentTeam(payload.TournamentId, payload.TeamCaptainId);
+
+            return Ok(response);
+        }
+        [HttpPost("player-profile")]
+        public async Task<ActionResult<LookupPlayerProfileResponseDto>> LookupPlayerProfile(LookupPlayerProfileRequestDto payload)
+        {
+            var response = await _lookupModule.LookupPlayerProfile(payload.PlayerExternalId);
+
+            return Ok(response);
+        }
+        [HttpPost("player-profile-by-person")]
+        public async Task<ActionResult<LookupPlayerProfileResponseDto>> LookupPlayerProfileByPersonId(LookupPlayerProfileByPersonIdRequestDto payload)
+        {
+            var response = await _lookupModule.LookupPlayerProfileByPersonId(payload.PersonId);
 
             return Ok(response);
         }

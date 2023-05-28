@@ -8,6 +8,7 @@ namespace pueblo_golf_tournament_api.Entities
         public string? BannerPhoto { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public double RegistrationFee { get; set; }
         public string? VenuePlace { get; set; }
         public string? VenueAddress { get; set; }
         public string? VenueCity { get; set; }

@@ -222,14 +222,10 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<double>("DivisionId")
-                        .HasColumnType("double precision");
-
                     b.Property<double>("Handicap")
                         .HasColumnType("double precision");
 
                     b.Property<string>("HomeClub")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<double>("PersonId")
@@ -238,14 +234,11 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<long?>("PersonId1")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("PlayerExternalId")
+                        .HasColumnType("text");
+
                     b.Property<int>("PlayerType")
                         .HasColumnType("integer");
-
-                    b.Property<double>("TeamId")
-                        .HasColumnType("double precision");
-
-                    b.Property<long?>("TeamId1")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("WorldHandicapSystemId")
                         .HasColumnType("text");
@@ -253,8 +246,6 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PersonId1");
-
-                    b.HasIndex("TeamId1");
 
                     b.ToTable("Players");
                 });
@@ -276,8 +267,8 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<long?>("DivisionId")
-                        .HasColumnType("bigint");
+                    b.Property<bool>("IsPayed")
+                        .HasColumnType("boolean");
 
                     b.Property<long?>("PaymentId")
                         .HasColumnType("bigint");
@@ -327,6 +318,9 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<long>("TeamCaptainId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.ToTable("Teams");
@@ -361,6 +355,9 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<int>("NumberOfSlots")
                         .HasColumnType("integer");
 
+                    b.Property<double>("RegistrationFee")
+                        .HasColumnType("double precision");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("timestamp without time zone");
 
@@ -379,6 +376,46 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tournaments");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.TournamentPlayer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("DivisionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PlayerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("PlayerType")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("RegistrationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TournamentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentPlayers");
                 });
 
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Account", b =>
@@ -409,13 +446,7 @@ namespace pueblo_golf_tournament_api.Migrations
                         .WithMany()
                         .HasForeignKey("PersonId1");
 
-                    b.HasOne("pueblo_golf_tournament_api.Entities.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId1");
-
                     b.Navigation("Person");
-
-                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Registration", b =>

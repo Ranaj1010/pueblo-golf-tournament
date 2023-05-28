@@ -6,7 +6,8 @@ namespace pueblo_golf_tournament_api.Dto.Incoming
 {
     public class RegisterPlayerDto
     {
-        public PersonRawDto? PersonalDetails { get; set; }
-        public PlayerRawDto? PlayerDetails { get; set; }
+        public string? WorldHandicapSystemId { get; set; }
+        public string? HomeClub { get; set; }
+        public long PersonId { get; set; }
     }
 }

@@ -29,8 +29,6 @@ namespace pueblo_golf_tournament_api.Modules.Authentications
         {
             var response = new AuthenticationLoginDto();
 
-            Console.WriteLine(JsonConvert.SerializeObject(payload));
-
             if (payload == null || string.IsNullOrEmpty(payload.Username) || string.IsNullOrEmpty(payload.Password))
             {
                 response.Authenticated = false;
@@ -56,14 +54,18 @@ namespace pueblo_golf_tournament_api.Modules.Authentications
             }
 
             var person = await _personService.GetAsync(person => person.Id.Equals(account.PersonId));
-            var player = await _playerService.GetAsync(player => player.PersonId.Equals(account.PersonId));
 
+            account.Password = "";
+            
             response.Data = new AuthenticatedUserData
             {
                 PersonalDetails = _mapper.Map<PersonDto>(person),
-                PlayerDetails = _mapper.Map<PlayerDto>(player),
+                Account = _mapper.Map<AccountDto>(account),
                 Username = account.Username
             };
+            
+            Console.WriteLine(response.Data.Account.AccountType);
+
             response.Authenticated = true;
             response.Message = "Account is authenticated.";
 

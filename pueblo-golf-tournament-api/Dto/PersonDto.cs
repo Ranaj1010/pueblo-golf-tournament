@@ -12,7 +12,7 @@ namespace pueblo_golf_tournament_api.Dto
         public string? EmailAddress { get; set; }
         public string? Country { get; set; }
     }
-    public class PersonRawDto
+    public class PersoRawDto
     {
         public string? FirstName { get; set; }
         public string? MiddleName { get; set; }
@@ -22,4 +22,5 @@ namespace pueblo_golf_tournament_api.Dto
         public string? EmailAddress { get; set; }
         public string? Country { get; set; }
     }
+
 }

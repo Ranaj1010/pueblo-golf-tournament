@@ -47,20 +47,33 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
+        [HttpPost("admin-account")]
+        public async Task<ActionResult<RegisteredAccountDto>> RegisterAdminAccount(RegisterAccountDto payload)
+        {
+            var response = await _registrationModule.RegisterAdminAccount(payload);
+
+            return response.Data != null ? Ok(response) : BadRequest(response);
+        }
         [HttpPost("account")]
-        public async Task<ActionResult<RegisteredAccountDto>> RegisterTeam(RegisterAccountDto payload)
+        public async Task<ActionResult<RegisteredAccountDto>> RegisterAccount(RegisterAccountDto payload)
         {
             var response = await _registrationModule.RegisterAccount(payload);
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
-        [HttpPost("team-images")]
-        public async Task<ActionResult<RegisteredTeamImagesDto>> RegisterTeamImages([FromForm]RegistrationTeamImagesDto payload)
+        [HttpPost("person")]
+        public async Task<ActionResult<RegisteredPersonDto>> RegisterPerson(RegisterPersonDto payload)
         {
-            var response = await _registrationModule.RegisterTeamsImages(payload);
+            var response = await _registrationModule.RegisterPerson(payload);
 
-            return response.LogoImageUrl != "" && response.PaymentImageUrl != "" ? Ok(response) : BadRequest(response);
+            return response.Data != null ? Ok(response) : BadRequest(response);
         }
+        [HttpPost("player")]
+        public async Task<ActionResult<RegisteredPlayerDto>> RegisterPlayer(RegisterPlayerDto payload)
+        {
+            var response = await _registrationModule.RegisterPlayer(payload);
 
+            return response.PlayerProfile != null ? Ok(response) : BadRequest(response);
+        }
     }
 }
