@@ -104,27 +104,6 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(
-                "Payment via ${controller.registeredTeam.value!.payment.paymentMethod}",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Card(
-                child: ListView(
-                  padding: EdgeInsets.all(0),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    ListTile(
-                      trailing: Icon(Icons.payment),
-                      title: Text(
-                        controller.registeredTeam.value!.payment.referrenceId,
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      subtitle: Text("Referrence Number"),
-                    ),
-                  ],
-                ),
-              ),
               const Text(
                 "Members",
                 style: TextStyle(fontWeight: FontWeight.bold),

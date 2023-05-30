@@ -15,7 +15,10 @@ RegistrationDto _$RegistrationDtoFromJson(Map<String, dynamic> json) =>
       status: json['status'] as int,
       registrationDate: DateTime.parse(json['registrationDate'] as String),
       isPayed: json['isPayed'] as bool,
-      paymentId: json['paymentId'] as int,
+      paymentId: json['paymentId'] as int?,
+      payment: json['payment'] == null
+          ? null
+          : PaymentDto.fromJson(json['payment'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RegistrationDtoToJson(RegistrationDto instance) =>
@@ -28,4 +31,5 @@ Map<String, dynamic> _$RegistrationDtoToJson(RegistrationDto instance) =>
       'registrationDate': instance.registrationDate.toIso8601String(),
       'isPayed': instance.isPayed,
       'paymentId': instance.paymentId,
+      'payment': instance.payment,
     };

@@ -39,38 +39,33 @@ class RegisterNewPlayerScreen extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
                 controller.forms[controller.selectedFormIndex.value],
-                controller.selectedFormIndex == controller.forms.length - 1
-                    ? BrandElevatedButton(
-                        onPressed: () => controller.goBack(),
-                        title: "Go Back",
-                        loading: false)
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 150,
-                            child: BrandSecondaryButton(
-                                onPressed: controller.selectedFormIndex > 0
-                                    ? () => controller.previous()
-                                    : null,
-                                title: "Back",
-                                loading: false),
-                          ),
-                          SizedBox(
-                            width: 150,
-                            child: BrandElevatedButton(
-                                onPressed: controller.selectedFormIndex ==
-                                        controller.forms.length - 2
-                                    ? () => controller.registerPlayerProfile()
-                                    : () => controller.next(),
-                                title: controller.selectedFormIndex ==
-                                        controller.forms.length - 2
-                                    ? "Create"
-                                    : "Next",
-                                loading: false),
-                          )
-                        ],
-                      )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      child: BrandSecondaryButton(
+                          onPressed: controller.selectedFormIndex > 0
+                              ? () => controller.previous()
+                              : null,
+                          title: "Back",
+                          loading: false),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      child: BrandElevatedButton(
+                          onPressed: controller.selectedFormIndex ==
+                                  controller.forms.length - 2
+                              ? () => controller.registerPlayerProfile()
+                              : () => controller.next(),
+                          title: controller.selectedFormIndex ==
+                                  controller.forms.length - 2
+                              ? "Create"
+                              : "Next",
+                          loading: false),
+                    )
+                  ],
+                )
               ],
             )),
       ),

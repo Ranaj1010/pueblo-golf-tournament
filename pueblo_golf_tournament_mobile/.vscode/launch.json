@@ -32,12 +32,17 @@
 			"program": "lib/environments/prod.dart",
 			"args": ["-d", "chrome", "--web-browser-flag", "--disable-web-security", "--dart-define=env=prod"]
 		},
-
 		{
 			"name": "pueblo_golf_tournament_mobile",
 			"request": "launch",
 			"type": "dart",
 			"args": ["--flavor", "dev", "-t", "lib/environments/dev.dart", "--dart-define=env=dev"]
+		},
+		{
+			"name": "pueblo_golf_tournament_mobile Alpha",
+			"request": "launch",
+			"type": "dart",
+			"args": ["--flavor", "alpha", "-t", "lib/environments/alpha.dart", "--dart-define=env=alpha"]
 		},
 		{
 			"name": "pueblo_golf_tournament_mobile (profile mode)",

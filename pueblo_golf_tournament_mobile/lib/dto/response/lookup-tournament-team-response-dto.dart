@@ -31,14 +31,14 @@ class RegisteredTeam {
   final RegistrationDto registration;
   final TeamDto team;
   final PlayerProfile captainProfile;
-  final PaymentDto payment;
+  final PaymentDto? payment;
   final List<PlayerProfile>? memberProfiles;
   RegisteredTeam({
     required this.registration,
     required this.captainProfile,
     required this.memberProfiles,
     required this.team,
-    required this.payment,
+    this.payment,
   });
   factory RegisteredTeam.fromJson(Map<String, dynamic> json) =>
       _$RegisteredTeamFromJson(json);

@@ -6,11 +6,13 @@ part 'team-dto.g.dart';
 class TeamDto extends BaseDto {
   final String name;
   final String? logoUrl;
+  final String? defaultBackgroundColor;
   final int teamCaptainId;
   TeamDto({
     required super.id,
     required this.name,
     required this.logoUrl,
+    this.defaultBackgroundColor,
     required this.teamCaptainId,
   });
 

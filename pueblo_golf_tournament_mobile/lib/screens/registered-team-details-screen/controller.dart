@@ -18,4 +18,14 @@ class RegisteredTeamDetailsScreenController
   void selectedRegisteredTeam(RegisteredTeam team) {
     registeredTeam(team);
   }
+
+  @override
+  void uploadRegistrationPayment() {
+    // TODO: implement uploadRegistrationPayment
+  }
+
+  @override
+  void updateTeamDetails() {
+    // TODO: implement updateTeamDetails
+  }
 }

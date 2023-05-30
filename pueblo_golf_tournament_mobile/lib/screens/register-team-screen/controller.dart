@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/api/upload/upload-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/data/context.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/model/person-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/model/player-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-payment-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/upload-mobile-proof-of-payment-request-dto.dart';
@@ -23,8 +27,7 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
   var selectedFormIndex = 0.obs;
   var isLoading = false.obs;
   var disabledNext = true.obs;
-  var teamLogo = Rxn<File>();
-  var proofOfPayment = Rxn<File>();
+  var isConfirmationUnderstood = false.obs;
   var members = <PlayerProfile>[].obs;
   var selectedPaymentMethod = PaymentMethodEnum.GCash.obs;
   var paymentReferrenceIdTextController = TextEditingController();
@@ -41,7 +44,7 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
   var formTitles = [
     "Create your Team",
     "Add your Members",
-    "Payment for Registration",
+    "Confirm Registration",
     "Congratulations"
   ];
 
@@ -53,11 +56,8 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
     teamNameTextController.addListener(() => disabledNextWhen());
     paymentReferrenceIdTextController.addListener(() => disabledNextWhen());
     forms = [
-      Obx(
-        () => TeamForm(
-            teamNameTextController: teamNameTextController,
-            uploadLogo: () => uploadTeamLogo(),
-            teamLogo: teamLogo.value),
+      TeamForm(
+        teamNameTextController: teamNameTextController,
       ),
       Obx(
         () => AddMembersForm(
@@ -66,13 +66,14 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
         ),
       ),
       Obx(
-        () => PaymentMethodForm(
-          proofOfPaymentImage: proofOfPayment.value,
-          paymentMethod: selectedPaymentMethod.value!,
-          selectPaymentMethod: (paymentMethod) =>
-              selectedPaymentMethod(paymentMethod),
-          uploadProofOfPayment: () => uploadProofOfPayment(),
-          paymentReferrenceIdTextController: paymentReferrenceIdTextController,
+        () => ConfirmationForm(
+          members: members.value,
+          isUnderstood: isConfirmationUnderstood.value,
+          onTapUnderstand: (bool value) {
+            isConfirmationUnderstood(value);
+            disabledNextWhen();
+          },
+          teamName: teamNameTextController.text,
         ),
       ),
       TeamRegistrationSuccess()
@@ -93,11 +94,14 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
 
   @override
   void addMember() async {
-    var addedMember = await Get.toNamed("/add-member");
+    var addedMember = await Get.toNamed("/register-player");
     if (addedMember != null) {
       print(jsonEncode(addedMember));
+
       var profile = PlayerProfile.fromJson(jsonDecode(jsonEncode(addedMember)));
       members.add(profile);
+      Get.snackbar("Member added",
+          "${profile.person.firstName} ${profile.person.lastName} is now added to the team.");
       disabledNextWhen();
       update();
     }
@@ -119,6 +123,7 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
         paymentDate: DateTime.now().toUtc());
 
     var team = RegisterTeamRequestDto(
+        backgroundColor: Random().nextInt(Colors.primaries.length).toString(),
         name: teamNameTextController.text,
         members: members.map((element) => element.player.id).toList(),
         payment: payment,
@@ -129,58 +134,10 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
 
     if (registeredTeam.data != null) {
       registeredTeamData(registeredTeam.data);
-      var uploadedTeamLogo = await uploadController.uploadMobileTeamLogo(
-          UploadMobileTeamLogoRequestDto(
-              teamId: registeredTeam.data!.team.id,
-              logoImageFile: teamLogo.value!));
-
-      if (!uploadedTeamLogo.isUploaded) {
-        Get.snackbar("Failed to Team Logo", uploadedTeamLogo.message);
-      }
-
-      if (uploadedTeamLogo.isUploaded) {
-        var uploadedProofOfPayment = await uploadController
-            .uploadMobileProofOfPayment(UploadMobileProofOfPaymentRequestDto(
-                paymentId: registeredTeam.data!.registration.paymentId,
-                paymentImage: proofOfPayment.value!));
-        if (!uploadedProofOfPayment.isUploaded) {
-          Get.snackbar("Failed to upload Proof of Payment",
-              uploadedProofOfPayment.message);
-        }
-
-        if (uploadedProofOfPayment.isUploaded) {
-          selectedFormIndex(++selectedFormIndex.value);
-        }
-      }
+      selectedFormIndex(++selectedFormIndex.value);
     }
 
     isLoading(false);
-  }
-
-  @override
-  Future<void> uploadProofOfPayment() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      return;
-    }
-
-    final imageTemp = File(image.path);
-    proofOfPayment(imageTemp);
-    disabledNextWhen();
-    update();
-  }
-
-  @override
-  Future<void> uploadTeamLogo() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      return;
-    }
-
-    final imageTemp = File(image.path);
-    teamLogo(imageTemp);
-    disabledNextWhen();
-    update();
   }
 
   @override
@@ -196,30 +153,18 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
   }
 
   @override
-  void selectPaymentMethod(PaymentMethodEnum method) {
-    selectedPaymentMethod(method);
-  }
-
-  @override
   void disabledNextWhen() {
     switch (selectedFormIndex.value) {
       case 0:
-        print("disabling");
-        disabledNext(teamNameTextController.value.text.isEmpty ||
-            teamLogo.value == null);
+        disabledNext(teamNameTextController.value.text.isEmpty);
         break;
 
       case 1:
-        print("disabling");
         disabledNext(members.length != 4);
         break;
-
       case 2:
-        print("disabling");
-        disabledNext(paymentReferrenceIdTextController.text.isEmpty ||
-            proofOfPayment.value == null);
+        disabledNext(!isConfirmationUnderstood.value);
         break;
-
       default:
     }
   }

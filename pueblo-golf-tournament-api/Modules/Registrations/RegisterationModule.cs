@@ -21,7 +21,6 @@ using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TournamentPlayers;
 using pueblo_golf_tournament_api.Services.Tournaments;
 using pueblo_golf_tournament_api.Utilities.Enums;
-using pueblo_golf_tournament_api.Utilities.Helpers;
 
 namespace pueblo_golf_tournament_api.Modules.Registrations
 {
@@ -285,6 +284,15 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             var response = new RegisteredPersonDto();
             try
             {
+                var existingPerson = await _personService.GetAsync(person => person.FirstName == payload.FirstName && person.MiddleName == payload.MiddleName && person.LastName == payload.LastName && person.BirthDate == payload.BirthDate);
+
+                if (existingPerson != null)
+                {
+                    response.Data = _mapper.Map<PersonDto>(existingPerson);
+                    response.Message = "Person is successfully registered.";
+                    return response;
+                }
+
                 var registered = await _personService.AddAsync(_mapper.Map<Person>(payload));
 
                 if (registered != null)
@@ -309,6 +317,23 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             var response = new RegisteredPlayerDto();
             try
             {
+
+                var existingPlayer = await _playerService.GetAsync(player => player.PersonId == payload.PersonId);
+
+                if (existingPlayer != null)
+                {
+                    var person = await _personService.GetAsync(person => person.Id == existingPlayer.PersonId);
+                    var profile = new PlayerProfile
+                    {
+                        Player = _mapper.Map<PlayerDto>(existingPlayer),
+                        Person = _mapper.Map<PersonDto>(person)
+                    };
+
+                    response.PlayerProfile = profile;
+                    response.Message = "Player is successfully registered.";
+                    return response;
+                }
+
                 var playerIdPrefex = "PBG000000000";
                 var player = _mapper.Map<Player>(payload);
                 var playersCount = await _dbContext.Players.CountAsync() + 1;
@@ -377,12 +402,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                     var teamCaptain = await _playerService.GetAsync(player => player.Id == payload.TeamCaptainId);
 
-                    var payment = await _paymentService.AddAsync(new Payment
-                    {
-                        PaymentDate = DateTime.Now,
-                        PaymentMethod = payload.Payment!.PaymentMethod,
-                        ReferrenceId = payload.Payment.ReferrenceId,
-                    });
 
                     var registration = await _registrationService.AddAsync(new Registration
                     {
@@ -391,7 +410,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         TournamentId = payload.TournamentId,
                         RegistrationDate = DateTime.Now,
                         Status = Utilities.Enums.RegistrationStatusEnum.Pending,
-                        PaymentId = payment.Id
                     });
 
                     if (registration == null)
@@ -439,77 +457,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             }
         }
 
-        public async Task<RegisteredTeamImagesDto> RegisterTeamsImages(RegistrationTeamImagesDto payload)
-        {
-            var response = new RegisteredTeamImagesDto();
-
-            try
-            {
-
-
-                if (payload.LogoImageFile == null || payload.LogoImageFile.Length == 0)
-                {
-                    response.Message = "Please send the Team Logo";
-                    return response;
-                }
-
-                if (payload.PaymentImageFile == null || payload.PaymentImageFile.Length == 0)
-                {
-                    response.Message = "Please send the Payment Screenshot";
-                    return response;
-                }
-
-                //create unique name for file
-                var paymentFileName = Guid.NewGuid().ToString() + Path.GetExtension(payload.PaymentImageFile.FileName);
-                var logoFileName = Guid.NewGuid().ToString() + Path.GetExtension(payload.LogoImageFile.FileName);
-
-                //set file url
-                var savePaymentPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/payments", paymentFileName);
-                var saveLogoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/logos", logoFileName);
-
-                using (var stream = new FileStream(savePaymentPath, FileMode.Create))
-                {
-                    payload.PaymentImageFile.CopyTo(stream);
-                }
-
-                using (var stream = new FileStream(saveLogoPath, FileMode.Create))
-                {
-                    payload.LogoImageFile.CopyTo(stream);
-                }
-
-                Console.WriteLine($"TEAM ID:{payload.TeamId}");
-
-                var registration = await _registrationService.GetAsync(registration => registration.TeamId == payload.TeamId);
-
-
-                var team = await _teamService.GetAsync(team => team.Id == payload.TeamId);
-                team.LogoUrl = logoFileName;
-
-                Console.WriteLine($"TEAM NAME: {team.Name}");
-
-                var updatedTeam = await _teamService.UpdateAsync(team);
-
-                var payment = await _paymentService.GetAsync(payment => payment.Id == registration.PaymentId);
-
-                payment.PaymentReferrencePhoto = paymentFileName;
-
-                var updatedPayment = await _paymentService.UpdateAsync(payment);
-
-                Console.WriteLine($"Payment updated : {updatedPayment}");
-                Console.WriteLine($"Team updated : {updatedTeam}");
-
-
-                response.PaymentImageUrl = paymentFileName;
-                response.LogoImageUrl = logoFileName;
-
-                return response;
-            }
-            catch (System.Exception ex)
-            {
-                response.Message = $"Registration Failed. {ex.Message}";
-                return response;
-            }
-        }
 
         public async Task<RegisteredTournamentDto> RegisterTournament(RegisterTournamentDto payload)
         {

@@ -38,7 +38,9 @@ RegisteredTeam _$RegisteredTeamFromJson(Map<String, dynamic> json) =>
           ?.map((e) => PlayerProfile.fromJson(e as Map<String, dynamic>))
           .toList(),
       team: TeamDto.fromJson(json['team'] as Map<String, dynamic>),
-      payment: PaymentDto.fromJson(json['payment'] as Map<String, dynamic>),
+      payment: json['payment'] == null
+          ? null
+          : PaymentDto.fromJson(json['payment'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RegisteredTeamToJson(RegisteredTeam instance) =>

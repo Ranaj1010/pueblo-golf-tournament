@@ -12,6 +12,5 @@ namespace pueblo_golf_tournament_api.Entities
         public DateTime RegistrationDate { get; set; }
         public bool IsPayed { get; set; }
         public long? PaymentId { get; set; }
-        public virtual Payment? Payment { get; set; }
     }
 }
