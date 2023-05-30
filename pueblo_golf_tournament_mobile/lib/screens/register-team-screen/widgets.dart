@@ -2,40 +2,22 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/utilities/enums.dart';
 
 class TeamForm extends StatelessWidget {
   final TextEditingController teamNameTextController;
-  final Function uploadLogo;
-  final File? teamLogo;
-  const TeamForm(
-      {super.key,
-      required this.teamNameTextController,
-      required this.uploadLogo,
-      required this.teamLogo});
+
+  const TeamForm({
+    super.key,
+    required this.teamNameTextController,
+  });
   @override
   Widget build(BuildContext context) {
     return Wrap(
       runSpacing: 20,
       children: [
-        Center(
-          child: InkWell(
-            enableFeedback: true,
-            splashColor: Colors.black,
-            borderRadius: BorderRadius.circular(50),
-            radius: 50,
-            onTap: () => uploadLogo(),
-            child: CircleAvatar(
-              maxRadius: 80,
-              backgroundImage: teamLogo != null ? FileImage(teamLogo!) : null,
-              child: Icon(
-                Icons.photo_camera,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
         TextField(
           decoration: const InputDecoration(hintText: "Team Name"),
           controller: teamNameTextController,
@@ -201,6 +183,102 @@ class PaymentMethodForm extends StatelessWidget {
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class ConfirmationForm extends StatelessWidget {
+  final bool isUnderstood;
+  final Function(bool value) onTapUnderstand;
+  final List<PlayerProfile> members;
+  final String teamName;
+  const ConfirmationForm(
+      {super.key,
+      required this.isUnderstood,
+      required this.onTapUnderstand,
+      required this.members,
+      required this.teamName});
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      runSpacing: 20,
+      children: [
+        Text(
+          "Team",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Container(
+          padding: EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromARGB(255, 232, 255, 240),
+          ),
+          width: double.infinity,
+          child: Wrap(
+            spacing: 10,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              CircleAvatar(child: Text(teamName[0])),
+              Text(
+                teamName,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )
+            ],
+          ),
+        ),
+        Text(
+          "Members",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Card(
+          child: ListView.separated(
+              padding: EdgeInsets.all(0),
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemBuilder: (context, index) => ListTile(
+                    leading: CircleAvatar(child: Icon(Icons.person)),
+                    title: Text(
+                        "${members[index].person.firstName} ${members[index].person.lastName}"),
+                    subtitle: Text("${members[index].player.playerExternalId}"),
+                  ),
+              separatorBuilder: (context, index) => Divider(),
+              itemCount: members.length),
+        ),
+        Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromARGB(255, 255, 239, 204),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(20),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Reminder:",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.deepOrange),
+              ),
+              Padding(padding: EdgeInsets.all(10)),
+              Text(
+                  "Please pay the Registration Fee within 15 days upon submission of registration. Failure to pay  forfeits your team slot in the tournament.\n\nThank you and happy golfing! :)"),
+            ]),
+          ),
+        ),
+        InkWell(
+          onTap: () => onTapUnderstand(!isUnderstood),
+          child: Row(
+            children: [
+              Checkbox(
+                value: isUnderstood,
+                onChanged: (value) => onTapUnderstand(!isUnderstood),
+              ),
+              const Text("I understand and continue my registration.")
+            ],
+          ),
+        )
       ],
     );
   }

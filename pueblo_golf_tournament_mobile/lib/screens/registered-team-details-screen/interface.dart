@@ -4,4 +4,6 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-tea
 abstract class IRegisteredTeamDetailsScreenControler extends GetxController {
   void goBack();
   void selectedRegisteredTeam(RegisteredTeam team);
+  void updateTeamDetails();
+  void uploadRegistrationPayment();
 }

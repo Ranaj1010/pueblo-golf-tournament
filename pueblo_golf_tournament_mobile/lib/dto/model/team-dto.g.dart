@@ -10,6 +10,7 @@ TeamDto _$TeamDtoFromJson(Map<String, dynamic> json) => TeamDto(
       id: json['id'] as int,
       name: json['name'] as String,
       logoUrl: json['logoUrl'] as String?,
+      defaultBackgroundColor: json['defaultBackgroundColor'] as String?,
       teamCaptainId: json['teamCaptainId'] as int,
     );
 
@@ -17,5 +18,6 @@ Map<String, dynamic> _$TeamDtoToJson(TeamDto instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'logoUrl': instance.logoUrl,
+      'defaultBackgroundColor': instance.defaultBackgroundColor,
       'teamCaptainId': instance.teamCaptainId,
     };

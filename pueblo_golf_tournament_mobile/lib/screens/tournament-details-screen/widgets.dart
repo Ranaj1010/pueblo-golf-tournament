@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 
@@ -61,8 +63,13 @@ class RegisteredTeamList extends StatelessWidget {
                           onTap: () => onSelectTeam(registeredTeams[index]),
                           trailing: Icon(Icons.chevron_right),
                           leading: CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  registeredTeams[index].team.logoUrl!)),
+                            backgroundColor: Colors.primaries[int.parse(
+                                registeredTeams[index]
+                                    .team
+                                    .defaultBackgroundColor!)],
+                            child:
+                                Text("${registeredTeams[index].team.name[0]}"),
+                          ),
                           title: Text(
                             registeredTeams[index].team.name,
                             style: const TextStyle(fontWeight: FontWeight.bold),

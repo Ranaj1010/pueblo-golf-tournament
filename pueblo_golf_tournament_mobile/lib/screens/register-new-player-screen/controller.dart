@@ -93,35 +93,24 @@ class RegisterNewPlayerScreenController
       }
 
       if (response.playerProfile != null) {
-        addTeamMemberScreenController.autoEncodeCreatedPlayer(
-            response.playerProfile!.player.playerExternalId);
-        selectedFormIndex(++selectedFormIndex.value);
+        selectedFormIndex(0);
+        firstNameTextController.clear();
+        middleNameTextController.clear();
+        lastNameTextController.clear();
+        birthDateTextController.clear();
+        mobileNumberTextController.clear();
+        emailAddressTextController.clear();
+        homeAddressTextController.clear();
+        cityTextController.clear();
+        countryTextController.clear();
+        homeClubTextController.clear();
+        worldHandicapSystemIdTextController.clear();
+        selectedFormIndex(0);
+        Get.back(result: response.playerProfile);
       }
     }
 
     isLoading(false);
-  }
-
-  @override
-  void iHaveWHSId() {
-    hasWHSId(!hasWHSId.value);
-  }
-
-  @override
-  void goBack() {
-    firstNameTextController.clear();
-    middleNameTextController.clear();
-    lastNameTextController.clear();
-    birthDateTextController.clear();
-    mobileNumberTextController.clear();
-    emailAddressTextController.clear();
-    homeAddressTextController.clear();
-    cityTextController.clear();
-    countryTextController.clear();
-    homeClubTextController.clear();
-    worldHandicapSystemIdTextController.clear();
-    selectedFormIndex(0);
-    Get.back();
   }
 
   @override

@@ -9,9 +9,6 @@ abstract class IRegisterTeamScreenController extends GetxController {
   void next();
   void previous();
   void resetForm();
-  Future<void> uploadTeamLogo();
-  Future<void> uploadProofOfPayment();
-  void selectPaymentMethod(PaymentMethodEnum method);
   void goBackToHome();
   void disabledNextWhen();
 }

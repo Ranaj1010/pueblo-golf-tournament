@@ -21,7 +21,6 @@ class AuthenticateController extends IAuthenticationController {
       case 200:
         var parsed =
             AuthenticateResponseDto.fromJson(jsonDecode(response.body));
-
         return parsed;
       case 400:
         return AuthenticateResponseDto.fromJson(jsonDecode(response.body));

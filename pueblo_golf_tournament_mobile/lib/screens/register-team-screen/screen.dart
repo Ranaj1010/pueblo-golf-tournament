@@ -72,7 +72,7 @@ class RegisterTeamScreen extends StatelessWidget {
                                         : () => controller.next(),
                                 title: controller.selectedFormIndex ==
                                         controller.forms.length - 2
-                                    ? "Create"
+                                    ? "Register"
                                     : "Next",
                                 loading: controller.isLoading.value),
                           )
