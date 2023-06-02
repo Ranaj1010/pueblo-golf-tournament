@@ -59,10 +59,10 @@ namespace pueblo_golf_tournament_api.Controllers.V1
             response = new UploadedTeamLogoDto
             {
                 LogoUrl = team.LogoUrl,
-                Message = updatedTeam ? "Team Logo uploaded successfully." : "Failed to upload team logo"
+                Message = updatedTeam != null ? "Team Logo uploaded successfully." : "Failed to upload team logo"
             };
 
-            return updatedTeam ? Ok() : BadRequest();
+            return updatedTeam != null ? Ok() : BadRequest();
         }
 
         [HttpPost("proof-of-payment")]
@@ -101,10 +101,10 @@ namespace pueblo_golf_tournament_api.Controllers.V1
             response = new UploadedProofOfPaymentDto
             {
                 PaymentImageUrl = payment.PaymentReferrencePhoto,
-                Message = updatedPayment ? "Proof of Payment uploaded successfully." : "Failed to upload Proof of Payment."
+                Message = updatedPayment != null ? "Proof of Payment uploaded successfully." : "Failed to upload Proof of Payment."
             };
 
-            return updatedPayment ? Ok(response) : BadRequest(response);
+            return updatedPayment != null ? Ok(response) : BadRequest(response);
         }
     }
 }

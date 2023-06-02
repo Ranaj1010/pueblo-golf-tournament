@@ -9,6 +9,8 @@ namespace pueblo_golf_tournament_api.Dto
         public string? LastName { get; set; }
         public DateTime BirthDate { get; set; }
         public string? ContactNumber { get; set; }
+        public string? HomeAddress { get; set; }
+        public string? City { get; set; }
         public string? EmailAddress { get; set; }
         public string? Country { get; set; }
     }

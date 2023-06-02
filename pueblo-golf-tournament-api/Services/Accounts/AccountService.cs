@@ -54,29 +54,23 @@ namespace pueblo_golf_tournament_api.Services.Accounts
 
         public async Task<List<Account>> ListAsync(Expression<Func<Account, bool>> expression) => await _dbContext.Accounts.Where(expression).ToListAsync();
 
-        public async Task<List<Account>> ListAsync()=> await _dbContext.Accounts.Where(tournament => tournament.Active).ToListAsync();
+        public async Task<List<Account>> ListAsync() => await _dbContext.Accounts.Where(tournament => tournament.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Account entity)
+        public async Task<Account> UpdateAsync(Account entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Accounts.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Accounts.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.Username = entity.Username;
-                existingData.Password = entity.Password;
+            existingData.Username = entity.Username;
+            existingData.Password = entity.Password;
 
-                _dbContext.Accounts.Update(existingData);
+            _dbContext.Accounts.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
+
         }
     }
 }

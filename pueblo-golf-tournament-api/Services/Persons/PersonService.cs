@@ -56,32 +56,26 @@ namespace pueblo_golf_tournament_api.Services.Persons
 
         public async Task<List<Person>> ListAsync() => await _dbContext.Persons.Where(person => person.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Person entity)
+        public async Task<Person> UpdateAsync(Person entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Persons.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Persons.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.FirstName = entity.FirstName;
-                existingData.LastName = entity.LastName;
-                existingData.MiddleName = entity.MiddleName;
-                existingData.BirthDate = entity.BirthDate;
-                existingData.ContactNumber = entity.ContactNumber;
-                existingData.EmailAddress = entity.EmailAddress;
-                existingData.Country = entity.Country;
+            existingData.FirstName = entity.FirstName;
+            existingData.LastName = entity.LastName;
+            existingData.MiddleName = entity.MiddleName;
+            existingData.BirthDate = entity.BirthDate;
+            existingData.ContactNumber = entity.ContactNumber;
+            existingData.EmailAddress = entity.EmailAddress;
+            existingData.Country = entity.Country;
 
-                _dbContext.Persons.Update(existingData);
+            _dbContext.Persons.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
+
         }
     }
 }

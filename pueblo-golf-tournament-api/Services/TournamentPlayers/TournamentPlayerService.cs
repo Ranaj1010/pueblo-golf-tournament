@@ -50,7 +50,7 @@ namespace pueblo_golf_tournament_api.Services.TournamentPlayers
         public async Task<TournamentPlayer> GetAsync(Expression<Func<TournamentPlayer, bool>> expression) => await _dbContext.TournamentPlayers.SingleOrDefaultAsync(expression);
         public async Task<List<TournamentPlayer>> ListAsync(Expression<Func<TournamentPlayer, bool>> expression)=> await _dbContext.TournamentPlayers.Where(expression).ToListAsync();
         public async Task<List<TournamentPlayer>> ListAsync() => await _dbContext.TournamentPlayers.Where(tournamentPlayer => tournamentPlayer.Active).ToListAsync();
-        public Task<bool> UpdateAsync(TournamentPlayer entity)
+        public Task<TournamentPlayer> UpdateAsync(TournamentPlayer entity)
         {
             throw new NotImplementedException();
         }

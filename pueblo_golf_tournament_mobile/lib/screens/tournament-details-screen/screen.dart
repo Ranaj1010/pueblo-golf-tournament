@@ -57,6 +57,17 @@ class TournamentDetailScreen extends StatelessWidget {
                         subtitle: const Text("Registration fee"),
                         leading: const Icon(Icons.money),
                       ),
+                      ListTile(
+                        title: Text(
+                          controller.selectedTournament.value!.numberOfSlots
+                              .toString(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        subtitle: const Text("Available Slots"),
+                        leading: const Icon(Icons.golf_course),
+                      ),
                     ]),
               ),
               const Padding(padding: EdgeInsets.all(10)),

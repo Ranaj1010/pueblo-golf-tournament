@@ -15,6 +15,8 @@ ReqisterPersonRequesDto _$ReqisterPersonRequesDtoFromJson(
       birthDate: DateTime.parse(json['birthDate'] as String),
       contactNumber: json['contactNumber'] as String,
       emailAddress: json['emailAddress'] as String,
+      homeAddress: json['homeAddress'] as String,
+      city: json['city'] as String,
       country: json['country'] as String,
     );
 
@@ -26,6 +28,8 @@ Map<String, dynamic> _$ReqisterPersonRequesDtoToJson(
       'lastName': instance.lastName,
       'birthDate': instance.birthDate.toIso8601String(),
       'contactNumber': instance.contactNumber,
+      'homeAddress': instance.homeAddress,
+      'city': instance.city,
       'emailAddress': instance.emailAddress,
       'country': instance.country,
     };

@@ -56,13 +56,11 @@ namespace pueblo_golf_tournament_api.Services.Teams
 
         public async Task<List<Team>> ListAsync() => await _dbContext.Teams.Where(tournament => tournament.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Team entity)
+        public async Task<Team> UpdateAsync(Team entity)
         {
-            try
-            {
                 var existingData = await _dbContext.Teams.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+                if (existingData == null) return null;
 
                 existingData.Name = entity.Name;
                 existingData.LogoUrl = entity.LogoUrl;
@@ -71,12 +69,7 @@ namespace pueblo_golf_tournament_api.Services.Teams
 
                 await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+                return entity;
         }
     }
 }

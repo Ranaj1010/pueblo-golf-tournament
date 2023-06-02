@@ -61,30 +61,24 @@ namespace pueblo_golf_tournament_api.Services.Divisions
             Active = division.Active,
             TournamentId = division.TournamentId,
             CreatedAt = division.CreatedAt,
-            ArchivedAt = division.ArchivedAt,            
+            ArchivedAt = division.ArchivedAt,
             Tournament = tournament,
         }).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Division entity)
+        public async Task<Division> UpdateAsync(Division entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Divisions.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Divisions.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.Name = entity.Name;
+            existingData.Name = entity.Name;
 
-                _dbContext.Divisions.Update(existingData);
+            _dbContext.Divisions.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
+
         }
     }
 }

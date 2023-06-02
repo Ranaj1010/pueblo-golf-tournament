@@ -179,6 +179,9 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
                     b.Property<string>("ContactNumber")
                         .HasColumnType("text");
 
@@ -192,6 +195,9 @@ namespace pueblo_golf_tournament_api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("HomeAddress")
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")

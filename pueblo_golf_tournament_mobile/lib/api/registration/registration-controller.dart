@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pueblo_golf_tournament_mobile/api/registration/iregistration-controller.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/model/payment-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-account-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-person-request-dto.dart';
@@ -11,11 +12,13 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-account-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-division-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/register-payment-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-person-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-player-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-response-dto.dart';
 
+import '../../dto/request/register-payment-request-dto.dart';
 import '../../utilities/http-controller.dart';
 
 class RegistrationController extends IRegistrationController {
@@ -128,6 +131,38 @@ class RegistrationController extends IRegistrationController {
             jsonDecode(response.body));
       default:
         return RegisterTournamentResponseDto(
+            message: response.reasonPhrase!, data: null);
+    }
+  }
+
+  @override
+  Future<RegisterPaymentResponseDto> registerPayment(
+      RegisterPaymentRequestDto payload) async {
+    var endpoint = "$controller/payment";
+    var fields = {
+      "PaymentMethod": payload.paymentMethod.toString(),
+      "ReferrenceId": payload.referrenceId.toString(),
+      "RegistrationId": payload.registrationId.toInt().toString(),
+    };
+
+    print(fields);
+
+    var response = await httpController.upload(endpoint,
+        "PaymentReferrencePhoto", payload.paymentReferrencePhoto, fields);
+
+    switch (response.statusCode) {
+      case 200:
+        var responseData = await response.stream.toBytes();
+        var dataString = String.fromCharCodes(responseData);
+        var responseJson = jsonDecode(dataString);
+        return RegisterPaymentResponseDto.fromJson(responseJson);
+      case 400:
+        var responseData = await response.stream.toBytes();
+        var dataString = String.fromCharCodes(responseData);
+        var responseJson = jsonDecode(dataString);
+        return RegisterPaymentResponseDto.fromJson(responseJson);
+      default:
+        return RegisterPaymentResponseDto(
             message: response.reasonPhrase!, data: null);
     }
   }

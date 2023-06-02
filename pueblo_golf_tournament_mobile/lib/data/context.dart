@@ -8,6 +8,7 @@ class DataContextController extends IDataContextController {
   var playerProfile = Rxn<PlayerProfile?>();
   @override
   void saveAuthenticatedUserData(AuthenticatedUserData data) {
+    print(data.account!.accountType);
     authenticatedData(data);
   }
 
