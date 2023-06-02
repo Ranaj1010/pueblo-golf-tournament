@@ -10,6 +10,7 @@ using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
 using pueblo_golf_tournament_api.Entities;
 using pueblo_golf_tournament_api.Extensions;
+using pueblo_golf_tournament_api.Modules.Uploads;
 using pueblo_golf_tournament_api.Services.Accounts;
 using pueblo_golf_tournament_api.Services.Divisions;
 using pueblo_golf_tournament_api.Services.HomeClubs;
@@ -36,9 +37,10 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         private readonly ITeamService _teamService;
         private readonly ITournamentPlayerService _tournamentPlayerService;
         private readonly IAccountService _accountService;
+        private readonly IUploadModule _uploadModule;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public RegisterationModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, ITournamentPlayerService tournamentPlayerService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
+        public RegisterationModule(IMapper mapper, DataContext dbContext, IUploadModule uploadModule, ITournamentService tournamentService, ITournamentPlayerService tournamentPlayerService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -52,6 +54,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             _personService = personService;
             _accountService = accountService;
             _paymentService = paymentService;
+            _uploadModule = uploadModule;
         }
         public async Task<RegisteredAccountDto> RegisterAccount(RegisterAccountDto payload)
         {
@@ -279,6 +282,34 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             return response;
         }
 
+        public async Task<RegisteredPaymentResponseDto> RegisterPayment(RegisterPaymentRequestDto payload)
+        {
+            var response = new RegisteredPaymentResponseDto();
+
+            var registration = await _registrationService.GetAsync(registration => registration.Id == payload.RegistrationId);
+
+            var paymentReferrencePhoto = _uploadModule.UploadImage(payload.PaymentReferrencePhoto, payload.PaymentReferrencePhoto.FileName, "payments");
+
+            var payment = new Payment
+            {
+                PaymentMethod = payload.PaymentMethod,
+                ReferrenceId = payload.ReferrenceId,
+                PaymentReferrencePhoto = paymentReferrencePhoto,
+                PaymentDate = DateTime.UtcNow
+            };
+
+            var createdPayment = await _paymentService.AddAsync(payment);
+            registration.IsPayed = true;
+            registration.PaymentId = createdPayment.Id;
+
+            var updatedRegistration = await _registrationService.UpdateAsync(registration);
+
+            response.Data = _mapper.Map<PaymentDto>(createdPayment);
+            response.Message = "Payment has been made";
+            
+            return response;
+        }
+
         public async Task<RegisteredPersonDto> RegisterPerson(RegisterPersonDto payload)
         {
             var response = new RegisteredPersonDto();
@@ -394,7 +425,8 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                 var registeredTeam = await _teamService.AddAsync(new Team
                 {
                     Name = payload.Name,
-                    TeamCaptainId = payload.TeamCaptainId
+                    TeamCaptainId = payload.TeamCaptainId,
+                    DefaultBackgroundColor = payload.BackgroundColor
                 });
 
                 if (registeredTeam != null)

@@ -117,16 +117,10 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
   void registerTeam() async {
     isLoading(true);
 
-    var payment = RegisterPaymentRequestDto(
-        paymentMethod: selectedPaymentMethod.value.name,
-        referrenceId: paymentReferrenceIdTextController.text,
-        paymentDate: DateTime.now().toUtc());
-
     var team = RegisterTeamRequestDto(
         backgroundColor: Random().nextInt(Colors.primaries.length).toString(),
         name: teamNameTextController.text,
         members: members.map((element) => element.player.id).toList(),
-        payment: payment,
         teamCaptainId: dataContextController.playerProfile.value!.player.id,
         tournamentId: tournamentDetailsController.selectedTournament.value!.id);
 

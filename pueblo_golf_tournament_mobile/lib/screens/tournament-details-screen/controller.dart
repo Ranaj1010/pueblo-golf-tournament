@@ -34,8 +34,11 @@ class TournamentDetailsScreenController
       var response = await lookupController.lookupTournamentTeam(
           LookupTournamentTeamRequestDto(
               tournamentId: selectedTournament.value!.id,
-              teamCaptainId:
-                  dataContextController.playerProfile.value!.player.id));
+              teamCaptainId: dataContextController
+                          .authenticatedData.value!.account!.accountType ==
+                      2
+                  ? dataContextController.playerProfile.value!.player.id
+                  : 0));
       print(jsonEncode(response));
       if (response.registeredTeams.isNotEmpty) {
         registeredTeams.addAll(response.registeredTeams);
@@ -67,6 +70,9 @@ class TournamentDetailsScreenController
   @override
   void selectRegisteredTeam(RegisteredTeam team) {
     registeredTeamDetails.selectedRegisteredTeam(team);
-    Get.toNamed("/registered-team-details");
+    var selected = Get.toNamed("/registered-team-details");
+    if (selected != null) {
+      loadingRegistrations();
+    }
   }
 }

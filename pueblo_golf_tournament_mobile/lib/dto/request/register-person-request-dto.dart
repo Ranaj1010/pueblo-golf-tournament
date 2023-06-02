@@ -9,6 +9,8 @@ class ReqisterPersonRequesDto {
   final String lastName;
   final DateTime birthDate;
   final String contactNumber;
+  final String homeAddress;
+  final String city;
   final String emailAddress;
   final String country;
 
@@ -19,6 +21,8 @@ class ReqisterPersonRequesDto {
       required this.birthDate,
       required this.contactNumber,
       required this.emailAddress,
+      required this.homeAddress,
+      required this.city,
       required this.country});
   factory ReqisterPersonRequesDto.fromJson(Map<String, dynamic> json) =>
       _$ReqisterPersonRequesDtoFromJson(json);

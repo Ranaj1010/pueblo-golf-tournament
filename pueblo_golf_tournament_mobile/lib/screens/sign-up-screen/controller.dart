@@ -95,9 +95,11 @@ class SignUpScreenController extends ISignUpScreenController {
       birthDate: DateFormat("MMMM dd, yyyy")
           .parse(birthDateTextController.text)
           .toUtc(),
+      homeAddress: homeAddressTextController.text,
+      city: cityTextController.text,
       contactNumber: mobileNumberTextController.text,
       emailAddress: emailAddressTextController.text,
-      country: "Philippines",
+      country: countryTextController.text,
     );
 
     var account = RegisterAccountCredentialDto(

@@ -63,10 +63,6 @@ class RegisteredTeamList extends StatelessWidget {
                           onTap: () => onSelectTeam(registeredTeams[index]),
                           trailing: Icon(Icons.chevron_right),
                           leading: CircleAvatar(
-                            backgroundColor: Colors.primaries[int.parse(
-                                registeredTeams[index]
-                                    .team
-                                    .defaultBackgroundColor!)],
                             child:
                                 Text("${registeredTeams[index].team.name[0]}"),
                           ),

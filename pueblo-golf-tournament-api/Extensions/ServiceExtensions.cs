@@ -6,6 +6,7 @@ using pueblo_golf_tournament_api.Data;
 using pueblo_golf_tournament_api.Entities;
 using pueblo_golf_tournament_api.Modules.Authentications;
 using pueblo_golf_tournament_api.Modules.Lookups;
+using pueblo_golf_tournament_api.Modules.Manage;
 using pueblo_golf_tournament_api.Modules.Registrations;
 using pueblo_golf_tournament_api.Modules.Uploads;
 using pueblo_golf_tournament_api.Services.Accounts;
@@ -72,6 +73,7 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<ILookupModule, LookupModule>();
             services.AddTransient<IAuthModule, AuthModule>();
             services.AddTransient<IUploadModule, UploadModule>();
+            services.AddTransient<IManageModule, ManageModule>();
             #endregion
         }
 

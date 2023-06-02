@@ -9,7 +9,6 @@ class RegisterTeamRequestDto {
   final int teamCaptainId;
   final String name;
   final String backgroundColor;
-  final RegisterPaymentRequestDto payment;
   final List<int> members;
 
   RegisterTeamRequestDto(
@@ -17,7 +16,6 @@ class RegisterTeamRequestDto {
       required this.teamCaptainId,
       required this.name,
       required this.backgroundColor,
-      required this.payment,
       required this.members});
   factory RegisterTeamRequestDto.fromJson(Map<String, dynamic> json) =>
       _$RegisterTeamRequestDtoFromJson(json);

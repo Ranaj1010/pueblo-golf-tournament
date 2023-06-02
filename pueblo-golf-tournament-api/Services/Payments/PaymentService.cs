@@ -49,33 +49,27 @@ namespace pueblo_golf_tournament_api.Services.Payments
             }
         }
 
-        public async Task<Payment> GetAsync(Expression<Func<Payment, bool>> expression)=> await _dbContext.Payments.SingleOrDefaultAsync(expression);
+        public async Task<Payment> GetAsync(Expression<Func<Payment, bool>> expression) => await _dbContext.Payments.SingleOrDefaultAsync(expression);
 
         public async Task<List<Payment>> ListAsync(Expression<Func<Payment, bool>> expression) => await _dbContext.Payments.Where(expression).ToListAsync();
-      
+
         public async Task<List<Payment>> ListAsync() => await _dbContext.Payments.Where(tournament => tournament.Active).ToListAsync();
-        public async Task<bool> UpdateAsync(Payment entity)
+        public async Task<Payment> UpdateAsync(Payment entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Payments.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Payments.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.ReferrenceId = entity.ReferrenceId;
-                existingData.PaymentMethod = entity.PaymentMethod;
-                existingData.PaymentReferrencePhoto = entity.PaymentReferrencePhoto;
+            existingData.ReferrenceId = entity.ReferrenceId;
+            existingData.PaymentMethod = entity.PaymentMethod;
+            existingData.PaymentReferrencePhoto = entity.PaymentReferrencePhoto;
 
-                _dbContext.Payments.Update(existingData);
+            _dbContext.Payments.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
+
         }
     }
 }

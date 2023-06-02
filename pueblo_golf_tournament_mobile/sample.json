@@ -1,0 +1,186 @@
+{
+	"tournamentId": 1,
+	"tournament": {
+		"name": "Pueblo Tournament",
+		"bannerPhoto": "http://127.0.0.1:5001/images/banners/sample-tournament-banner.png",
+		"startDate": "2023-05-05T01:45:03.15",
+		"endDate": "2023-05-05T01:45:03.15",
+		"registrationFee": 1000,
+		"venuePlace": "Pueblo Golf Club",
+		"venueAddress": "Banilad",
+		"venueCity": "Cagayan de oro",
+		"venueCountry": "Philippines",
+		"numberOfSlots": 100,
+		"id": 1
+	},
+	"registeredTeams": [
+		{
+			"registration": {
+				"teamId": 46,
+				"teamCaptainId": 52,
+				"tournamentId": 1,
+				"status": 0,
+				"registrationDate": "2023-06-02T05:26:46.214537",
+				"isPayed": true,
+				"paymentId": 81,
+				"payment": null,
+				"id": 46
+			},
+			"payment": {
+				"paymentMethod": "BankDeposit",
+				"paymentReferrencePhoto": "http://127.0.0.1:5001/images/payments/image_picker_7B96F17E-409B-4688-BFD7-1B52F4211726-85057-00000F9B84BFAA3D.jpg",
+				"referrenceId": "345533",
+				"paymentDate": "2023-06-02T02:45:23.958378",
+				"id": 81
+			},
+			"team": {
+				"name": "Mystic Striker",
+				"logoUrl": null,
+				"defaultBackgroundColor": null,
+				"teamCaptainId": 52,
+				"id": 46
+			},
+			"captainProfile": {
+				"person": {
+					"firstName": "Eve Michael Jayson",
+					"middleName": "Real",
+					"lastName": "Selmo",
+					"birthDate": "1995-10-10T16:00:00",
+					"contactNumber": "09453929961",
+					"homeAddress": "Mystic Fails",
+					"city": "Virginia",
+					"emailAddress": "jayson.selmo@rafi.ph",
+					"country": "Philippines",
+					"id": 48
+				},
+				"player": {
+					"playerType": 0,
+					"playerExternalId": "PBG000000001",
+					"worldHandicapSystemId": "902380424323",
+					"handicap": 0,
+					"homeClub": "Cebu Country Club",
+					"personId": 48,
+					"id": 52
+				}
+			},
+			"memberProfiles": [
+				{
+					"person": {
+						"firstName": "Stefan",
+						"middleName": "Romualdez",
+						"lastName": "Salvatore",
+						"birthDate": "2023-05-08T16:00:00",
+						"contactNumber": "092344564243",
+						"homeAddress": "Mystic Fails",
+						"city": "Virginia",
+						"emailAddress": "stefan@gmail.com",
+						"country": "Philippines",
+						"id": 57
+					},
+					"player": {
+						"playerType": 1,
+						"playerExternalId": "PBG000000009",
+						"worldHandicapSystemId": "09543453654",
+						"handicap": 0,
+						"homeClub": "Mystic Club",
+						"personId": 57,
+						"id": 62
+					}
+				},
+				{
+					"person": {
+						"firstName": "Damon",
+						"middleName": "Romualdez",
+						"lastName": "Salvatore",
+						"birthDate": "2023-03-06T16:00:00",
+						"contactNumber": "09453928345",
+						"homeAddress": "Mystic Fails",
+						"city": "Virginia",
+						"emailAddress": "damon@gmail.com",
+						"country": "Philippines",
+						"id": 56
+					},
+					"player": {
+						"playerType": 1,
+						"playerExternalId": "PBG000000008",
+						"worldHandicapSystemId": "89345363453",
+						"handicap": 0,
+						"homeClub": "Mystic Club",
+						"personId": 56,
+						"id": 61
+					}
+				},
+				{
+					"person": {
+						"firstName": "Eve Michael Jayson",
+						"middleName": "Real",
+						"lastName": "Selmo",
+						"birthDate": "1995-10-10T16:00:00",
+						"contactNumber": "09453929961",
+						"homeAddress": "Mystic Fails",
+						"city": "Virginia",
+						"emailAddress": "jayson.selmo@rafi.ph",
+						"country": "Philippines",
+						"id": 48
+					},
+					"player": {
+						"playerType": 0,
+						"playerExternalId": "PBG000000001",
+						"worldHandicapSystemId": "902380424323",
+						"handicap": 0,
+						"homeClub": "Cebu Country Club",
+						"personId": 48,
+						"id": 52
+					}
+				},
+				{
+					"person": {
+						"firstName": "Elena",
+						"middleName": "Mitchel",
+						"lastName": "Gilbert",
+						"birthDate": "2023-04-10T16:00:00",
+						"contactNumber": "09453929961",
+						"homeAddress": "Mystic Fails",
+						"city": "Virginia",
+						"emailAddress": "jayson.selmo@rafi.ph",
+						"country": "Philippines",
+						"id": 55
+					},
+					"player": {
+						"playerType": 1,
+						"playerExternalId": "PBG000000007",
+						"worldHandicapSystemId": "9489253434",
+						"handicap": 0,
+						"homeClub": "Mystic Club",
+						"personId": 55,
+						"id": 60
+					}
+				},
+				{
+					"person": {
+						"firstName": "Caronline",
+						"middleName": "Elizabeth",
+						"lastName": "Forbes",
+						"birthDate": "2023-06-01T16:00:00",
+						"contactNumber": "09234567535",
+						"homeAddress": "Mystic Fails",
+						"city": "Virginia",
+						"emailAddress": "caroline@gmail.com",
+						"country": "Philippines",
+						"id": 58
+					},
+					"player": {
+						"playerType": 1,
+						"playerExternalId": "PBG000000010",
+						"worldHandicapSystemId": "35030233243",
+						"handicap": 0,
+						"homeClub": "Mystic Club",
+						"personId": 58,
+						"id": 63
+					}
+				}
+			]
+		}
+	],
+	"message": "Registration found."
+}

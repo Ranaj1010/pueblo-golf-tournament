@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:pueblo_golf_tournament_mobile/data/context.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/controller.dart';
+import 'package:pueblo_golf_tournament_mobile/widgets/brand-elevated-button.dart';
 
 class RegisteredTeamDetailsScreen extends StatelessWidget {
   final controller = Get.find<RegisteredTeamDetailsScreenController>();
+  final dataContextController = Get.find<DataContextController>();
 
   Widget status(int value) {
     switch (value) {
@@ -61,16 +64,19 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
       ),
       body: Obx(
         () => SingleChildScrollView(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Wrap(
             runSpacing: 20,
             children: [
               Card(
                 elevation: 10,
                 child: ListTile(
-                  leading: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          controller.registeredTeam.value!.team.logoUrl!)),
+                  leading: controller.registeredTeam.value!.team.logoUrl == null
+                      ? const CircleAvatar(
+                          backgroundImage: AssetImage("assets/golf-logo.png"))
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(
+                              controller.registeredTeam.value!.team.logoUrl!)),
                   title: Text(
                     controller.registeredTeam.value!.team.name,
                     style: const TextStyle(fontWeight: FontWeight.bold),
@@ -105,6 +111,28 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                 ),
               ),
               const Text(
+                "Payment",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Card(
+                child: ListView(
+                  padding: EdgeInsets.all(0),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    ListTile(
+                      trailing: Icon(Icons.payment),
+                      title: Text(
+                        "Ref: ${controller.registeredTeam.value!.payment!.referrenceId}",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                      subtitle: Text(
+                          "via ${controller.registeredTeam.value!.payment!.paymentMethod} (${DateFormat("MMMM dd yyyy").format(controller.registeredTeam.value!.payment!.paymentDate)})"),
+                    ),
+                  ],
+                ),
+              ),
+              const Text(
                 "Members",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
@@ -116,17 +144,36 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => ListTile(
+                          onTap: () => controller.viewMemberDetails(controller
+                              .registeredTeam.value!.memberProfiles![index]),
                           leading:
-                              CircleAvatar(child: const Icon(Icons.person)),
+                              const CircleAvatar(child: Icon(Icons.person)),
                           title: Text(
                               "${controller.registeredTeam.value!.memberProfiles![index].person.firstName} ${controller.registeredTeam.value!.memberProfiles![index].person.middleName} ${controller.registeredTeam.value!.memberProfiles![index].person.lastName}"),
                           subtitle: playerType(controller.registeredTeam.value!
                               .memberProfiles![index].player.playerType),
                         ),
-                    separatorBuilder: (context, index) => Divider(),
+                    separatorBuilder: (context, index) => const Divider(),
                     itemCount: controller
                         .registeredTeam.value!.memberProfiles!.length),
-              )
+              ),
+              !controller.registeredTeam.value!.registration.isPayed
+                  ? BrandElevatedButton(
+                      onPressed: () => controller.payRegistration(),
+                      title: "Pay Registration",
+                      loading: false)
+                  : const Padding(padding: EdgeInsets.all(0)),
+              controller.registeredTeam.value!.registration.isPayed &&
+                      controller.registeredTeam.value!.registration.status ==
+                          0 &&
+                      dataContextController
+                              .authenticatedData.value!.account!.accountType ==
+                          1
+                  ? BrandElevatedButton(
+                      onPressed: () => controller.confirmRegistrationPayment(),
+                      title: "Confirm Registration",
+                      loading: controller.isConfirming.value)
+                  : const Padding(padding: EdgeInsets.all(0))
             ],
           ),
         ),

@@ -73,7 +73,9 @@ class RegisterNewPlayerScreenController
           .toUtc(),
       contactNumber: mobileNumberTextController.text,
       emailAddress: emailAddressTextController.text,
-      country: "Philippines",
+      homeAddress: homeAddressTextController.text,
+      city: cityTextController.text,
+      country: countryTextController.text,
     );
     var registeredPerson = await registrationController.registerPerson(person);
 
@@ -105,7 +107,7 @@ class RegisterNewPlayerScreenController
         countryTextController.clear();
         homeClubTextController.clear();
         worldHandicapSystemIdTextController.clear();
-        selectedFormIndex(0);
+
         Get.back(result: response.playerProfile);
       }
     }

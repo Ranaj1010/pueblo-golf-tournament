@@ -56,30 +56,23 @@ namespace pueblo_golf_tournament_api.Services.HomeClubs
 
         public async Task<List<HomeClub>> ListAsync() => await _dbContext.HomeClubs.Where(tournament => tournament.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(HomeClub entity)
+        public async Task<HomeClub> UpdateAsync(HomeClub entity)
         {
-            try
-            {
-                var existingData = await _dbContext.HomeClubs.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.HomeClubs.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.Name = entity.Name;
-                existingData.Address = entity.Address;
-                existingData.City = entity.City;
-                existingData.Province = entity.Province;
-                existingData.Country = entity.Country;
+            existingData.Name = entity.Name;
+            existingData.Address = entity.Address;
+            existingData.City = entity.City;
+            existingData.Province = entity.Province;
+            existingData.Country = entity.Country;
 
-                _dbContext.HomeClubs.Update(existingData);
+            _dbContext.HomeClubs.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
         }
     }
 }

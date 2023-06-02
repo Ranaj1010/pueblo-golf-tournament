@@ -4,6 +4,7 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/add-team-member-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/landing-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-new-player-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/screen.dart';
@@ -11,6 +12,8 @@ import 'package:pueblo_golf_tournament_mobile/screens/setup-player-profile-scree
 import 'package:pueblo_golf_tournament_mobile/screens/sign-in-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/sign-up-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/tournament-details-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/update-member-details-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/view-team-member-screen/screen.dart';
 
 import 'configurations/bindings.dart';
 
@@ -51,7 +54,10 @@ class App extends StatelessWidget {
         "/add-member": (context) => AddTeamMemberScreen(),
         "/register-player": (context) => RegisterNewPlayerScreen(),
         "/setup-player-profile": (context) => SetupPlayerProfileScreen(),
-        "/registered-team-details": (context) => RegisteredTeamDetailsScreen()
+        "/registered-team-details": (context) => RegisteredTeamDetailsScreen(),
+        "/member-details": (context) => ViewTeamMemberScreen(),
+        "/update-profile": (context) => UpdateMemberDetailsScreen(),
+        "/pay-registration": (context) => PayRegistrationScreen()
       },
     );
   }

@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-division-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-payment-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-player-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-account-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-division-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/register-payment-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-person-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-player-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-response-dto.dart';
@@ -25,4 +27,6 @@ abstract class IRegistrationController extends GetxController {
       ReqisterPersonRequesDto payload);
   Future<RegisterPlayerResponseDto> registerPlayer(
       RegisterPlayerRequestDto payload);
+  Future<RegisterPaymentResponseDto> registerPayment(
+      RegisterPaymentRequestDto payload);
 }

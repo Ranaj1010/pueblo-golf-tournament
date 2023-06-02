@@ -10,6 +10,8 @@ class PersonDto extends BaseDto {
   final String lastName;
   final DateTime birthDate;
   final String contactNumber;
+  final String homeAddress;
+  final String city;
   final String emailAddress;
   final String country;
   PersonDto({
@@ -19,6 +21,8 @@ class PersonDto extends BaseDto {
     required this.lastName,
     required this.birthDate,
     required this.contactNumber,
+    required this.homeAddress,
+    required this.city,
     required this.emailAddress,
     required this.country,
   });

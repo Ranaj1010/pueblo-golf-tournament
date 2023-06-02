@@ -50,34 +50,27 @@ namespace pueblo_golf_tournament_api.Services.Registrations
             }
         }
 
-        public async Task<Registration> GetAsync(Expression<Func<Registration, bool>> expression)=> await _dbContext.Registrations.SingleOrDefaultAsync(expression);
+        public async Task<Registration> GetAsync(Expression<Func<Registration, bool>> expression) => await _dbContext.Registrations.SingleOrDefaultAsync(expression);
 
         public async Task<List<Registration>> ListAsync(Expression<Func<Registration, bool>> expression) => await _dbContext.Registrations.Where(expression).ToListAsync();
 
         public async Task<List<Registration>> ListAsync() => await _dbContext.Registrations.Where(tournament => tournament.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Registration entity)
+        public async Task<Registration> UpdateAsync(Registration entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Registrations.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Registrations.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.Status = entity.Status;
-                existingData.PaymentId = entity.PaymentId;
-                existingData.TeamId = entity.TeamId;
-                existingData.TournamentId = entity.TournamentId;
-                _dbContext.Registrations.Update(existingData);
+            existingData.Status = entity.Status;
+            existingData.PaymentId = entity.PaymentId;
+            existingData.TeamId = entity.TeamId;
+            existingData.TournamentId = entity.TournamentId;
+            _dbContext.Registrations.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
         }
     }
 }

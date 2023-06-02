@@ -167,7 +167,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             Console.WriteLine($"TEAM CAPTAIN: {teamCaptainId}");
             Console.WriteLine($"TOURNAMENT : {tournamentId}");
             var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == tournamentId);
-            var registrations = await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId && registration.TeamCaptainId == teamCaptainId);
+            var registrations = teamCaptainId == 0 ? await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId) : await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId && registration.TeamCaptainId == teamCaptainId);
 
             if (registrations.Count == 0)
             {
@@ -192,7 +192,8 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                     var memberProfiles = tournamentPlayers.Join(_dbContext.Persons, player => player.player.PersonId, person => person.Id, (player, person) => new PlayerProfile
                     {
                         Person = _mapper.Map<PersonDto>(person),
-                        Player = _mapper.Map<PlayerDto>(new Player{
+                        Player = _mapper.Map<PlayerDto>(new Player
+                        {
                             PlayerType = player.tournamentPlayer.PlayerType,
                             HomeClub = player.player.HomeClub,
                             Handicap = player.player.Handicap,
@@ -212,7 +213,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                         CaptainProfile = teamCaptainProfile!,
                         MemberProfiles = memberProfiles.ToList(),
                         Payment = _mapper.Map<PaymentDto>(payment)
-                        
+
                     });
                 }
 

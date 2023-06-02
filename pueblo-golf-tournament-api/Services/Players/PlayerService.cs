@@ -56,30 +56,23 @@ namespace pueblo_golf_tournament_api.Services.Players
 
         public async Task<List<Player>> ListAsync() => await _dbContext.Players.Where(tournament => tournament.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Player entity)
+        public async Task<Player> UpdateAsync(Player entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Players.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Players.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.Handicap = entity.Handicap;
-                existingData.WorldHandicapSystemId = entity.WorldHandicapSystemId;
-                existingData.HomeClub = entity.HomeClub;
-                existingData.PlayerType = entity.PlayerType;
-                existingData.PersonId = entity.PersonId;
+            existingData.Handicap = entity.Handicap;
+            existingData.WorldHandicapSystemId = entity.WorldHandicapSystemId;
+            existingData.HomeClub = entity.HomeClub;
+            existingData.PlayerType = entity.PlayerType;
+            existingData.PersonId = entity.PersonId;
 
-                _dbContext.Players.Update(existingData);
+            _dbContext.Players.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
         }
     }
 }

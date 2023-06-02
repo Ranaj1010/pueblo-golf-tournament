@@ -57,33 +57,27 @@ namespace pueblo_golf_tournament_api.Services.Tournaments
 
         public async Task<List<Tournament>> ListAsync() => await _dbContext.Tournaments.Where(tournament => tournament.Active).ToListAsync();
 
-        public async Task<bool> UpdateAsync(Tournament entity)
+        public async Task<Tournament> UpdateAsync(Tournament entity)
         {
-            try
-            {
-                var existingData = await _dbContext.Tournaments.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
+            var existingData = await _dbContext.Tournaments.SingleOrDefaultAsync(result => result.Id.Equals(entity.Id));
 
-                if (existingData == null) return false;
+            if (existingData == null) return null;
 
-                existingData.Name = entity.Name;
-                existingData.StartDate = entity.StartDate;
-                existingData.EndDate = entity.EndDate;
-                existingData.VenuePlace = entity.VenuePlace;
-                existingData.VenueAddress = entity.VenueAddress;
-                existingData.VenueCity = entity.VenueCity;
-                existingData.VenueCountry = entity.VenueCountry;
-                existingData.NumberOfSlots = entity.NumberOfSlots;
+            existingData.Name = entity.Name;
+            existingData.StartDate = entity.StartDate;
+            existingData.EndDate = entity.EndDate;
+            existingData.VenuePlace = entity.VenuePlace;
+            existingData.VenueAddress = entity.VenueAddress;
+            existingData.VenueCity = entity.VenueCity;
+            existingData.VenueCountry = entity.VenueCountry;
+            existingData.NumberOfSlots = entity.NumberOfSlots;
 
-                _dbContext.Tournaments.Update(existingData);
+            _dbContext.Tournaments.Update(existingData);
 
-                await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-                return true;
-            }
-            catch (System.Exception)
-            {
-                return false;
-            }
+            return entity;
+
         }
     }
 }
