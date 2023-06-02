@@ -43,10 +43,6 @@ class RegisteredTeamList extends StatelessWidget {
     return Wrap(
       runSpacing: 10,
       children: [
-        const Text(
-          "My Team",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
         isLoading
             ? const Center(
                 child: CircularProgressIndicator(),

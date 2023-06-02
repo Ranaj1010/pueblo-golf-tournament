@@ -10,4 +10,5 @@ abstract class IRegisteredTeamDetailsScreenControler extends GetxController {
   void payRegistration();
   void confirmRegistrationPayment();
   void loadTeamRegistration();
+  void previewPaymentImage();
 }

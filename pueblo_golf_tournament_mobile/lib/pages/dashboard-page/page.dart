@@ -11,43 +11,48 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => SingleChildScrollView(
-        padding: EdgeInsets.fromLTRB(20, 40, 20, 20),
-        child: Column(children: [
-          DashboardPlayerProfile(),
-          TextField(
-            decoration: const InputDecoration(
-                hintText: "Search tournaments..",
-                suffixIcon: Icon(Icons.search)),
-            readOnly: true,
-            controller: controller.searchTextController,
-          ),
-          const Padding(padding: EdgeInsets.all(10)),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Tournaments",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              ElevatedButton(
-                  onPressed: () => controller.viewMoreTournaments(),
-                  child: const Text(
-                    "View More",
-                    style: TextStyle(
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.center,
-                  )),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.all(10)),
-          DashboardTournamentList(
-              loadingData: controller.isLoadingTournaments.value,
-              tournaments: controller.tournaments,
-              selectTournament: (tournament) =>
-                  controller.selectTournament(tournament))
-        ]),
+      () => RefreshIndicator(
+        onRefresh: () async {
+          controller.loadTournaments();
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+          child: Column(children: [
+            DashboardPlayerProfile(),
+            TextField(
+              decoration: const InputDecoration(
+                  hintText: "Search tournaments..",
+                  suffixIcon: Icon(Icons.search)),
+              readOnly: true,
+              controller: controller.searchTextController,
+            ),
+            const Padding(padding: EdgeInsets.all(10)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Tournaments",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ElevatedButton(
+                    onPressed: () => controller.viewMoreTournaments(),
+                    child: const Text(
+                      "View More",
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    )),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.all(10)),
+            DashboardTournamentList(
+                loadingData: controller.isLoadingTournaments.value,
+                tournaments: controller.tournaments,
+                selectTournament: (tournament) =>
+                    controller.selectTournament(tournament))
+          ]),
+        ),
       ),
     );
   }
