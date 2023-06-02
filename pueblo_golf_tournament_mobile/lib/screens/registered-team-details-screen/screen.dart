@@ -110,28 +110,33 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const Text(
-                "Payment",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Card(
-                child: ListView(
-                  padding: EdgeInsets.all(0),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    ListTile(
-                      trailing: Icon(Icons.payment),
-                      title: Text(
-                        "Ref: ${controller.registeredTeam.value!.payment!.referrenceId}",
-                        style: TextStyle(fontWeight: FontWeight.w700),
+              controller.registeredTeam.value!.registration.isPayed
+                  ? const Text(
+                      "Payment",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : const Padding(padding: EdgeInsets.all(0)),
+              controller.registeredTeam.value!.registration.isPayed
+                  ? Card(
+                      child: ListView(
+                        padding: EdgeInsets.all(0),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          ListTile(
+                            onTap: () => controller.previewPaymentImage(),
+                            trailing: Icon(Icons.chevron_right),
+                            title: Text(
+                              "Ref: ${controller.registeredTeam.value!.payment!.referrenceId}",
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            subtitle: Text(
+                                "via ${controller.registeredTeam.value!.payment!.paymentMethod} (${DateFormat("MMMM dd yyyy").format(controller.registeredTeam.value!.payment!.paymentDate)})"),
+                          ),
+                        ],
                       ),
-                      subtitle: Text(
-                          "via ${controller.registeredTeam.value!.payment!.paymentMethod} (${DateFormat("MMMM dd yyyy").format(controller.registeredTeam.value!.payment!.paymentDate)})"),
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : const Padding(padding: EdgeInsets.all(0)),
               const Text(
                 "Members",
                 style: TextStyle(fontWeight: FontWeight.bold),

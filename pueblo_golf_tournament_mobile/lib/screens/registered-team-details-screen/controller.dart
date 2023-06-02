@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -83,5 +85,14 @@ class RegisteredTeamDetailsScreenController
           "Something went wrong. Please try again.");
     }
     isConfirming(false);
+  }
+
+  @override
+  void previewPaymentImage() {
+    Get.defaultDialog(
+        title: "Proof of Payment",
+        content: Image(
+            image: NetworkImage(
+                registeredTeam.value!.payment!.paymentReferrencePhoto)));
   }
 }
