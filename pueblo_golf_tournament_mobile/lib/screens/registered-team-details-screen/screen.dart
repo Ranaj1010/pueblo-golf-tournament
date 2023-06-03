@@ -118,6 +118,8 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                   : const Padding(padding: EdgeInsets.all(0)),
               controller.registeredTeam.value!.registration.isPayed
                   ? Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      semanticContainer: true,
                       child: ListView(
                         padding: EdgeInsets.all(0),
                         shrinkWrap: true,

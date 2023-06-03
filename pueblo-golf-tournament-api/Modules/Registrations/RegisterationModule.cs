@@ -90,13 +90,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                 return response;
             }
 
-            if (!ValidatorExtensions.ValidEmail(payload.Person!.EmailAddress!))
-            {
-                response.Data = null;
-                response.Message = "Invalid Email Address.";
-                return response;
-            }
-
             if (!ValidatorExtensions.ValidUsername(payload.Account!.Username!))
             {
                 response.Data = null;
@@ -107,7 +100,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             if (!ValidatorExtensions.ValidPassword(payload.Account!.Password!))
             {
                 response.Data = null;
-                response.Message = "Invalid Password. Make sure not to use any special characters.";
+                response.Message = "Invalid Password. Password should have atleast 6 characters and 1 uppercase letter. Make sure not to use any special characters.";
                 return response;
             }
 
@@ -175,13 +168,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             {
                 response.Data = null;
                 response.Message = "Invalid Mobile Number.";
-                return response;
-            }
-
-            if (!ValidatorExtensions.ValidEmail(payload.Person!.EmailAddress!))
-            {
-                response.Data = null;
-                response.Message = "Invalid Email Address.";
                 return response;
             }
 

@@ -16,8 +16,6 @@ import '../../dto/response/lookup-tournament-team-response-dto.dart';
 
 class TournamentDetailsScreenController
     extends ITournamentDetailsScreenController {
-  var formatter = CurrencyTextInputFormatter(
-      symbol: '₱', locale: "en-ph", decimalDigits: 1);
   var selectedTournament = Rxn<TournamentDto>();
   var loadingRegistrations = false.obs;
   var registeredTeams = <RegisteredTeam>[].obs;
