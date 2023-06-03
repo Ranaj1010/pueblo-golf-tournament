@@ -164,7 +164,12 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                     itemCount: controller
                         .registeredTeam.value!.memberProfiles!.length),
               ),
-              !controller.registeredTeam.value!.registration.isPayed
+              !controller.registeredTeam.value!.registration.isPayed &&
+                      controller.registeredTeam.value!.registration.status ==
+                          0 &&
+                      dataContextController
+                              .authenticatedData.value!.account!.accountType ==
+                          2
                   ? BrandElevatedButton(
                       onPressed: () => controller.payRegistration(),
                       title: "Pay Registration",

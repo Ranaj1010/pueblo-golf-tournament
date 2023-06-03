@@ -51,7 +51,6 @@ class HomeScreenController extends IHomeScreenScreenController {
               2) {
         print(dataContextController
             .authenticatedData.value!.account!.accountType);
-        Get.snackbar("Player not found", "Please try again");
         Get.toNamed("/setup-player-profile");
       }
 

@@ -107,22 +107,10 @@ class ContactForm extends StatelessWidget {
         runSpacing: 20,
         children: [
           TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field is required.';
-              }
-              return null;
-            },
             decoration: const InputDecoration(hintText: "Mobile Number"),
             controller: mobileNumberTextController,
           ),
           TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field is required.';
-              }
-              return null;
-            },
             decoration: const InputDecoration(hintText: "Email Address"),
             controller: emailAddressTextController,
           ),
