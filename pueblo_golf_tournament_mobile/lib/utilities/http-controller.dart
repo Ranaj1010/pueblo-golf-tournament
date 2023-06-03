@@ -13,6 +13,12 @@ mixin HttpServiceMixin {
   Future<http.Response> delete(String endpoint, dynamic body);
   Future<http.StreamedResponse> upload(
       String endpoint, String fileField, File file, Map<String, String> fields);
+  Future<http.StreamedResponse> uploadFromByes(
+      String endpoint,
+      String fileField,
+      List<int> file,
+      String fileName,
+      Map<String, String> fields);
 }
 
 class HttpController extends GetxController with HttpServiceMixin {
@@ -61,6 +67,26 @@ class HttpController extends GetxController with HttpServiceMixin {
   Future<http.StreamedResponse> upload(String endpoint, String fileField,
       File file, Map<String, String> fields) async {
     var filePath = await http.MultipartFile.fromPath(fileField, file.path);
+    var request = http.MultipartRequest("POST", Uri.http(baseUrl, endpoint));
+
+    fields.forEach((key, value) {
+      request.fields[key] = value;
+    });
+
+    request.files.add(filePath);
+    var response = await request.send();
+    return response;
+  }
+
+  @override
+  Future<http.StreamedResponse> uploadFromByes(
+      String endpoint,
+      String fileField,
+      List<int> file,
+      String fileName,
+      Map<String, String> fields) async {
+    var filePath =
+        http.MultipartFile.fromBytes(fileField, file, filename: fileName);
     var request = http.MultipartRequest("POST", Uri.http(baseUrl, endpoint));
 
     fields.forEach((key, value) {

@@ -17,7 +17,7 @@ namespace pueblo_golf_tournament_api.Modules.Uploads
                 file.CopyTo(stream);
             }
 
-            return _configuration.GetSection("BaseUrl").Value + $"/images/{folderName}/{fileName}";
+            return $"/images/{folderName}/{fileName}";
         }
     }
 }

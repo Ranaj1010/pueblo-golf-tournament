@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_flavor/flutter_flavor.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -21,6 +23,12 @@ class RegisteredTeamDetailsScreenController
   var selectedMember = Rxn<PlayerProfile>();
   final lookupController = Get.find<LookupController>();
   final manageController = Get.find<ManageController>();
+  var baseUrl = "";
+
+  RegisteredTeamDetailsScreenController() {
+    baseUrl =
+        "http://${FlavorConfig.instance.variables["baseUrl"] ?? dotenv.env["BASE_URL"]}";
+  }
 
   @override
   void goBack() {
@@ -89,10 +97,29 @@ class RegisteredTeamDetailsScreenController
 
   @override
   void previewPaymentImage() {
+    print(registeredTeam.value!.payment!.paymentReferrencePhoto);
     Get.defaultDialog(
-        title: "Proof of Payment",
-        content: Image(
-            image: NetworkImage(
-                registeredTeam.value!.payment!.paymentReferrencePhoto)));
+        title: "Preview",
+        content: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Image.network(
+              baseUrl + registeredTeam.value!.payment!.paymentReferrencePhoto,
+              errorBuilder: (context, exception, stacktrace) => Container(
+                  height: 500,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Color.fromARGB(255, 230, 230, 230)),
+                  child: const Center(
+                      child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    direction: Axis.vertical,
+                    alignment: WrapAlignment.center,
+                    runAlignment: WrapAlignment.center,
+                    children: [
+                      Icon(Icons.image_not_supported_outlined, size: 20),
+                      Text("Image not found."),
+                    ],
+                  )))),
+        ));
   }
 }

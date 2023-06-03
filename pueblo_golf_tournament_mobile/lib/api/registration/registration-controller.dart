@@ -166,4 +166,40 @@ class RegistrationController extends IRegistrationController {
             message: response.reasonPhrase!, data: null);
     }
   }
+
+  @override
+  Future<RegisterPaymentResponseDto> registerPaymentWeb(
+      RegisterPaymentWebRequestDto payload) async {
+    var endpoint = "$controller/payment";
+    var fields = {
+      "PaymentMethod": payload.paymentMethod.toString(),
+      "ReferrenceId": payload.referrenceId.toString(),
+      "RegistrationId": payload.registrationId.toInt().toString(),
+    };
+
+    print(fields);
+    var response = await httpController.uploadFromByes(
+      endpoint,
+      "PaymentReferrencePhoto",
+      payload.paymentReferrencePhoto,
+      "${payload.registrationId}_${payload.referrenceId.toString()}.jpg",
+      fields,
+    );
+
+    switch (response.statusCode) {
+      case 200:
+        var responseData = await response.stream.toBytes();
+        var dataString = String.fromCharCodes(responseData);
+        var responseJson = jsonDecode(dataString);
+        return RegisterPaymentResponseDto.fromJson(responseJson);
+      case 400:
+        var responseData = await response.stream.toBytes();
+        var dataString = String.fromCharCodes(responseData);
+        var responseJson = jsonDecode(dataString);
+        return RegisterPaymentResponseDto.fromJson(responseJson);
+      default:
+        return RegisterPaymentResponseDto(
+            message: response.reasonPhrase!, data: null);
+    }
+  }
 }

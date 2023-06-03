@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
+import 'package:money_formatter/money_formatter.dart';
 import 'package:pueblo_golf_tournament_mobile/data/context.dart';
 import 'package:pueblo_golf_tournament_mobile/pages/dashboard-page/widgets.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/tournament-details-screen/controller.dart';
@@ -60,9 +61,13 @@ class TournamentDetailScreen extends StatelessWidget {
                               const Divider(),
                               ListTile(
                                 title: Text(
-                                  controller.formatter.format(controller
-                                      .selectedTournament.value!.registrationFee
-                                      .toString()),
+                                  MoneyFormatter(
+                                          settings: MoneyFormatterSettings(
+                                              symbol: '₱'),
+                                          amount: controller.selectedTournament
+                                              .value!.registrationFee)
+                                      .output
+                                      .symbolOnLeft,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),

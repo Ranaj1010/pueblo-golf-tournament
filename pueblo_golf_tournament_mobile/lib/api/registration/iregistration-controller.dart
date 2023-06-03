@@ -29,4 +29,6 @@ abstract class IRegistrationController extends GetxController {
       RegisterPlayerRequestDto payload);
   Future<RegisterPaymentResponseDto> registerPayment(
       RegisterPaymentRequestDto payload);
+  Future<RegisterPaymentResponseDto> registerPaymentWeb(
+      RegisterPaymentWebRequestDto payload);
 }

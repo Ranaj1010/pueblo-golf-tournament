@@ -63,99 +63,80 @@ class ViewTeamMemberScreen extends StatelessWidget {
                   const Padding(padding: EdgeInsets.all(10)),
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: Wrap(
                         runSpacing: 20,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Birth Date",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(DateFormat('MMMM dd, yyyy').format(
-                                  registeredTeamScreenController
-                                      .selectedMember.value!.person.birthDate)),
-                            ],
+                          ListTile(
+                            title: Text(DateFormat('MMMM dd, yyyy').format(
+                                registeredTeamScreenController
+                                    .selectedMember.value!.person.birthDate)),
+                            subtitle: const Text(
+                              "Birth Date",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Contact Number",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController
-                                  .selectedMember.value!.person.contactNumber),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "Contact Number",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(registeredTeamScreenController
+                                .selectedMember.value!.person.contactNumber),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Home Address",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController
-                                  .selectedMember.value!.person.homeAddress),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "Home Address",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(
+                                registeredTeamScreenController
+                                    .selectedMember.value!.person.homeAddress,
+                                overflow: TextOverflow.clip),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "City",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController
-                                  .selectedMember.value!.person.city),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "City",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(registeredTeamScreenController
+                                .selectedMember.value!.person.city),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Country",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController
-                                  .selectedMember.value!.person.country),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "Country",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(registeredTeamScreenController
+                                .selectedMember.value!.person.country),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Email Address",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController
-                                  .selectedMember.value!.person.emailAddress),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "Email Address",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(registeredTeamScreenController
+                                .selectedMember.value!.person.emailAddress),
                           ),
                           Divider(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "Home Club",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController
-                                  .selectedMember.value!.player.homeClub),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "Home Club",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(registeredTeamScreenController
+                                .selectedMember.value!.player.homeClub),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                "WHS ID",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(registeredTeamScreenController.selectedMember
-                                  .value!.player.worldHandicapSystemId),
-                            ],
+                          ListTile(
+                            subtitle: const Text(
+                              "WHS ID",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            title: Text(registeredTeamScreenController
+                                .selectedMember
+                                .value!
+                                .player
+                                .worldHandicapSystemId),
                           ),
                         ],
                       ),

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -18,6 +16,7 @@ import '../../utilities/enums.dart';
 
 class PayRegistrationController extends IPayRegistrationScreenController {
   var proofOfPayment = Rxn<File>();
+  var proofOfPaymentWeb = Rxn<Uint8List>();
   var paymentReferrenceIdTextController = TextEditingController();
   var selectedPaymentMethod = PaymentMethodEnum.GCash.obs;
   var selectedFormIndex = 0.obs;
@@ -35,6 +34,8 @@ class PayRegistrationController extends IPayRegistrationScreenController {
     forms = [
       Obx(
         () => PaymentMethodForm(
+          isWeb: kIsWeb,
+          proofOfPaymentImageWeb: proofOfPaymentWeb.value,
           proofOfPaymentImage: proofOfPayment.value,
           paymentMethod: selectedPaymentMethod.value!,
           selectPaymentMethod: (paymentMethod) =>
@@ -58,24 +59,42 @@ class PayRegistrationController extends IPayRegistrationScreenController {
     isLoading(true);
 
     try {
-      var payment = RegisterPaymentRequestDto(
-          registrationId: registeredTeamDetailsController
-              .registeredTeam.value!.registration.id,
-          paymentMethod: selectedPaymentMethod.value.name,
-          referrenceId: paymentReferrenceIdTextController.text,
-          paymentDate: DateTime.now().toUtc(),
-          paymentReferrencePhoto: proofOfPayment.value!);
+      if (kIsWeb) {
+        var paymentWeb = RegisterPaymentWebRequestDto(
+            registrationId: registeredTeamDetailsController
+                .registeredTeam.value!.registration.id,
+            paymentMethod: selectedPaymentMethod.value.name,
+            referrenceId: paymentReferrenceIdTextController.text,
+            paymentDate: DateTime.now().toUtc(),
+            paymentReferrencePhoto: proofOfPaymentWeb.value!);
 
-      var registeredPayment =
-          await registrationController.registerPayment(payment);
+        var registeredPayment =
+            await registrationController.registerPaymentWeb(paymentWeb);
+        if (registeredPayment.data != null) {
+          selectedFormIndex(++selectedFormIndex.value);
+          Get.snackbar("Payment Success", registeredPayment.message);
+        }
+      } else {
+        var payment = RegisterPaymentRequestDto(
+            registrationId: registeredTeamDetailsController
+                .registeredTeam.value!.registration.id,
+            paymentMethod: selectedPaymentMethod.value.name,
+            referrenceId: paymentReferrenceIdTextController.text,
+            paymentDate: DateTime.now().toUtc(),
+            paymentReferrencePhoto: proofOfPayment.value!);
 
-      if (registeredPayment.data != null) {
-        selectedFormIndex(++selectedFormIndex.value);
-        Get.snackbar("Payment Success", registeredPayment.message);
+        var registeredPayment =
+            await registrationController.registerPayment(payment);
+
+        if (registeredPayment.data != null) {
+          selectedFormIndex(++selectedFormIndex.value);
+          Get.snackbar("Payment Success", registeredPayment.message);
+        }
       }
     } catch (e) {
+      print(e);
       Get.snackbar(
-          "Payment Success", "Something went wrong. Please try again later.");
+          "Payment Failed", "Something went wrong. Please try again later.");
     }
 
     isLoading(false);
@@ -83,23 +102,32 @@ class PayRegistrationController extends IPayRegistrationScreenController {
 
   @override
   void uploadProofOfPayment() async {
-    if (kIsWeb) {
-      var picked = await FilePicker.platform.pickFiles();
+    try {
+      if (kIsWeb) {
+        var picker = ImagePicker();
+        var picked = await picker.pickImage(
+            source: ImageSource.gallery, requestFullMetadata: true);
 
-      if (picked != null) {
-        final imageTemp = File(picked.files.first.path!);
+        if (picked != null) {
+          var image = await picked.readAsBytes();
+          proofOfPaymentWeb(image);
+          update();
+        } else {
+          print("No file selected");
+        }
+      } else {
+        final image =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
+        if (image == null) {
+          return;
+        }
+
+        final imageTemp = File(image.path);
         proofOfPayment(imageTemp);
         update();
       }
-    } else {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        return;
-      }
-
-      final imageTemp = File(image.path);
-      proofOfPayment(imageTemp);
-      update();
+    } catch (e) {
+      print(e.toString());
     }
   }
 

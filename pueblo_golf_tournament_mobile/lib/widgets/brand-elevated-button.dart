@@ -16,7 +16,7 @@ class BrandElevatedButton extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton.icon(
-          onPressed: onPressed != null ? () => onPressed!() : null,
+          onPressed: onPressed == null || loading ? null : () => onPressed!(),
           style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Colors.white,

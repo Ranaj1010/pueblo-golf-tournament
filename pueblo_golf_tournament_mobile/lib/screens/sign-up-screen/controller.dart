@@ -13,6 +13,7 @@ class SignUpScreenController extends ISignUpScreenController {
   var isPasswordPeeked = false.obs;
   var isConfirmPasswordPeeked = false.obs;
   var isLoading = false.obs;
+  var disableNext = true.obs;
   var selectedFormIndex = 0.obs;
   var forms = [];
   var formTitles = ["Personal", "Contact", "Account", "Congratulations"];
@@ -29,16 +30,21 @@ class SignUpScreenController extends ISignUpScreenController {
   var passwordTextController = TextEditingController();
   var confirmPasswordTextController = TextEditingController();
   final registrationController = Get.find<RegistrationController>();
+  final personalInfoFormKey = GlobalKey<FormState>();
+  final contactFormKey = GlobalKey<FormState>();
+  final accountFormKey = GlobalKey<FormState>();
   @override
   void onInit() {
     super.onInit();
     forms = [
       PersonalInfoForm(
+          formKey: personalInfoFormKey,
           firstNameTextController: firstNameTextController,
           middleNameTextController: middleNameTextController,
           lastNameTextController: lastNameTextController,
           birthDateTextController: birthDateTextController),
       ContactForm(
+          formKey: contactFormKey,
           mobileNumberTextController: mobileNumberTextController,
           emailAddressTextController: emailAddressTextController,
           homeAddressTextController: homeAddressTextController,
@@ -46,6 +52,7 @@ class SignUpScreenController extends ISignUpScreenController {
           countryTextController: countryTextController),
       Obx(
         () => AccountForm(
+          formKey: accountFormKey,
           usernameTextController: usernameTextController,
           passwordTextController: passwordTextController,
           confirmPasswordTextController: confirmPasswordTextController,
@@ -61,7 +68,19 @@ class SignUpScreenController extends ISignUpScreenController {
 
   @override
   void next() {
-    selectedFormIndex(++selectedFormIndex.value);
+    switch (selectedFormIndex.value) {
+      case 0:
+        if (personalInfoFormKey.currentState!.validate()) {
+          selectedFormIndex(++selectedFormIndex.value);
+        }
+        break;
+      case 1:
+        if (contactFormKey.currentState!.validate()) {
+          selectedFormIndex(++selectedFormIndex.value);
+        }
+        break;
+      default:
+    }
   }
 
   @override
@@ -87,35 +106,37 @@ class SignUpScreenController extends ISignUpScreenController {
 
   @override
   void signUp() async {
-    isLoading(true);
-    var person = ReqisterPersonRequesDto(
-      firstName: firstNameTextController.text,
-      middleName: middleNameTextController.text,
-      lastName: lastNameTextController.text,
-      birthDate: DateFormat("MMMM dd, yyyy")
-          .parse(birthDateTextController.text)
-          .toUtc(),
-      homeAddress: homeAddressTextController.text,
-      city: cityTextController.text,
-      contactNumber: mobileNumberTextController.text,
-      emailAddress: emailAddressTextController.text,
-      country: countryTextController.text,
-    );
+    if (accountFormKey.currentState!.validate()) {
+      isLoading(true);
+      var person = ReqisterPersonRequesDto(
+        firstName: firstNameTextController.text,
+        middleName: middleNameTextController.text,
+        lastName: lastNameTextController.text,
+        birthDate: DateFormat("MMMM dd, yyyy")
+            .parse(birthDateTextController.text)
+            .toUtc(),
+        homeAddress: homeAddressTextController.text,
+        city: cityTextController.text,
+        contactNumber: mobileNumberTextController.text,
+        emailAddress: emailAddressTextController.text,
+        country: countryTextController.text,
+      );
 
-    var account = RegisterAccountCredentialDto(
-        username: usernameTextController.text,
-        password: passwordTextController.text);
-    var response = await registrationController.registerAccount(
-        ReqisterAccountRequesDto(account: account, person: person));
+      var account = RegisterAccountCredentialDto(
+          username: usernameTextController.text,
+          password: passwordTextController.text);
+      var response = await registrationController.registerAccount(
+          ReqisterAccountRequesDto(account: account, person: person));
 
-    if (response.data!.person == null) {
-      Get.snackbar("Sign Up Failed", response.message);
+      if (response.data!.person == null) {
+        Get.snackbar("Sign Up Failed", response.message);
+      }
+
+      if (response.data!.person != null) {
+        selectedFormIndex(++selectedFormIndex.value);
+      }
+
+      isLoading(false);
     }
-
-    if (response.data!.person != null) {
-      selectedFormIndex(++selectedFormIndex.value);
-    }
-
-    isLoading(false);
   }
 }

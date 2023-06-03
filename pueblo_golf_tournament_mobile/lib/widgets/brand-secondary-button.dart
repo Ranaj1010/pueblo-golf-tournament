@@ -16,7 +16,7 @@ class BrandSecondaryButton extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton.icon(
-          onPressed: onPressed != null ? () => onPressed!() : null,
+          onPressed: onPressed == null || loading ? null : () => onPressed!(),
           style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromARGB(255, 240, 221, 191),
               foregroundColor: Colors.black,

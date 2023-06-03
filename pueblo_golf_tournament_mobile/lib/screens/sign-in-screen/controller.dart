@@ -20,7 +20,7 @@ class SignInScreenController extends ISignInScreenController {
   final homeScreenController = Get.find<HomeScreenController>();
   final authenticationController = Get.find<AuthenticateController>();
   final dataContextController = Get.find<DataContextController>();
-
+  final credentialsFormKey = GlobalKey<FormState>();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -52,39 +52,41 @@ class SignInScreenController extends ISignInScreenController {
 
   @override
   void signIn() async {
-    isLoading(true);
+    if (credentialsFormKey.currentState!.validate()) {
+      isLoading(true);
 
-    if (usernameTextController.text.isEmpty) {
-      isUserNameEmpty(true);
-    }
-
-    if (passwordTextController.text.isEmpty) {
-      isPasswordEmpty(true);
-    }
-
-    if (usernameTextController.text.isNotEmpty &&
-        passwordTextController.text.isNotEmpty) {
-      var response = await authenticationController.authenticate(
-          AuthenticateRequestDto(
-              username: usernameTextController.text,
-              password: passwordTextController.text));
-
-      if (response.data!.account == null) {
-        isFailedToLogin(true);
-        Get.snackbar("Sign In Failed", response.message);
+      if (usernameTextController.text.isEmpty) {
+        isUserNameEmpty(true);
       }
 
-      if (response.data!.account != null) {
-        dataContextController.saveAuthenticatedUserData(response.data!);
-        isFailedToLogin(false);
-        usernameTextController.clear();
-        passwordTextController.clear();
-        homeScreenController.selectedPageIndex(0);
-        homeScreenController.initializePlayerProfile();
-        Get.toNamed("/home");
+      if (passwordTextController.text.isEmpty) {
+        isPasswordEmpty(true);
       }
 
-      isLoading(false);
+      if (usernameTextController.text.isNotEmpty &&
+          passwordTextController.text.isNotEmpty) {
+        var response = await authenticationController.authenticate(
+            AuthenticateRequestDto(
+                username: usernameTextController.text,
+                password: passwordTextController.text));
+
+        if (response.data!.account == null) {
+          isFailedToLogin(true);
+          Get.snackbar("Sign In Failed", response.message);
+        }
+
+        if (response.data!.account != null) {
+          dataContextController.saveAuthenticatedUserData(response.data!);
+          isFailedToLogin(false);
+          usernameTextController.clear();
+          passwordTextController.clear();
+          homeScreenController.selectedPageIndex(0);
+          homeScreenController.initializePlayerProfile();
+          Get.toNamed("/home");
+        }
+
+        isLoading(false);
+      }
     }
   }
 }

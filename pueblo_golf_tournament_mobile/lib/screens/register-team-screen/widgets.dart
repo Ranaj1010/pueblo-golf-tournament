@@ -54,20 +54,22 @@ class AddMembersForm extends StatelessWidget {
                     separatorBuilder: (context, index) => Divider(),
                     itemCount: members.length),
               )
-            : Padding(padding: EdgeInsets.all(0)),
-        SizedBox(
-            width: double.infinity,
-            child: Card(
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              semanticContainer: true,
-              child: InkWell(
-                onTap: () => onAddMember(),
-                child: ListTile(
-                  title: Text("Add Member"),
-                  trailing: Icon(Icons.add),
-                ),
-              ),
-            ))
+            : const Padding(padding: EdgeInsets.all(0)),
+        members.length < 4
+            ? SizedBox(
+                width: double.infinity,
+                child: Card(
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  semanticContainer: true,
+                  child: InkWell(
+                    onTap: () => onAddMember(),
+                    child: const ListTile(
+                      title: Text("Add Member"),
+                      trailing: Icon(Icons.add),
+                    ),
+                  ),
+                ))
+            : const Padding(padding: EdgeInsets.all(0))
       ],
     );
   }

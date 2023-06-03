@@ -36,17 +36,21 @@ class RegisterNewPlayerScreenController
       Get.find<AddTeamMemberScreenController>();
   final registrationController = Get.find<RegistrationController>();
   final dataContextController = Get.find<DataContextController>();
+  final personalInfoFormKey = GlobalKey<FormState>();
+  final contactFormKey = GlobalKey<FormState>();
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
     forms = [
       PersonalInfoForm(
+          formKey: personalInfoFormKey,
           firstNameTextController: firstNameTextController,
           middleNameTextController: middleNameTextController,
           lastNameTextController: lastNameTextController,
           birthDateTextController: birthDateTextController),
       ContactForm(
+          formKey: contactFormKey,
           mobileNumberTextController: mobileNumberTextController,
           emailAddressTextController: emailAddressTextController,
           homeAddressTextController: homeAddressTextController,
@@ -117,7 +121,19 @@ class RegisterNewPlayerScreenController
 
   @override
   void next() {
-    selectedFormIndex(++selectedFormIndex.value);
+    switch (selectedFormIndex.value) {
+      case 0:
+        if (personalInfoFormKey.currentState!.validate()) {
+          selectedFormIndex(++selectedFormIndex.value);
+        }
+        break;
+      case 1:
+        if (contactFormKey.currentState!.validate()) {
+          selectedFormIndex(++selectedFormIndex.value);
+        }
+        break;
+      default:
+    }
   }
 
   @override

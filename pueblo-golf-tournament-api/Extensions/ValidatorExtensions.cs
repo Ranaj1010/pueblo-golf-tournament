@@ -8,7 +8,7 @@ namespace pueblo_golf_tournament_api.Extensions
             {
                 if (string.IsNullOrEmpty(username))
                     return false;
-                if (username.Length < 6)
+                if (username.Length < 4)
                     return false;
                 if (username.Contains(' '))
                     return false;
