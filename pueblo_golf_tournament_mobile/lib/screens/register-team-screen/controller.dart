@@ -154,7 +154,7 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
         break;
 
       case 1:
-        disabledNext(members.length <= 4);
+        disabledNext(members.length < 4);
         break;
       case 2:
         disabledNext(!isConfirmationUnderstood.value);

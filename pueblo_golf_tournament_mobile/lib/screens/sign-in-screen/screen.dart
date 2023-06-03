@@ -29,12 +29,12 @@ class SignInScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                       height: 100,
                       child: Image(
                         image: AssetImage("assets/login-screen-image.png"),
                       )),
-                  Padding(padding: EdgeInsets.all(10)),
+                  const Padding(padding: EdgeInsets.all(10)),
                   const Text(
                     "Welcome back!",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),

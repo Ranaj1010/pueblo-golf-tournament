@@ -6,6 +6,7 @@ import 'package:pueblo_golf_tournament_mobile/data/context.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-person-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/add-team-member-screen/controller.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/controller.dart';
 
 import '../../dto/request/register-player-request-dto.dart';
 import 'interface.dart';
@@ -17,6 +18,7 @@ class RegisterNewPlayerScreenController
   var playerProfile = Rxn<PlayerProfile>();
   var isPasswordPeeked = false.obs;
   var isConfirmPasswordPeeked = false.obs;
+  var isMemberAlreadyExists = false.obs;
   var isLoading = false.obs;
   var selectedFormIndex = 0.obs;
   var forms = [];
@@ -36,6 +38,7 @@ class RegisterNewPlayerScreenController
       Get.find<AddTeamMemberScreenController>();
   final registrationController = Get.find<RegistrationController>();
   final dataContextController = Get.find<DataContextController>();
+  final registerTeamScreenController = Get.find<RegisterTeamScreenController>();
   final personalInfoFormKey = GlobalKey<FormState>();
   final contactFormKey = GlobalKey<FormState>();
   @override
@@ -95,24 +98,39 @@ class RegisterNewPlayerScreenController
               personId: registeredPerson.data!.id));
 
       if (response.playerProfile == null) {
-        Get.snackbar("Registration Failed.", "Please try again");
+        Get.snackbar(
+            "Registration Failed.", "${response.message}. Please try again");
       }
 
       if (response.playerProfile != null) {
-        selectedFormIndex(0);
-        firstNameTextController.clear();
-        middleNameTextController.clear();
-        lastNameTextController.clear();
-        birthDateTextController.clear();
-        mobileNumberTextController.clear();
-        emailAddressTextController.clear();
-        homeAddressTextController.clear();
-        cityTextController.clear();
-        countryTextController.clear();
-        homeClubTextController.clear();
-        worldHandicapSystemIdTextController.clear();
+        var existingMember = registerTeamScreenController.members.where(
+            (element) =>
+                element.player.playerExternalId ==
+                response.playerProfile!.player.playerExternalId);
 
-        Get.back(result: response.playerProfile);
+        if (existingMember.isNotEmpty) {
+          isMemberAlreadyExists(true);
+          Get.snackbar("Member already exists.",
+              "Please add another member for this team.");
+        }
+
+        if (existingMember.isEmpty) {
+          selectedFormIndex(0);
+          isMemberAlreadyExists(false);
+          firstNameTextController.clear();
+          middleNameTextController.clear();
+          lastNameTextController.clear();
+          birthDateTextController.clear();
+          mobileNumberTextController.clear();
+          emailAddressTextController.clear();
+          homeAddressTextController.clear();
+          cityTextController.clear();
+          countryTextController.clear();
+          homeClubTextController.clear();
+          worldHandicapSystemIdTextController.clear();
+
+          Get.back(result: response.playerProfile);
+        }
       }
     }
 
