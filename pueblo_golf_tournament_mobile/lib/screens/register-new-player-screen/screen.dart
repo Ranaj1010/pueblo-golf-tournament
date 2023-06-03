@@ -38,6 +38,21 @@ class RegisterNewPlayerScreen extends StatelessWidget {
                   controller.formTitles[controller.selectedFormIndex.value],
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                 ),
+                controller.isMemberAlreadyExists.value
+                    ? Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color.fromARGB(255, 254, 232, 232)),
+                        padding: const EdgeInsets.all(10),
+                        child: const Text(
+                          "Member already exists. Please add another member for this team.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w600),
+                        ),
+                      )
+                    : const Padding(padding: EdgeInsets.all(0)),
                 controller.forms[controller.selectedFormIndex.value],
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
