@@ -437,6 +437,18 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         return response;
                     }
 
+                    if (registration != null)
+                    {
+                        var existingTournament = await _tournamentService.GetAsync(tournament => tournament.Id == registration.TournamentId);
+
+                        existingTournament.NumberOfSlots = existingTournament.NumberOfSlots - 1;
+
+                        var updatedTournament = await _tournamentService.UpdateAsync(existingTournament);
+
+                        Console.WriteLine($"Slots are now only {updatedTournament.NumberOfSlots} left.");
+                    }
+
+
                     var tournamentPlayers = payload.Members.Select(player => new TournamentPlayer
                     {
                         PlayerId = player,
@@ -462,6 +474,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                     response.Data.Registration = _mapper.Map<RegistrationDto>(registration);
                     response.Data.Team = _mapper.Map<TeamDto>(registeredTeam);
+                    response.Message = "Team is now registered.";
                 }
 
 
