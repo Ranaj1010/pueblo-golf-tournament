@@ -24,7 +24,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pueblo De Oro Golf and Country Club',
       initialBinding: AppBindings(),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -34,14 +34,14 @@ class App extends StatelessWidget {
           hintStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               width: 0,
               style: BorderStyle.none,
             ),
           ),
           filled: true,
-          contentPadding: EdgeInsets.all(16),
-          fillColor: Color.fromARGB(255, 233, 233, 233),
+          contentPadding: const EdgeInsets.all(16),
+          fillColor: const Color.fromARGB(255, 233, 233, 233),
         ),
       ),
       routes: {

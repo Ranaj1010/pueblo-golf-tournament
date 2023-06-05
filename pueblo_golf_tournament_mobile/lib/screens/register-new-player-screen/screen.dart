@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-new-player-screen/controller.dart';
-import 'package:pueblo_golf_tournament_mobile/screens/sign-up-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/widgets/brand-elevated-button.dart';
 import 'package:pueblo_golf_tournament_mobile/widgets/brand-secondary-button.dart';
 
@@ -36,7 +35,8 @@ class RegisterNewPlayerScreen extends StatelessWidget {
                                 AssetImage("assets/sign-up-screen-image.png"))),
                 Text(
                   controller.formTitles[controller.selectedFormIndex.value],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 24),
                 ),
                 controller.isMemberAlreadyExists.value
                     ? Container(
