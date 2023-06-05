@@ -65,25 +65,25 @@ android {
     flavorDimensions "flavors"
     productFlavors {
         dev {
-            resValue "string", "app_name", "Pueblo Golf Dev"
+            resValue "string", "app_name", "Pueblo De Oro Golf and Country Club Dev"
             dimension "flavors"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
         }
         alpha {
-            resValue "string", "app_name", "Pueblo Golf Alpha"
+            resValue "string", "app_name", "Pueblo De Oro Golf and Country Club Alpha"
             dimension "flavors"
             applicationIdSuffix ".alpha"
             versionNameSuffix "-alpha"
         }
         beta {
-            resValue "string", "app_name", "Pueblo Golf Beta"
+            resValue "string", "app_name", "Pueblo De Oro Golf and Country Club Beta"
             dimension "flavors"
             applicationIdSuffix ".beta"
             versionNameSuffix "-beta"
         }
         prod {
-            resValue "string", "app_name", "Pueblo Golf"
+            resValue "string", "app_name", "Pueblo De Oro Golf and Country Club"
             dimension "flavors"
         }
     }
