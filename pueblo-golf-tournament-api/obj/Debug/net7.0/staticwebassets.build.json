@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "HbTiOigmMR1x7CqWMPApbvwi7qnhRWVTbvvILof0nCg=",
+  "Hash": "v2CWfT0JVKf6C+Wxh98LJ8lYx9TyNcu2MQmsipAMMy4=",
   "Source": "pueblo-golf-tournament-api",
   "BasePath": "_content/pueblo-golf-tournament-api",
   "Mode": "Default",
@@ -236,6 +236,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/images/payments/image_picker_91D0A351-1604-4114-A22E-D2AD92557685-85057-00000F97022788E2.jpg"
+    },
+    {
+      "Identity": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/images/payments/image_picker_96B8029F-5408-4133-809C-7509A53A21F2-51635-0000105F9295E9E3.jpg",
+      "SourceId": "pueblo-golf-tournament-api",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/",
+      "BasePath": "_content/pueblo-golf-tournament-api",
+      "RelativePath": "images/payments/image_picker_96B8029F-5408-4133-809C-7509A53A21F2-51635-0000105F9295E9E3.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/payments/image_picker_96B8029F-5408-4133-809C-7509A53A21F2-51635-0000105F9295E9E3.jpg"
     },
     {
       "Identity": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/wwwroot/images/payments/image_picker_9F392BA6-686F-4BF1-ADE4-5BF37C7546EB-85057-00000F93076F1535.jpg",

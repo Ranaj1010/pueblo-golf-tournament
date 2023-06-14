@@ -292,7 +292,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
             response.Data = _mapper.Map<PaymentDto>(createdPayment);
             response.Message = "Payment has been made";
-            
+
             return response;
         }
 
@@ -378,6 +378,31 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                 response.Message = $"Registration Failed. {ex.Message}";
                 return response;
             }
+        }
+
+
+
+        public async Task<RegisteredTournamentPlayerDto> RegisterPlayerToTeam(RegisterTournamentPlayerDto payload)
+        {
+            var response = new RegisteredTournamentPlayerDto();
+
+            var player = new TournamentPlayer
+            {
+                PlayerId = payload.PlayerId,
+                TournamentId = payload.TournamentId,
+                DivisionId = 0,
+                RegistrationId = payload.RegistrationId,
+                TeamId = payload.TeamId,
+                PlayerType = PlayerTypeEnum.Member
+            };
+
+            await _tournamentPlayerService.AddAsync(player);
+
+
+            response.Data = _mapper.Map<TournamentPlayerDto>(player);
+            response.Message = "Player added";
+
+            return response;
         }
 
         public async Task<RegisteredTeamDto> RegisterTeam(RegisterTeamDto payload)

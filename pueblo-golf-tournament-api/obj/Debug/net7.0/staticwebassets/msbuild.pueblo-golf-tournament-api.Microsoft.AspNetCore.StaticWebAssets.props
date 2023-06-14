@@ -208,6 +208,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\payments\image_picker_91D0A351-1604-4114-A22E-D2AD92557685-85057-00000F97022788E2.jpg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\payments\image_picker_96B8029F-5408-4133-809C-7509A53A21F2-51635-0000105F9295E9E3.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>pueblo-golf-tournament-api</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/pueblo-golf-tournament-api</BasePath>
+      <RelativePath>images/payments/image_picker_96B8029F-5408-4133-809C-7509A53A21F2-51635-0000105F9295E9E3.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\payments\image_picker_96B8029F-5408-4133-809C-7509A53A21F2-51635-0000105F9295E9E3.jpg))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\images\payments\image_picker_9F392BA6-686F-4BF1-ADE4-5BF37C7546EB-85057-00000F93076F1535.jpg))">
       <SourceType>Package</SourceType>
       <SourceId>pueblo-golf-tournament-api</SourceId>

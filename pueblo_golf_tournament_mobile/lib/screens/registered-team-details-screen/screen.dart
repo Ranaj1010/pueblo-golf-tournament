@@ -139,9 +139,21 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                       ),
                     )
                   : const Padding(padding: EdgeInsets.all(0)),
-              const Text(
-                "Members",
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Members",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  controller.registeredTeam.value!.memberProfiles!.length < 5
+                      ? ElevatedButton.icon(
+                          onPressed: () => controller.addMember(),
+                          icon: const Icon(Icons.add),
+                          label: const Text("Add Member"),
+                        )
+                      : const Padding(padding: EdgeInsets.all(0))
+                ],
               ),
               Card(
                 semanticContainer: true,
