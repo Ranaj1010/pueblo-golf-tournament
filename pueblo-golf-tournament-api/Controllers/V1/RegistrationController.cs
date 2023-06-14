@@ -75,6 +75,13 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.PlayerProfile != null ? Ok(response) : BadRequest(response);
         }
+        [HttpPost("tournament-player")]
+        public async Task<ActionResult<RegisteredTournamentPlayerDto>> RegisterTournamentPlayer(RegisterTournamentPlayerDto payload)
+        {
+            var response = await _registrationModule.RegisterPlayerToTeam(payload);
+
+            return response.Data != null ? Ok(response) : BadRequest(response);
+        }
         [HttpPost("payment")]
         public async Task<ActionResult<RegisteredPaymentResponseDto>> RegisterPayment([FromForm]RegisterPaymentRequestDto payload)
         {

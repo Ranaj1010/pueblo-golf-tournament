@@ -9,5 +9,6 @@ namespace pueblo_golf_tournament_api.Dto.Incoming
         public string? WorldHandicapSystemId { get; set; }
         public string? HomeClub { get; set; }
         public long PersonId { get; set; }
+        
     }
 }

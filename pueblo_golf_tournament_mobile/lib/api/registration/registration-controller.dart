@@ -9,6 +9,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/register-division-requ
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-person-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-player-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-player-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-account-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-division-response-dto.dart';
@@ -19,6 +20,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-respons
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-response-dto.dart';
 
 import '../../dto/request/register-payment-request-dto.dart';
+import '../../dto/response/register-tournament-player-response-dto.dart';
 import '../../utilities/http-controller.dart';
 
 class RegistrationController extends IRegistrationController {
@@ -200,6 +202,26 @@ class RegistrationController extends IRegistrationController {
       default:
         return RegisterPaymentResponseDto(
             message: response.reasonPhrase!, data: null);
+    }
+  }
+
+  @override
+  Future<RegisterTournamentPlayerResponseDto> registerTournamentPlayer(
+      RegisterTournamentPlayerRequestDto payload) async {
+    var endpoint = "$controller/tournament-player";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return RegisterTournamentPlayerResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return RegisterTournamentPlayerResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        return RegisterTournamentPlayerResponseDto(
+            message: response.reasonPhrase!, playerProfile: null);
     }
   }
 }

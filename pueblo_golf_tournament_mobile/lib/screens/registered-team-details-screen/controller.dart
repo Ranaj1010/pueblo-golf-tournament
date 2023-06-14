@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,7 +9,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:pueblo_golf_tournament_mobile/api/lookup/lookup-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/api/manage/manage-controller.dart';
+import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/confirm-payment-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-player-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/tournament-details-screen/controller.dart';
@@ -23,6 +27,7 @@ class RegisteredTeamDetailsScreenController
   var selectedMember = Rxn<PlayerProfile>();
   final lookupController = Get.find<LookupController>();
   final manageController = Get.find<ManageController>();
+  final registrationController = Get.find<RegistrationController>();
   var baseUrl = "";
 
   RegisteredTeamDetailsScreenController() {
@@ -121,5 +126,27 @@ class RegisteredTeamDetailsScreenController
                     ],
                   )))),
         ));
+  }
+
+  @override
+  void addMember() async {
+    var addedMember = await Get.toNamed("/register-player");
+    if (addedMember != null) {
+      print(jsonEncode(addedMember));
+
+      var profile = PlayerProfile.fromJson(jsonDecode(jsonEncode(addedMember)));
+
+      var addedPlayer = await registrationController.registerTournamentPlayer(
+          RegisterTournamentPlayerRequestDto(
+              registrationId: registeredTeam.value!.registration.id,
+              teamId: registeredTeam.value!.registration.teamId,
+              tournamentId: registeredTeam.value!.registration.tournamentId,
+              playerId: profile.player.id));
+
+      loadTeamRegistration();
+      Get.snackbar("Member added",
+          "${profile.person.firstName} ${profile.person.lastName} is now added to the team.");
+      update();
+    }
   }
 }

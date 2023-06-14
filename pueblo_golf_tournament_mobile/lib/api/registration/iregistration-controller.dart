@@ -14,6 +14,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-r
 
 import '../../dto/request/register-account-request-dto.dart';
 import '../../dto/request/register-person-request-dto.dart';
+import '../../dto/request/register-tournament-player-request-dto.dart';
+import '../../dto/response/register-tournament-player-response-dto.dart';
 
 abstract class IRegistrationController extends GetxController {
   Future<RegisterTournamentResponseDto> registerTournament(
@@ -27,6 +29,8 @@ abstract class IRegistrationController extends GetxController {
       ReqisterPersonRequesDto payload);
   Future<RegisterPlayerResponseDto> registerPlayer(
       RegisterPlayerRequestDto payload);
+  Future<RegisterTournamentPlayerResponseDto> registerTournamentPlayer(
+      RegisterTournamentPlayerRequestDto payload);
   Future<RegisterPaymentResponseDto> registerPayment(
       RegisterPaymentRequestDto payload);
   Future<RegisterPaymentResponseDto> registerPaymentWeb(
