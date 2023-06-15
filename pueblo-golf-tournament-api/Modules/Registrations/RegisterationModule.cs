@@ -473,18 +473,20 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                         Console.WriteLine($"Slots are now only {updatedTournament.NumberOfSlots} left.");
                     }
 
-
-                    var tournamentPlayers = payload.Members.Select(player => new TournamentPlayer
+                    if (payload.Members.Count > 0)
                     {
-                        PlayerId = player,
-                        TournamentId = payload.TournamentId,
-                        DivisionId = 0,
-                        RegistrationId = registration.Id,
-                        TeamId = registeredTeam.Id,
-                        PlayerType = PlayerTypeEnum.Member
-                    }).ToList();
+                        var tournamentPlayers = payload.Members.Select(player => new TournamentPlayer
+                        {
+                            PlayerId = player,
+                            TournamentId = payload.TournamentId,
+                            DivisionId = 0,
+                            RegistrationId = registration.Id,
+                            TeamId = registeredTeam.Id,
+                            PlayerType = PlayerTypeEnum.Member
+                        }).ToList();
 
-                    var registeredTournamentPlayers = await _tournamentPlayerService.AddRangeAsync(tournamentPlayers);
+                        var registeredTournamentPlayers = await _tournamentPlayerService.AddRangeAsync(tournamentPlayers);
+                    }
 
 
                     var tournamentTeamCaptain = await _tournamentPlayerService.AddAsync(new TournamentPlayer
