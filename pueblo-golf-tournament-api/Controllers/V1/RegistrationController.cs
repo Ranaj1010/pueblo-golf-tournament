@@ -89,5 +89,21 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
+        [HttpPost("payment-channel")]
+        public async Task<ActionResult<RegisteredPaymentChannelResponseDto>> RegisterPaymentChannel(RegisterPaymentChannelRequestDto payload)
+        {
+            var response = await _registrationModule.RegisterPaymentChannel(payload);
+
+            return response.Data != null ? Ok(response) : BadRequest(response);
+        }
+        
+        [HttpPost("payment-channel-account")]
+        public async Task<ActionResult<RegisteredPaymentChannelAccountResponseDto>> RegisterPaymentChannelAccount(RegisterPaymentChannelAccountRequestDto payload)
+        {
+            var response = await _registrationModule.RegisterPaymentChannelAccount(payload);
+
+            return response.Data != null ? Ok(response) : BadRequest(response);
+        }
+
     }
 }

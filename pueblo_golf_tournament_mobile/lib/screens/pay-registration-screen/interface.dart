@@ -5,5 +5,5 @@ abstract class IPayRegistrationScreenController extends GetxController {
   void uploadProofOfPayment();
   void makePayment();
   void goBack();
-  void selectPaymentMethod(PaymentMethodEnum paymentMethod);
+  void selectPaymentMethod();
 }

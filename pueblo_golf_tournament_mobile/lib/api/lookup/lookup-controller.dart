@@ -4,11 +4,15 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pueblo_golf_tournament_mobile/api/lookup/ilookup-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-details-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournaments-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-details-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-response-dto.dart';
@@ -147,6 +151,48 @@ class LookupController extends ILookupController {
         Get.snackbar("Failed", response.reasonPhrase!);
         return LookupPlayeProfileResponseDto(
             message: response.reasonPhrase!, profile: null);
+    }
+  }
+
+  @override
+  Future<LookupPaymentChannelAccountsResponseDto> lookupPaymentChannelAccounts(
+      LookupPaymentChannelAccountsRequestDto payload) async {
+    var endpoint = "$controller/payment-channel-accounts";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupPaymentChannelAccountsResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return LookupPaymentChannelAccountsResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupPaymentChannelAccountsResponseDto(
+            message: response.reasonPhrase!, data: null);
+    }
+  }
+
+  @override
+  Future<LookupPaymentChannelsResponseDto> lookupPaymentChannels(
+      LookupPaymentChannelsRequestDto payload) async {
+    var endpoint = "$controller/payment-channels";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupPaymentChannelsResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return LookupPaymentChannelsResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupPaymentChannelsResponseDto(
+            message: response.reasonPhrase!, data: null);
     }
   }
 }

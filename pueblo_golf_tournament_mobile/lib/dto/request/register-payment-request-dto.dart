@@ -8,10 +8,16 @@ class RegisterPaymentRequestDto {
   final String paymentMethod;
   final int registrationId;
   final String referrenceId;
+  final int paymentChannelAccountId;
+  final String accountNumber;
+  final String accountName;
   final DateTime paymentDate;
   final File paymentReferrencePhoto;
 
   RegisterPaymentRequestDto({
+    required this.paymentChannelAccountId,
+    required this.accountNumber,
+    required this.accountName,
     required this.paymentMethod,
     required this.registrationId,
     required this.referrenceId,

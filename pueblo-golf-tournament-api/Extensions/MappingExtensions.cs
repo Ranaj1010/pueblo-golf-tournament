@@ -28,12 +28,15 @@ namespace pueblo_golf_tournament_api.Extensions
             CreateMap<Person, RegisterPersonDto>().ReverseMap();
             CreateMap<Player, RegisterPlayerDto>().ReverseMap();
             CreateMap<Payment, PaymentDto>().ReverseMap();
+            CreateMap<PaymentChannel, PaymentChannelDto>().ReverseMap();
+            CreateMap<PaymentChannelAccount, PaymentChannelAccountDto>().ReverseMap();
             CreateMap<Team, TeamRawDto>().ReverseMap();
-            CreateMap<Tournament, RegisterTournamentDto>().ReverseMap();
             CreateMap<TournamentPlayer, TournamentPlayerDto>().ReverseMap();
             CreateMap<Registration, RegistrationRawDto>().ReverseMap();
 
             CreateMap<Division, RegisterDivisionDto>().ReverseMap();
+            CreateMap<PaymentChannel, RegisterPaymentChannelRequestDto>().ReverseMap();
+            CreateMap<PaymentChannelAccount, RegisterPaymentChannelAccountRequestDto>().ReverseMap();
             CreateMap<Tournament, RegisterTournamentDto>().ReverseMap();
             CreateMap<HomeClub, RegisterHomeClubDto>().ReverseMap();
         }

@@ -136,6 +136,12 @@ namespace pueblo_golf_tournament_api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("AccountName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountNumber")
+                        .HasColumnType("text");
+
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
@@ -144,6 +150,9 @@ namespace pueblo_golf_tournament_api.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("PaymentChannelAccountId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("timestamp without time zone");
@@ -160,6 +169,74 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.PaymentChannel", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentChannels");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.PaymentChannelAccount", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("AccountName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AccountNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("PaymentChannelId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TournamentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentChannelId");
+
+                    b.ToTable("PaymentChannelAccounts");
                 });
 
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Person", b =>
@@ -445,6 +522,17 @@ namespace pueblo_golf_tournament_api.Migrations
                         .IsRequired();
 
                     b.Navigation("Tournament");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.PaymentChannelAccount", b =>
+                {
+                    b.HasOne("pueblo_golf_tournament_api.Entities.PaymentChannel", "PaymentChannel")
+                        .WithMany()
+                        .HasForeignKey("PaymentChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentChannel");
                 });
 
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Player", b =>

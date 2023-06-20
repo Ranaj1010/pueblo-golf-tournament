@@ -47,7 +47,7 @@ class PayRegistrationScreen extends StatelessWidget {
                       loading: false)
                   : BrandElevatedButton(
                       onPressed: () => controller.makePayment(),
-                      title: "Pay",
+                      title: "Submit Payment",
                       loading: controller.isLoading.value)
             ],
           ),

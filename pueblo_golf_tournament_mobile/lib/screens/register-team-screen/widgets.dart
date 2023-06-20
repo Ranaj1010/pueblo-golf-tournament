@@ -38,6 +38,29 @@ class AddMembersForm extends StatelessWidget {
     return Wrap(
       runSpacing: 20,
       children: [
+        Container(
+          clipBehavior: Clip.antiAliasWithSaveLayer,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Color.fromARGB(255, 255, 239, 204),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(20),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Notes:",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, color: Colors.deepOrange),
+              ),
+              Padding(padding: EdgeInsets.all(5)),
+              Text("- Please add atleast 1 member."),
+              Text(
+                  "- You as the 'Team Captain' is automatically added to the team registration."),
+            ]),
+          ),
+        ),
         members.isNotEmpty
             ? Card(
                 child: ListView.separated(
@@ -54,7 +77,7 @@ class AddMembersForm extends StatelessWidget {
                     separatorBuilder: (context, index) => Divider(),
                     itemCount: members.length),
               )
-            : const Padding(padding: EdgeInsets.all(0)),
+            : Padding(padding: const EdgeInsets.all(0)),
         members.length < 4
             ? SizedBox(
                 width: double.infinity,
@@ -172,13 +195,15 @@ class ConfirmationForm extends StatelessWidget {
 }
 
 class TeamRegistrationSuccess extends StatelessWidget {
+  const TeamRegistrationSuccess({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Wrap(
         children: [
           Text(
-            "You have successfully created your team. Please wait for the organizers confirmation for your registration.",
+            "You have successfully created your team. Please wait for the organizer's confirmation for your registration.",
             style: TextStyle(
               fontSize: 20,
             ),

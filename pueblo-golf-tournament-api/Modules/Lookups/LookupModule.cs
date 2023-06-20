@@ -9,6 +9,8 @@ using pueblo_golf_tournament_api.Entities;
 using pueblo_golf_tournament_api.Services.Accounts;
 using pueblo_golf_tournament_api.Services.Divisions;
 using pueblo_golf_tournament_api.Services.HomeClubs;
+using pueblo_golf_tournament_api.Services.PaymentChannelAccounts;
+using pueblo_golf_tournament_api.Services.PaymentChannels;
 using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
@@ -25,11 +27,13 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly IRegistrationService _registrationService;
         private readonly IPlayerService _playerService;
         private readonly IPersonService _personService;
+        private readonly IPaymentChannelService _paymentChannelService;
+        private readonly IPaymentChannelAccountService _paymentChannelAccountService;
         private readonly ITeamService _teamService;
         private readonly IAccountService _accountService;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -41,6 +45,8 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _teamService = teamService;
             _personService = personService;
             _accountService = accountService;
+            _paymentChannelService = paymentChannelService;
+            _paymentChannelAccountService = paymentChannelAccountService;
         }
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
@@ -70,6 +76,28 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
 
             response.Data = _mapper.Map<List<HomeClubDto>>(data);
             response.Message = $"{data.Count} items found.";
+
+            return response;
+        }
+
+        public async Task<LookupPaymentChannelAccountsResponseDto> LookupPaymentChannelAccounts(LookupPaymentChannelAccountsRequestDto payload)
+        {
+            var response = new LookupPaymentChannelAccountsResponseDto();
+
+            var data = await _paymentChannelAccountService.ListAsync(account => account.TournamentId == payload.TournamentId);
+            response.Data = _mapper.Map<List<PaymentChannelAccountDto>>(data);
+            response.Message = data.Count > 0 ? $"{data.Count} payment channel accounts found" : "No payment channel accounts found.";
+
+            return response;
+        }
+
+        public async  Task<LookupPaymentChannelsResponseDto> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
+        {
+            var response = new LookupPaymentChannelsResponseDto();
+
+            var data = await _paymentChannelService.ListAsync();
+            response.Data = _mapper.Map<List<PaymentChannelDto>>(data);
+            response.Message = data.Count > 0 ? $"{data.Count} payment channels found" : "No payment channels found.";
 
             return response;
         }

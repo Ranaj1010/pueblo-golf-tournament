@@ -65,7 +65,9 @@ class RegisteredTeamDetailsScreenController
   @override
   void payRegistration() {
     var payment = Get.toNamed("/pay-registration");
-    if (payment != null) {}
+    if (payment != null) {
+      loadTeamRegistration();
+    }
   }
 
   @override

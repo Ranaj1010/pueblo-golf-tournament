@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -7,9 +8,11 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/model/payment-channel-account-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/interface.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/widgets.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/controller.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/select-payment-method-screen/controller.dart';
 
 import '../../dto/request/register-payment-request-dto.dart';
 import '../../utilities/enums.dart';
@@ -17,7 +20,11 @@ import '../../utilities/enums.dart';
 class PayRegistrationController extends IPayRegistrationScreenController {
   var proofOfPayment = Rxn<File>();
   var proofOfPaymentWeb = Rxn<Uint8List>();
+  var selectedPaymentChannelAccount = Rxn<PaymentChannelAccountDto>();
   var paymentReferrenceIdTextController = TextEditingController();
+  var accountNameTextController = TextEditingController();
+  var accountNumberTextController = TextEditingController();
+  var paymentMethodTextController = TextEditingController();
   var selectedPaymentMethod = PaymentMethodEnum.GCash.obs;
   var selectedFormIndex = 0.obs;
   var isLoading = false.obs;
@@ -27,6 +34,8 @@ class PayRegistrationController extends IPayRegistrationScreenController {
   final registrationController = Get.find<RegistrationController>();
   final registeredTeamDetailsController =
       Get.find<RegisteredTeamDetailsScreenController>();
+  final selectPaymentMethodController =
+      Get.find<SelectPaymentMethodController>();
   @override
   void onInit() {
     // TODO: implement onInit
@@ -34,12 +43,14 @@ class PayRegistrationController extends IPayRegistrationScreenController {
     forms = [
       Obx(
         () => PaymentMethodForm(
+          paymentMethodTextController: paymentMethodTextController,
+          accountNameTextController: accountNameTextController,
+          accountNumberTextController: accountNumberTextController,
+          selectedPaymentChannelAccount: selectedPaymentChannelAccount.value,
           isWeb: kIsWeb,
           proofOfPaymentImageWeb: proofOfPaymentWeb.value,
           proofOfPaymentImage: proofOfPayment.value,
-          paymentMethod: selectedPaymentMethod.value!,
-          selectPaymentMethod: (paymentMethod) =>
-              selectedPaymentMethod(paymentMethod),
+          selectPaymentMethod: () => selectPaymentMethod(),
           uploadProofOfPayment: () => uploadProofOfPayment(),
           paymentReferrenceIdTextController: paymentReferrenceIdTextController,
         ),
@@ -50,7 +61,6 @@ class PayRegistrationController extends IPayRegistrationScreenController {
 
   @override
   void goBack() {
-    selectedFormIndex(0);
     Get.back(result: isPayed.value);
   }
 
@@ -76,9 +86,13 @@ class PayRegistrationController extends IPayRegistrationScreenController {
         }
       } else {
         var payment = RegisterPaymentRequestDto(
+            paymentChannelAccountId: selectedPaymentChannelAccount.value!.id,
+            accountName: accountNameTextController.text,
+            accountNumber: accountNumberTextController.text,
             registrationId: registeredTeamDetailsController
                 .registeredTeam.value!.registration.id,
-            paymentMethod: selectedPaymentMethod.value.name,
+            paymentMethod:
+                "${selectedPaymentChannelAccount.value!.paymentChannel!.name} - ${selectedPaymentChannelAccount.value!.accountNumber}",
             referrenceId: paymentReferrenceIdTextController.text,
             paymentDate: DateTime.now().toUtc(),
             paymentReferrencePhoto: proofOfPayment.value!);
@@ -88,6 +102,7 @@ class PayRegistrationController extends IPayRegistrationScreenController {
 
         if (registeredPayment.data != null) {
           selectedFormIndex(++selectedFormIndex.value);
+          selectedPaymentChannelAccount(null);
           Get.snackbar("Payment Success", registeredPayment.message);
         }
       }
@@ -132,7 +147,16 @@ class PayRegistrationController extends IPayRegistrationScreenController {
   }
 
   @override
-  void selectPaymentMethod(PaymentMethodEnum paymentMethod) {
-    selectedPaymentMethod(paymentMethod);
+  void selectPaymentMethod() async {
+    if (selectedPaymentChannelAccount.value == null) {
+      selectPaymentMethodController.loadPaymentAccountOptions(
+          registeredTeamDetailsController
+              .registeredTeam.value!.registration.tournamentId);
+    }
+    var selectedPaymentMethod = await Get.toNamed("/select-payment-method");
+    if (selectedPaymentMethod != null) {
+      paymentMethodTextController.text =
+          "${selectedPaymentChannelAccount.value!.paymentChannel!.name} - ${selectedPaymentChannelAccount.value!.accountNumber}";
+    }
   }
 }

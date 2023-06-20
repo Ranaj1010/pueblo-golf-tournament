@@ -69,5 +69,21 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+        [HttpPost("payment-channels")]
+        public async Task<ActionResult<LookupPaymentChannelsResponseDto>> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
+        {
+            var response = await _lookupModule.LookupPaymentChannels(payload);
+
+            return Ok(response);
+        }
+        
+        [HttpPost("payment-channel-accounts")]
+        public async Task<ActionResult<LookupPaymentChannelAccountsResponseDto>> LookupPaymentChannelAccounts(LookupPaymentChannelAccountsRequestDto payload)
+        {
+            var response = await _lookupModule.LookupPaymentChannelAccounts(payload);
+
+            return Ok(response);
+        }
+
     }
 }
