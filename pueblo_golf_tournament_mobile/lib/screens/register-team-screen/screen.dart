@@ -64,7 +64,9 @@ class RegisterTeamScreen extends StatelessWidget {
                           SizedBox(
                             width: 150,
                             child: BrandElevatedButton(
-                                onPressed: controller.disabledNext.value
+                                onPressed: controller.disabledNext.value ||
+                                        (controller.members.length < 1 &&
+                                            controller.selectedFormIndex == 1)
                                     ? null
                                     : controller.selectedFormIndex ==
                                             controller.forms.length - 2
@@ -73,7 +75,10 @@ class RegisterTeamScreen extends StatelessWidget {
                                 title: controller.selectedFormIndex ==
                                         controller.forms.length - 2
                                     ? "Register"
-                                    : "Next",
+                                    : controller.selectedFormIndex == 1 &&
+                                            controller.members.length < 4
+                                        ? "Add Later"
+                                        : "Next",
                                 loading: controller.isLoading.value),
                           )
                         ],

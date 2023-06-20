@@ -8,6 +8,7 @@ import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/sc
 import 'package:pueblo_golf_tournament_mobile/screens/register-new-player-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/select-payment-method-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/setup-player-profile-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/sign-in-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/sign-up-screen/screen.dart';
@@ -57,7 +58,8 @@ class App extends StatelessWidget {
         "/registered-team-details": (context) => RegisteredTeamDetailsScreen(),
         "/member-details": (context) => ViewTeamMemberScreen(),
         "/update-profile": (context) => UpdateMemberDetailsScreen(),
-        "/pay-registration": (context) => PayRegistrationScreen()
+        "/pay-registration": (context) => PayRegistrationScreen(),
+        "/select-payment-method": (context) => SelectPaymentMethodScreen()
       },
     );
   }

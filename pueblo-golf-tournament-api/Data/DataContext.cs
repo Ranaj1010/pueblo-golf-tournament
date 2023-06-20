@@ -18,6 +18,8 @@ namespace pueblo_golf_tournament_api.Data
         public DbSet<HomeClub> HomeClubs { get; set; }
         public DbSet<Tournament> Tournaments { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentChannel> PaymentChannels { get; set; }
+        public DbSet<PaymentChannelAccount> PaymentChannelAccounts { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<TournamentPlayer> TournamentPlayers { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -14,6 +14,8 @@ using pueblo_golf_tournament_api.Modules.Uploads;
 using pueblo_golf_tournament_api.Services.Accounts;
 using pueblo_golf_tournament_api.Services.Divisions;
 using pueblo_golf_tournament_api.Services.HomeClubs;
+using pueblo_golf_tournament_api.Services.PaymentChannelAccounts;
+using pueblo_golf_tournament_api.Services.PaymentChannels;
 using pueblo_golf_tournament_api.Services.Payments;
 using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
@@ -33,6 +35,8 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         private readonly IRegistrationService _registrationService;
         private readonly IPlayerService _playerService;
         private readonly IPaymentService _paymentService;
+        private readonly IPaymentChannelService _paymentChannelService;
+        private readonly IPaymentChannelAccountService _paymentChannelAccountService;
         private readonly IPersonService _personService;
         private readonly ITeamService _teamService;
         private readonly ITournamentPlayerService _tournamentPlayerService;
@@ -40,7 +44,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         private readonly IUploadModule _uploadModule;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public RegisterationModule(IMapper mapper, DataContext dbContext, IUploadModule uploadModule, ITournamentService tournamentService, ITournamentPlayerService tournamentPlayerService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
+        public RegisterationModule(IMapper mapper, DataContext dbContext, IPaymentChannelService paymentChannelService, IPaymentChannelAccountService paymentChannelAccountService, IUploadModule uploadModule, ITournamentService tournamentService, ITournamentPlayerService tournamentPlayerService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -55,6 +59,8 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             _accountService = accountService;
             _paymentService = paymentService;
             _uploadModule = uploadModule;
+            _paymentChannelService = paymentChannelService;
+            _paymentChannelAccountService = paymentChannelAccountService;
         }
         public async Task<RegisteredAccountDto> RegisterAccount(RegisterAccountDto payload)
         {
@@ -278,6 +284,9 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
             var payment = new Payment
             {
+                AccountName = payload.AccountName,
+                AccountNumber = payload.AccountNumber,
+                PaymentChannelAccountId = payload.PaymentChannelAccountId,
                 PaymentMethod = payload.PaymentMethod,
                 ReferrenceId = payload.ReferrenceId,
                 PaymentReferrencePhoto = paymentReferrencePhoto,
@@ -294,6 +303,60 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             response.Message = "Payment has been made";
 
             return response;
+        }
+
+        public async Task<RegisteredPaymentChannelResponseDto> RegisterPaymentChannel(RegisterPaymentChannelRequestDto payload)
+        {
+            var response = new RegisteredPaymentChannelResponseDto();
+
+            try
+            {
+                var registered = await _paymentChannelService.AddAsync(_mapper.Map<PaymentChannel>(payload));
+
+                response.Data = _mapper.Map<PaymentChannelDto>(registered);
+                response.Message = "Payment Channel is successfully registered.";
+
+                return response;
+            }
+            catch (System.Exception)
+            {
+
+                response.Data = null;
+                response.Message = "Failed to register Payment Channel Account. Please try again later.";
+                return response;
+            }
+
+        }
+
+        public async Task<RegisteredPaymentChannelAccountResponseDto> RegisterPaymentChannelAccount(RegisterPaymentChannelAccountRequestDto payload)
+        {
+            var response = new RegisteredPaymentChannelAccountResponseDto();
+
+            try
+            {
+                var paymentChannel = await _paymentChannelService.GetAsync(paymentChannel => paymentChannel.Id == payload.PaymentChannelId);
+
+                if (paymentChannel == null)
+                {
+                    response.Data = null;
+                    response.Message = "Payment Channel not found. Please try again later.";
+                    return response;
+                }
+
+                var registered = await _paymentChannelAccountService.AddAsync(_mapper.Map<PaymentChannelAccount>(payload));
+                registered.PaymentChannel = paymentChannel;
+                response.Data = _mapper.Map<PaymentChannelAccountDto>(registered);
+                response.Message = "Payment Channel Account is successfully registered.";
+
+                return response;
+            }
+            catch (System.Exception)
+            {
+                response.Data = null;
+                response.Message = "Failed to register Payment Channel. Please try again later.";
+
+                return response;
+            }
         }
 
         public async Task<RegisteredPersonDto> RegisterPerson(RegisterPersonDto payload)
@@ -445,7 +508,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                     var teamCaptain = await _playerService.GetAsync(player => player.Id == payload.TeamCaptainId);
 
-
                     var registration = await _registrationService.AddAsync(new Registration
                     {
                         TeamId = registeredTeam.Id,
@@ -503,11 +565,9 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                     response.Data.Team = _mapper.Map<TeamDto>(registeredTeam);
                     response.Message = "Team is now registered.";
                 }
-
-
                 return response;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 response.Data = null;
                 response.Message = $"Registration Failed. {ex.Message}";

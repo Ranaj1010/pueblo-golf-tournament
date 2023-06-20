@@ -18,6 +18,7 @@ import '../screens/pay-registration-screen/controller.dart';
 import '../screens/register-new-player-screen/controller.dart';
 import '../screens/register-team-screen/controller.dart';
 import '../screens/registered-team-details-screen/controller.dart';
+import '../screens/select-payment-method-screen/controller.dart';
 import '../screens/setup-player-profile-screen/controller.dart';
 import '../screens/sign-in-screen/controller.dart';
 import '../screens/sign-up-screen/controller.dart';
@@ -50,5 +51,6 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => ViewTeamMemberScreenController());
     Get.lazyPut(() => UpdateMemberDetailsScreenController());
     Get.lazyPut(() => PayRegistrationController());
+    Get.lazyPut(() => SelectPaymentMethodController());
   }
 }

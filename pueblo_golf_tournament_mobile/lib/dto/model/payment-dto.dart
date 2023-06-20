@@ -8,14 +8,20 @@ part 'payment-dto.g.dart';
 class PaymentDto extends BaseDto {
   final String paymentMethod;
   final String paymentReferrencePhoto;
+  final int? paymentChannelAccountId;
+  final String? accountNumber;
+  final String? accountName;
   final String referrenceId;
   final DateTime paymentDate;
   PaymentDto({
     required super.id,
     required this.paymentMethod,
+    required this.paymentChannelAccountId,
     required this.paymentReferrencePhoto,
     required this.referrenceId,
     required this.paymentDate,
+    required this.accountNumber,
+    required this.accountName,
   });
 
   factory PaymentDto.fromJson(Map<String, dynamic> json) =>

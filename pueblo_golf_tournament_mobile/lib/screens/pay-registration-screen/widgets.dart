@@ -1,84 +1,57 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/model/payment-channel-account-dto.dart';
 
 import '../../utilities/enums.dart';
 
 class PaymentMethodForm extends StatelessWidget {
   final bool isWeb;
-  final PaymentMethodEnum paymentMethod;
-  final Function(PaymentMethodEnum) selectPaymentMethod;
+  final PaymentChannelAccountDto? selectedPaymentChannelAccount;
+  final Function selectPaymentMethod;
   final Function uploadProofOfPayment;
   final File? proofOfPaymentImage;
   final Uint8List? proofOfPaymentImageWeb;
+
+  final TextEditingController accountNumberTextController;
+  final TextEditingController accountNameTextController;
   final TextEditingController paymentReferrenceIdTextController;
+  final TextEditingController paymentMethodTextController;
   const PaymentMethodForm(
       {super.key,
-      required this.paymentMethod,
       required this.selectPaymentMethod,
       required this.uploadProofOfPayment,
       this.proofOfPaymentImage,
       required this.paymentReferrenceIdTextController,
       this.proofOfPaymentImageWeb,
-      required this.isWeb});
+      required this.isWeb,
+      required this.selectedPaymentChannelAccount,
+      required this.accountNumberTextController,
+      required this.accountNameTextController,
+      required this.paymentMethodTextController});
   @override
   Widget build(BuildContext context) {
     return Wrap(
       runSpacing: 20,
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-                child: Card(
-              semanticContainer: true,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(22, 20, 22, 20),
-                    child: Text(
-                      "Select Payment Method",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  ListView(
-                    padding: EdgeInsets.all(0),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
-                      ListTile(
-                        title: const Text('GCash'),
-                        onTap: () =>
-                            selectPaymentMethod(PaymentMethodEnum.GCash),
-                        leading: Radio<PaymentMethodEnum>(
-                          value: PaymentMethodEnum.GCash,
-                          groupValue: paymentMethod,
-                          onChanged: (PaymentMethodEnum? value) =>
-                              selectPaymentMethod(value!),
-                        ),
-                      ),
-                      ListTile(
-                        title: const Text('Bank Deposit'),
-                        onTap: () =>
-                            selectPaymentMethod(PaymentMethodEnum.BankDeposit),
-                        leading: Radio<PaymentMethodEnum>(
-                          value: PaymentMethodEnum.BankDeposit,
-                          groupValue: paymentMethod,
-                          onChanged: (PaymentMethodEnum? value) =>
-                              selectPaymentMethod(value!),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ))
-          ],
+        TextField(
+          onTap: () => selectPaymentMethod(),
+          decoration: const InputDecoration(
+              hintText: "Payment Method",
+              suffixIcon: Icon(Icons.chevron_right)),
+          readOnly: true,
+          controller: paymentMethodTextController,
         ),
         TextField(
-          decoration: InputDecoration(hintText: "Referrence Id"),
+          decoration: const InputDecoration(hintText: "Account No."),
+          controller: accountNameTextController,
+        ),
+        TextField(
+          decoration: const InputDecoration(hintText: "Account Name."),
+          controller: accountNumberTextController,
+        ),
+        TextField(
+          decoration: const InputDecoration(hintText: "Referrence Id"),
           controller: paymentReferrenceIdTextController,
         ),
         SizedBox(
