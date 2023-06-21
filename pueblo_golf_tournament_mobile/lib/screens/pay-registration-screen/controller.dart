@@ -25,7 +25,6 @@ class PayRegistrationController extends IPayRegistrationScreenController {
   var accountNameTextController = TextEditingController();
   var accountNumberTextController = TextEditingController();
   var paymentMethodTextController = TextEditingController();
-  var selectedPaymentMethod = PaymentMethodEnum.GCash.obs;
   var selectedFormIndex = 0.obs;
   var isLoading = false.obs;
   var isPayed = false.obs;
@@ -71,9 +70,13 @@ class PayRegistrationController extends IPayRegistrationScreenController {
     try {
       if (kIsWeb) {
         var paymentWeb = RegisterPaymentWebRequestDto(
+            paymentMethod:
+                "${selectedPaymentChannelAccount.value!.paymentChannel!.name} - ${selectedPaymentChannelAccount.value!.accountNumber}",
             registrationId: registeredTeamDetailsController
                 .registeredTeam.value!.registration.id,
-            paymentMethod: selectedPaymentMethod.value.name,
+            paymentChannelAccountId: selectedPaymentChannelAccount.value!.id,
+            accountName: accountNameTextController.text,
+            accountNumber: accountNumberTextController.text,
             referrenceId: paymentReferrenceIdTextController.text,
             paymentDate: DateTime.now().toUtc(),
             paymentReferrencePhoto: proofOfPaymentWeb.value!);
