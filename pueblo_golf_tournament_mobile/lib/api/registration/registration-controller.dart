@@ -180,6 +180,9 @@ class RegistrationController extends IRegistrationController {
       "PaymentMethod": payload.paymentMethod.toString(),
       "ReferrenceId": payload.referrenceId.toString(),
       "RegistrationId": payload.registrationId.toInt().toString(),
+      "PaymentChannelAccountId": payload.paymentChannelAccountId.toString(),
+      "AccountName": payload.accountName.toString(),
+      "AccountNumber": payload.accountNumber.toString(),
     };
 
     print(fields);
