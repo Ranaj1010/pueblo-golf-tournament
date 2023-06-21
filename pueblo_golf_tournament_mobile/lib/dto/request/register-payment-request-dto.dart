@@ -31,9 +31,15 @@ class RegisterPaymentWebRequestDto {
   final int registrationId;
   final String referrenceId;
   final DateTime paymentDate;
+  final int paymentChannelAccountId;
+  final String accountNumber;
+  final String accountName;
   final Uint8List paymentReferrencePhoto;
 
   RegisterPaymentWebRequestDto({
+    required this.paymentChannelAccountId,
+    required this.accountNumber,
+    required this.accountName,
     required this.paymentMethod,
     required this.registrationId,
     required this.referrenceId,
