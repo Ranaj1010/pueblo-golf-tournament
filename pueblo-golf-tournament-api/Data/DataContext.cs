@@ -22,6 +22,8 @@ namespace pueblo_golf_tournament_api.Data
         public DbSet<PaymentChannelAccount> PaymentChannelAccounts { get; set; }
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<TournamentPlayer> TournamentPlayers { get; set; }
+        public DbSet<TeeTimeSchedule> TeeTimeSchedules { get; set; }
+        public DbSet<PlayerTeeTimeSchedule> PlayerTeeTimeSchedules { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("Host=localhost;Database=pueblo_golf_tournament_db;Username=postgres;Password=Baba101095", x => x.UseNetTopologySuite());
         protected override void OnModelCreating(ModelBuilder modelBuilder)

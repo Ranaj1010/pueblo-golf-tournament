@@ -15,6 +15,7 @@ using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
+using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Tournaments;
 
 namespace pueblo_golf_tournament_api.Modules.Lookups
@@ -30,10 +31,11 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly IPaymentChannelService _paymentChannelService;
         private readonly IPaymentChannelAccountService _paymentChannelAccountService;
         private readonly ITeamService _teamService;
+        private readonly ITeeTimeScheduleService _teeTimeScheduleService;
         private readonly IAccountService _accountService;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -47,7 +49,8 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _accountService = accountService;
             _paymentChannelService = paymentChannelService;
             _paymentChannelAccountService = paymentChannelAccountService;
-        }
+            _teeTimeScheduleService = teeTimeScheduleService;
+        }   
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
         {
@@ -91,7 +94,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             return response;
         }
 
-        public async  Task<LookupPaymentChannelsResponseDto> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
+        public async Task<LookupPaymentChannelsResponseDto> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
         {
             var response = new LookupPaymentChannelsResponseDto();
 
@@ -155,6 +158,17 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                 response.Message = "Profile found.";
 
             }
+            return response;
+        }
+
+        public async Task<LookupTeeTimeSchedulesResponseDto> LookupTeeTimeSchedules(LookupTeeTimeSchedulesRequestDto payload)
+        {
+            var response = new LookupTeeTimeSchedulesResponseDto();
+
+            var teeTimeSchedules =  await _teeTimeScheduleService.ListAsync();
+
+            // Continue here...
+
             return response;
         }
 

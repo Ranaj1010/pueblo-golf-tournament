@@ -14,5 +14,6 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         Task<LookupTournamentDetailsResponseDto> LookupTournamentDetails(LookupTournamentDetailsDto payload);
         Task<LookupPaymentChannelsResponseDto> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload);
         Task<LookupPaymentChannelAccountsResponseDto> LookupPaymentChannelAccounts(LookupPaymentChannelAccountsRequestDto payload);
+        Task<LookupTeeTimeSchedulesResponseDto> LookupTeeTimeSchedules(LookupTeeTimeSchedulesRequestDto payload);
     }
 }
