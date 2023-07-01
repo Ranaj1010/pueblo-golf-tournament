@@ -14,19 +14,24 @@ class TournamentDto extends BaseDto {
   final String venueCity;
   final String venueCountry;
   final int numberOfSlots;
+  final String nameOfTournamentSupport;
+  final String contactNumberOfTournamentSupport;
 
-  TournamentDto(
-      {required super.id,
-      required this.name,
-      required this.bannerPhoto,
-      required this.startDate,
-      required this.endDate,
-      required this.registrationFee,
-      required this.venuePlace,
-      required this.venueAddress,
-      required this.venueCity,
-      required this.venueCountry,
-      required this.numberOfSlots});
+  TournamentDto({
+    required super.id,
+    required this.name,
+    required this.bannerPhoto,
+    required this.startDate,
+    required this.endDate,
+    required this.registrationFee,
+    required this.venuePlace,
+    required this.venueAddress,
+    required this.venueCity,
+    required this.venueCountry,
+    required this.numberOfSlots,
+    required this.nameOfTournamentSupport,
+    required this.contactNumberOfTournamentSupport,
+  });
 
   factory TournamentDto.fromJson(Map<String, dynamic> json) =>
       _$TournamentDtoFromJson(json);

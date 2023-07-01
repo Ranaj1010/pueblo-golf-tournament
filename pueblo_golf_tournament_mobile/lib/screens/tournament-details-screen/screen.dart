@@ -116,6 +116,41 @@ class TournamentDetailScreen extends StatelessWidget {
                                         controller.registeredTeams),
                               ],
                             ),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: const Color.fromARGB(255, 237, 217, 186)),
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          direction: Axis.vertical,
+                          spacing: 10,
+                          children: [
+                            const Text(
+                                "For inquiries regarding your registration \nplease contact:"),
+                            Column(
+                              children: [
+                                Text(
+                                  controller.selectedTournament.value!
+                                      .nameOfTournamentSupport,
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  controller.selectedTournament.value!
+                                      .contactNumberOfTournamentSupport,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
           ),
