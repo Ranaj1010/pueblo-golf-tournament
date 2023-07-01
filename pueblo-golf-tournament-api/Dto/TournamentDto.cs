@@ -14,5 +14,7 @@ namespace pueblo_golf_tournament_api.Dto
         public string? VenueCity { get; set; }
         public string? VenueCountry { get; set; }
         public int NumberOfSlots { get; set; }
+        public string? NameOfTournamentSupport { get; set; }
+        public string? ContactNumberOfTournamentSupport { get; set; }
     }
 }
