@@ -397,7 +397,6 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             var response = new RegisteredPlayerDto();
             try
             {
-
                 var existingPlayer = await _playerService.GetAsync(player => player.PersonId == payload.PersonId);
 
                 if (existingPlayer != null)
@@ -496,7 +495,9 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                     return response;
                 }
 
-                var registeredTeam = await _teamService.AddAsync(new Team
+                var existingTeamName = await _teamService.GetAsync(team => team.Name.Equals(payload.Name));
+
+                var registeredTeam = existingTeamName != null ? existingTeamName :  await _teamService.AddAsync(new Team
                 {
                     Name = payload.Name,
                     TeamCaptainId = payload.TeamCaptainId,
