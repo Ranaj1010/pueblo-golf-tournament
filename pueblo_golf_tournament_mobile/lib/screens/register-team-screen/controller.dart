@@ -52,7 +52,6 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
-
     teamNameTextController.addListener(() => disabledNextWhen());
     paymentReferrenceIdTextController.addListener(() => disabledNextWhen());
     forms = [
@@ -110,6 +109,7 @@ class RegisterTeamScreenController extends IRegisterTeamScreenController {
   @override
   void goBackToHome() {
     selectedFormIndex(0);
+    members.clear();
     Get.back();
   }
 
