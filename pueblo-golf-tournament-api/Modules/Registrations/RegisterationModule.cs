@@ -497,7 +497,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
                 var existingTeamName = await _teamService.GetAsync(team => team.Name.Equals(payload.Name));
 
-                var registeredTeam = existingTeamName != null ? existingTeamName :  await _teamService.AddAsync(new Team
+                var registeredTeam = existingTeamName != null ? existingTeamName : await _teamService.AddAsync(new Team
                 {
                     Name = payload.Name,
                     TeamCaptainId = payload.TeamCaptainId,
@@ -508,6 +508,15 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                 {
 
                     var teamCaptain = await _playerService.GetAsync(player => player.Id == payload.TeamCaptainId);
+
+                    var existingRegistration = await _registrationService.GetAsync(registration => registration.TeamId == registeredTeam.Id && registration.TournamentId == payload.TournamentId);
+
+                    if (existingRegistration != null)
+                    {
+                        response.Data = null;
+                        response.Message = "Invalid Input. Registration already exists.";
+                        return response;
+                    }
 
                     var registration = await _registrationService.AddAsync(new Registration
                     {
