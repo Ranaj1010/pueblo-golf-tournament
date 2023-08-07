@@ -84,6 +84,26 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+        [HttpPost("tee-time-schedules")]
+        public async Task<ActionResult<LookupTeeTimeSchedulesResponseDto>> LookupTeeTimeSchedules(LookupTeeTimeSchedulesRequestDto payload)
+        {
+            var response = await _lookupModule.LookupTeeTimeSchedules(payload);
 
+            return Ok(response);
+        }
+        [HttpPost("player-tee-time-schedules")]
+        public async Task<ActionResult<LookupPlayerScheduleResponseDto>> LookupPlayerSchedule(LookupPlayerScheduleRequestDto payload)
+        {
+            var response = await _lookupModule.LookupPlayerSchedule(payload);
+
+            return Ok(response);
+        }
+        [HttpPost("team-captain-teams")]
+        public async Task<ActionResult<LookupTeamsForCaptainResponseDto>> LookupTeamsForCaptain(LookupTeamsForCaptainRequestDto payload)
+        {
+            var response = await _lookupModule.LookupTeamsForCaptain(payload);
+
+            return Ok(response);
+        }
     }
 }

@@ -13,25 +13,30 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
   Widget status(int value) {
     switch (value) {
       case 0:
-        return Text(
-          "Pending",
-          style: TextStyle(color: Colors.orange),
-        );
+        return controller.registeredTeam.value!.registration.isPayed
+            ? const Text(
+                "For Approval",
+                style: TextStyle(color: Colors.blue),
+              )
+            : const Text(
+                "Pending",
+                style: TextStyle(color: Colors.orange),
+              );
 
       case 1:
-        return Text(
+        return const Text(
           "Confirmed",
           style: TextStyle(color: Colors.green),
         );
 
       case 2:
-        return Text(
+        return const Text(
           "Cancelled",
           style: TextStyle(color: Colors.red),
         );
 
       default:
-        return Text("Unknown");
+        return const Text("Unknown");
     }
   }
 
@@ -197,7 +202,7 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                       onPressed: () => controller.confirmRegistrationPayment(),
                       title: "Confirm Registration",
                       loading: controller.isConfirming.value)
-                  : const Padding(padding: EdgeInsets.all(0))
+                  : const Padding(padding: EdgeInsets.all(0)),
             ],
           ),
         ),

@@ -13,28 +13,33 @@ class RegisteredTeamList extends StatelessWidget {
       required this.isLoading,
       required this.onSelectTeam});
 
-  Widget status(int value) {
+  Widget status(int value, RegisteredTeam registeredTeam) {
     switch (value) {
       case 0:
-        return Text(
-          "Pending",
-          style: TextStyle(color: Colors.orange),
-        );
+        return registeredTeam.registration.isPayed
+            ? const Text(
+                "For Approval",
+                style: TextStyle(color: Colors.blue),
+              )
+            : const Text(
+                "Pending",
+                style: TextStyle(color: Colors.orange),
+              );
 
       case 1:
-        return Text(
+        return const Text(
           "Confirmed",
           style: TextStyle(color: Colors.green),
         );
 
       case 2:
-        return Text(
+        return const Text(
           "Cancelled",
           style: TextStyle(color: Colors.red),
         );
 
       default:
-        return Text("Unknown");
+        return const Text("Unknown");
     }
   }
 
@@ -57,17 +62,17 @@ class RegisteredTeamList extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => ListTile(
                           onTap: () => onSelectTeam(registeredTeams[index]),
-                          trailing: Icon(Icons.chevron_right),
+                          trailing: const Icon(Icons.chevron_right),
                           leading: CircleAvatar(
-                            child:
-                                Text("${registeredTeams[index].team.name[0]}"),
+                            child: Text(registeredTeams[index].team.name[0]),
                           ),
                           title: Text(
                             registeredTeams[index].team.name,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: status(
-                              registeredTeams[index].registration.status),
+                              registeredTeams[index].registration.status,
+                              registeredTeams[index]),
                         ),
                     separatorBuilder: (context, index) => const Divider(),
                     itemCount: registeredTeams.length),

@@ -70,6 +70,28 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response != null ? Ok(response) : BadRequest(response);
         }
+        [HttpPost("update/tee-time-schedule")]
+        public async Task<ActionResult<UpdateTeeTimeScheduleResponseDto>> UpdateTeeTimeSchedule(UpdateTeeTimeScheduleRequestDto dto)
+        {
+            var updated = await _manageModule.UpdateTeeTimeSchedule(dto.TeeTimeSchedule);
+
+            if(updated != null){
+                Console.WriteLine(updated.Id);
+                Console.WriteLine(updated.TournamentId);
+                Console.WriteLine(updated.DateTimeSlot.ToString());
+                Console.WriteLine(updated.IsSelected);
+                Console.WriteLine(updated.IsEnabled);
+                Console.WriteLine(updated.IsFull);
+            }
+
+            var response = new UpdateTeeTimeScheduleResponseDto
+            {
+                Data = updated,
+                Message = updated != null ? "Tee Time Schedule is successfully updated." : "Failed to update info. Please try again."
+            };
+
+            return response != null ? Ok(response) : BadRequest(response);
+        }
         [HttpPost("confirm/payment")]
         public async Task<ActionResult<ConfirmPaymentResponseDto>> ConfirmPayment(ConfirmPaymentRequestDto dto)
         {

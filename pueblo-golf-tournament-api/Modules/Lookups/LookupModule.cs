@@ -13,8 +13,10 @@ using pueblo_golf_tournament_api.Services.PaymentChannelAccounts;
 using pueblo_golf_tournament_api.Services.PaymentChannels;
 using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
+using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
+using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Tournaments;
 
 namespace pueblo_golf_tournament_api.Modules.Lookups
@@ -30,10 +32,12 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly IPaymentChannelService _paymentChannelService;
         private readonly IPaymentChannelAccountService _paymentChannelAccountService;
         private readonly ITeamService _teamService;
-        private readonly IAccountService _accountService;
+        private readonly ITeeTimeScheduleService _teeTimeScheduleService;
+        private readonly IPlayerTeeTimeScheduleService _playerTeeTimeScheduleService;
+
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -44,9 +48,10 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _playerService = playerService;
             _teamService = teamService;
             _personService = personService;
-            _accountService = accountService;
             _paymentChannelService = paymentChannelService;
             _paymentChannelAccountService = paymentChannelAccountService;
+            _teeTimeScheduleService = teeTimeScheduleService;
+            _playerTeeTimeScheduleService = playerTeeTimeScheduleService;
         }
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
@@ -91,7 +96,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             return response;
         }
 
-        public async  Task<LookupPaymentChannelsResponseDto> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
+        public async Task<LookupPaymentChannelsResponseDto> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
         {
             var response = new LookupPaymentChannelsResponseDto();
 
@@ -155,6 +160,81 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                 response.Message = "Profile found.";
 
             }
+            return response;
+        }
+
+        public async Task<LookupPlayerScheduleResponseDto> LookupPlayerSchedule(LookupPlayerScheduleRequestDto payload)
+        {
+            var response = new LookupPlayerScheduleResponseDto();
+
+            var player = await _playerService.GetAsync(player => player.Id == payload.PlayerId);
+
+            if (player == null)
+            {
+                response.Message = "Player not found.";
+                return response;
+            }
+
+            if (player != null)
+            {
+                var data = await _dbContext.PlayerTeeTimeSchedules
+                .Where(t => t.PlayerId == payload.PlayerId)
+                .Join(_dbContext.TeeTimeSchedules, (playerSchedule) => playerSchedule.TeeTimeScheduleId, (teeTimeSchedule) => teeTimeSchedule.Id, (playerSchedule, teeTimeSchedule)
+                => teeTimeSchedule ).ToListAsync();
+
+                var scheduleDates = new List<TournamentScheduleDate>();
+
+                response.PlayerId = player.Id;
+
+                foreach (var schedule in data.DistinctBy(x => x.DateTimeSlot.Date))
+                {
+                    scheduleDates.Add(new TournamentScheduleDate
+                    {
+                        Date = schedule.DateTimeSlot.Date,
+                        TimeSchedules = _mapper.Map<List<TeeTimeScheduleDto>>(data.Where(x => x.DateTimeSlot.Date == schedule.DateTimeSlot.Date).OrderBy(o => o.DateTimeSlot).ToList())
+                    });
+                }
+                
+                response.Data = scheduleDates.OrderBy(date => date.Date).ToList();
+                response.Message = data.Count > 0 ? $"Schedules found for Player {player.PlayerExternalId}" : "No Schedules found.";
+
+            }
+
+            return response;
+        }
+
+        public async Task<LookupTeamsForCaptainResponseDto> LookupTeamsForCaptain(LookupTeamsForCaptainRequestDto payload)
+        {
+            var response = new LookupTeamsForCaptainResponseDto();
+
+
+
+            return response;
+        }
+
+        public async Task<LookupTeeTimeSchedulesResponseDto> LookupTeeTimeSchedules(LookupTeeTimeSchedulesRequestDto payload)
+        {
+            var response = new LookupTeeTimeSchedulesResponseDto();
+
+            var teeTimeSchedules = await _teeTimeScheduleService.ListAsync(teeTimeSchedule => teeTimeSchedule.TournamentId == payload.TournamentId);
+
+            if (teeTimeSchedules.Count == 0)
+            {
+                response.Message = "No Tee Time schedules found.";
+                return response;
+            }
+
+            foreach (var schedule in teeTimeSchedules.DistinctBy(x => x.DateTimeSlot.Date))
+            {
+                response.Data.Add(new TournamentScheduleDate
+                {
+                    Date = schedule.DateTimeSlot.Date,
+                    TimeSchedules = _mapper.Map<List<TeeTimeScheduleDto>>(teeTimeSchedules.Where(x => x.DateTimeSlot.Date == schedule.DateTimeSlot.Date).ToList())
+                });
+            }
+
+            response.Message = "Tee Time Schedules found.";
+
             return response;
         }
 

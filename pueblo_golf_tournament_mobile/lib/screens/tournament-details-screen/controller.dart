@@ -73,4 +73,9 @@ class TournamentDetailsScreenController
       loadingRegistrations();
     }
   }
+
+  @override
+  void gotoManageSchedules() {
+    Get.toNamed("/manage-schedules");
+  }
 }

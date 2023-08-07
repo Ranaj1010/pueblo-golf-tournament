@@ -8,6 +8,7 @@ using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
+using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Tournaments;
 
 namespace pueblo_golf_tournament_api.Modules.Manage
@@ -19,9 +20,10 @@ namespace pueblo_golf_tournament_api.Modules.Manage
         private readonly IRegistrationService _registrationService;
         private readonly IPaymentService _paymentService;
         private readonly ITeamService _teamService;
+        private readonly ITeeTimeScheduleService _teeTimeScheduleService;
         private readonly ITournamentService _tournamentService;
         private readonly IMapper _mapper;
-        public ManageModule(IMapper mapper, ITournamentService tournamentService, IRegistrationService registrationService, IPaymentService paymentService, ITeamService teamService, IPlayerService playerService, IPersonService personService)
+        public ManageModule(IMapper mapper, ITournamentService tournamentService, ITeeTimeScheduleService teeTimeScheduleService, IRegistrationService registrationService, IPaymentService paymentService, ITeamService teamService, IPlayerService playerService, IPersonService personService)
         {
             _mapper = mapper;
             _tournamentService = tournamentService;
@@ -30,6 +32,7 @@ namespace pueblo_golf_tournament_api.Modules.Manage
             _playerService = playerService;
             _personService = personService;
             _paymentService = paymentService;
+            _teeTimeScheduleService = teeTimeScheduleService;
         }
 
         public async Task<ConfirmPaymentResponseDto> ConfirmPayment(ConfirmPaymentRequestDto payment)
@@ -88,6 +91,12 @@ namespace pueblo_golf_tournament_api.Modules.Manage
         {
             var entity = await _teamService.UpdateAsync(_mapper.Map<Team>(team));
             return _mapper.Map<TeamDto>(entity);
+        }
+
+        public async Task<TeeTimeScheduleDto> UpdateTeeTimeSchedule(TeeTimeScheduleDto tournament)
+        {
+            var entity = await _teeTimeScheduleService.UpdateAsync(_mapper.Map<TeeTimeSchedule>(tournament));
+            return _mapper.Map<TeeTimeScheduleDto>(entity);
         }
 
         public async Task<TournamentDto> UpdateTournament(TournamentDto tournament)

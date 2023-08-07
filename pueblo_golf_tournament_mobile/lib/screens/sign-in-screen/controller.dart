@@ -25,6 +25,10 @@ class SignInScreenController extends ISignInScreenController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+
+    usernameTextController.text = "Ranaj1010";
+    passwordTextController.text = "Baba101095";
+
     usernameTextController.addListener(() {
       isUserNameEmpty(usernameTextController.text.isEmpty);
     });

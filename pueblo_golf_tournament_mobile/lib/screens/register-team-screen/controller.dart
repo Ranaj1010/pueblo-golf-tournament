@@ -1,20 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/api/upload/upload-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/data/context.dart';
-import 'package:pueblo_golf_tournament_mobile/dto/model/person-dto.dart';
-import 'package:pueblo_golf_tournament_mobile/dto/model/player-dto.dart';
-import 'package:pueblo_golf_tournament_mobile/dto/request/register-payment-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
-import 'package:pueblo_golf_tournament_mobile/dto/request/upload-mobile-proof-of-payment-request-dto.dart';
-import 'package:pueblo_golf_tournament_mobile/dto/request/upload-mobile-team-logo-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/widgets.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/tournament-details-screen/controller.dart';

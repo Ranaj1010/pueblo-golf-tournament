@@ -151,4 +151,9 @@ class RegisteredTeamDetailsScreenController
       update();
     }
   }
+
+  @override
+  void bookTeamSchedule() {
+    Get.toNamed("/book-team-schedule");
+  }
 }

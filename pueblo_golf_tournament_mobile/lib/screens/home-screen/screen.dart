@@ -6,16 +6,22 @@ import 'package:pueblo_golf_tournament_mobile/api/authentication/authentication-
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/widgets.dart';
 
+import '../../data/context.dart';
+
 class HomeScreen extends StatelessWidget {
   final controller = Get.find<HomeScreenController>();
-
+  final dataContextController = Get.find<DataContextController>();
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
           appBar: AppBar(
             leadingWidth: 90,
-            leading: HomeAppBarLeading(),
+            leading: HomeAppBarLeading(
+                name: dataContextController.authenticatedData.value!
+                        .personalDetails!.firstName[0] +
+                    dataContextController
+                        .authenticatedData.value!.personalDetails!.lastName[0]),
             title:
                 Text(controller.pagesTitle[controller.selectedPageIndex.value]),
             actions: [
@@ -39,11 +45,11 @@ class HomeScreen extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.sports_score),
-                label: 'Score Board',
+                label: 'My Teams',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.schedule_outlined),
-                label: 'Schedules',
+                label: 'History',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.dashboard),

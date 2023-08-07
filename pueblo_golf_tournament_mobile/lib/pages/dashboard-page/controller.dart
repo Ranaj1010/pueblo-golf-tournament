@@ -25,7 +25,7 @@ class DashboardPageController extends IDashboardPageController {
     isLoadingTournaments(true);
     var data = await lookupController
         .lookupTournaments(LookupTournamentsRequestDto(filterName: ""));
-    tournaments(data.data);
+    tournaments(data.data!.take(3).toList());
     isLoadingTournaments(false);
   }
 
@@ -36,8 +36,9 @@ class DashboardPageController extends IDashboardPageController {
 
   @override
   void viewMoreTournaments() {
-    // TODO: implement viewMoreTournaments
+    Get.toNamed("/tournaments");
   }
+
   @override
   void selectTournament(TournamentDto tournament) {
     tournamentDetailsController.selectTournament(tournament);
