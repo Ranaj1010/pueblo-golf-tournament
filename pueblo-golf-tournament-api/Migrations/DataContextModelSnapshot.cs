@@ -458,10 +458,13 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.Property<DateTime>("DateTimeSlot")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<bool>("IsDisabled")
+                    b.Property<bool>("IsEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsFull")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsSelected")
                         .HasColumnType("boolean");
 
                     b.Property<long>("TournamentId")

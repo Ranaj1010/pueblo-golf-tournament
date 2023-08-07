@@ -49,6 +49,7 @@ dependencies:
   swipe_refresh: ^1.0.2
   file_picker: ^5.3.1
   money_formatter: ^0.0.3
+  table_calendar: ^3.0.8
 
 
 dev_dependencies:
@@ -93,6 +94,8 @@ flutter:
     - assets/bankdeposit.png
     - assets/payment-method-image.png
     - assets/cubeworks-logo.png
+    - assets/empty.png
+    - assets/select-date-time.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -5,5 +5,6 @@ namespace pueblo_golf_tournament_api.Services.TeeTimeSchedules
 {
     public interface ITeeTimeScheduleService : IBaseServiceAsync<TeeTimeSchedule>
     {
+        
     }
 }

@@ -50,7 +50,6 @@ class HttpController extends GetxController with HttpServiceMixin {
   @override
   Future<http.Response> post(String endpoint, dynamic body) async {
     var url = Uri.http(baseUrl, endpoint);
-    print(url);
     return await http
         .post(url, body: body, headers: headers)
         .timeout(const Duration(minutes: 3));

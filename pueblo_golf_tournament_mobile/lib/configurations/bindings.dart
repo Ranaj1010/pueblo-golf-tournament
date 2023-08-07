@@ -10,10 +10,14 @@ import 'package:pueblo_golf_tournament_mobile/pages/menu/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/update-member-details-screen/controller.dart';
 
+import '../api/setup/setup-controller.dart';
 import '../data/context.dart';
 import '../pages/dashboard-page/controller.dart';
 import '../screens/add-team-member-screen/controller.dart';
+import '../screens/add-tournament-schedule-screen/controller.dart';
+import '../screens/book-team-schedule/controller.dart';
 import '../screens/landing-screen/controller.dart';
+import '../screens/manage-schedules-screen/controller.dart';
 import '../screens/pay-registration-screen/controller.dart';
 import '../screens/register-new-player-screen/controller.dart';
 import '../screens/register-team-screen/controller.dart';
@@ -23,34 +27,47 @@ import '../screens/setup-player-profile-screen/controller.dart';
 import '../screens/sign-in-screen/controller.dart';
 import '../screens/sign-up-screen/controller.dart';
 import '../screens/tournament-details-screen/controller.dart';
+import '../screens/tournaments-screen/controller.dart';
 import '../screens/view-team-member-screen/controller.dart';
 import '../utilities/http-controller.dart';
 
 class AppBindings implements Bindings {
   @override
   void dependencies() {
+    // UTILITIES Controllers
     Get.lazyPut(() => HttpController());
+    Get.lazyPut(() => DataContextController());
+
+    // API Controllers
     Get.lazyPut(() => AuthenticateController());
     Get.lazyPut(() => RegistrationController());
     Get.lazyPut(() => LookupController());
     Get.lazyPut(() => ManageController());
     Get.lazyPut(() => UploadController());
+    Get.lazyPut(() => SetupController());
+
+    // SCREENS Controlllers
     Get.lazyPut(() => LandingScreenController());
     Get.lazyPut(() => SignInScreenController());
     Get.lazyPut(() => HomeScreenController());
-    Get.lazyPut(() => DashboardPageController());
     Get.lazyPut(() => SignUpScreenController());
     Get.lazyPut(() => TournamentDetailsScreenController());
     Get.lazyPut(() => RegisterTeamScreenController());
     Get.lazyPut(() => AddTeamMemberScreenController());
     Get.lazyPut(() => RegisterNewPlayerScreenController());
-    Get.lazyPut(() => MenuPageController());
-    Get.lazyPut(() => DataContextController());
     Get.lazyPut(() => SetupPlayerProfileScreenController());
     Get.lazyPut(() => RegisteredTeamDetailsScreenController());
     Get.lazyPut(() => ViewTeamMemberScreenController());
     Get.lazyPut(() => UpdateMemberDetailsScreenController());
     Get.lazyPut(() => PayRegistrationController());
     Get.lazyPut(() => SelectPaymentMethodController());
+    Get.lazyPut(() => TournamentScreenController());
+    Get.lazyPut(() => ManageSchedulesScreenController());
+    Get.lazyPut(() => AddTournamentScheduleScreenController());
+    Get.lazyPut(() => BookTeamScheduleScreenController());
+
+    // PAGES Controllers
+    Get.lazyPut(() => DashboardPageController());
+    Get.lazyPut(() => MenuPageController());
   }
 }

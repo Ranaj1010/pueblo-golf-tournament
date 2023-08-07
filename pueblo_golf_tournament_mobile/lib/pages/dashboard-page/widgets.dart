@@ -45,24 +45,43 @@ class DashboardTournamentList extends StatelessWidget {
   Widget build(BuildContext context) {
     return loadingData
         ? const CircularProgressIndicator()
-        : ListView.builder(
-            primary: true,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: const EdgeInsets.all(0),
-            itemCount: tournaments.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                  height: 255,
-                  child: GestureDetector(
-                      onTap: () => selectTournament(tournaments[index]),
-                      child: TournamentCardViewMore(
-                        tournament: tournaments[index],
-                        onSelectTournament: selectTournament,
-                      )));
-            });
+        : SizedBox(
+            width: double.maxFinite,
+            child: tournaments.length == 1
+                ? Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    height: 320,
+                    child: GestureDetector(
+                        onTap: () => selectTournament(tournaments[0]),
+                        child: TournamentCardViewMore(
+                          tournament: tournaments[0],
+                          onSelectTournament: selectTournament,
+                        )))
+                : SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        children: [
+                          ...tournaments
+                              .map((e) => Container(
+                                  width: 340,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 0, 5, 20),
+                                  height: 320,
+                                  child: GestureDetector(
+                                      onTap: () => selectTournament(e),
+                                      child: TournamentCardViewMore(
+                                        tournament: e,
+                                        onSelectTournament: selectTournament,
+                                      ))))
+                              .toList()
+                        ],
+                      ),
+                    ),
+                  ),
+          );
   }
 }
 
@@ -257,7 +276,7 @@ class TournamentCardViewMore extends StatelessWidget {
                                       color: Colors.white,
                                       fontSize: 16)),
                               Icon(
-                                Icons.chevron_right,
+                                Icons.arrow_circle_right_outlined,
                                 size: 18,
                                 color: Colors.white,
                               ),

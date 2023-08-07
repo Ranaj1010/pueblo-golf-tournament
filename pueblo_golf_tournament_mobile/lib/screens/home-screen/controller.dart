@@ -5,15 +5,17 @@ import 'package:pueblo_golf_tournament_mobile/data/context.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/model/tournament-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/pages/dashboard-page/page.dart';
+import 'package:pueblo_golf_tournament_mobile/pages/history-page/page.dart';
 import 'package:pueblo_golf_tournament_mobile/pages/menu/page.dart';
+import 'package:pueblo_golf_tournament_mobile/pages/my-teams-page/page.dart';
 import 'package:pueblo_golf_tournament_mobile/pages/schedules-page/page.dart';
 import 'package:pueblo_golf_tournament_mobile/pages/score-board-page/page.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/interface.dart';
 
 class HomeScreenController extends IHomeScreenScreenController {
   var selectedPageIndex = 0.obs;
-  var pages = [DashboardPage(), ScoreboardPage(), SchedulesPage(), MenuPage()];
-  var pagesTitle = ["Home", "Scoreboard", "Schedules", "Menu"];
+  var pages = [DashboardPage(), MyTeamsPage(), HistoryPage(), MenuPage()];
+  var pagesTitle = ["Home", "My Teams", "History", "Menu"];
   final lookupController = Get.find<LookupController>();
   final dataContextController = Get.find<DataContextController>();
   @override

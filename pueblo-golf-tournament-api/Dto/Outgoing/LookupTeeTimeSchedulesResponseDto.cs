@@ -4,6 +4,12 @@ namespace pueblo_golf_tournament_api.Dto.Outgoing
 {
     public class LookupTeeTimeSchedulesResponseDto : BaseResponse
     {
-        public List<TeeTimeScheduleDto> Data { get; set; } = new List<TeeTimeScheduleDto>();
+        public List<TournamentScheduleDate> Data { get; set; } = new List<TournamentScheduleDate>();
+    }
+
+    public class TournamentScheduleDate
+    {
+        public DateTime? Date { get; set; }
+        public List<TeeTimeScheduleDto> TimeSchedules { get; set; } = new List<TeeTimeScheduleDto>();
     }
 }

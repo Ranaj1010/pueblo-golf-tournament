@@ -3,6 +3,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-reques
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-tee-time-schedule-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tee-time-schedule-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-details-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournaments-request-dto.dart';
@@ -10,6 +12,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-respo
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-tee-time-schedules-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tee-time-schedules-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-details-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
@@ -31,4 +35,8 @@ abstract class ILookupController extends GetxController {
       LookupPaymentChannelsRequestDto payload);
   Future<LookupPaymentChannelAccountsResponseDto> lookupPaymentChannelAccounts(
       LookupPaymentChannelAccountsRequestDto payload);
+  Future<LookupTeeTimeScheduleResponse> lookupTeeTimeSchedules(
+      LookupTeeTimeScheduleRequest payload);
+  Future<LookupPlayerTeeTimeScheduleResponse> lookupPlayerTeeTimeSchedules(
+      LookupPlayerTeeTimeScheduleRequest payload);
 }

@@ -35,11 +35,11 @@ class MenuPage extends StatelessWidget {
                       height: 90,
                       width: 90,
                       child: CircleAvatar(
-                          child: Image(
-                        image: AssetImage(
-                          "assets/sample-avatar.png",
-                        ),
-                        fit: BoxFit.fill,
+                          child: CircleAvatar(
+                        child: Text(dataContextController.authenticatedData
+                                .value!.personalDetails!.firstName[0] +
+                            dataContextController.authenticatedData.value!
+                                .personalDetails!.lastName[0]),
                       )),
                     ),
                     Padding(

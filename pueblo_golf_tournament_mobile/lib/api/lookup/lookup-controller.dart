@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pueblo_golf_tournament_mobile/api/lookup/ilookup-controller.dart';
@@ -7,6 +8,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-reques
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-tee-time-schedule-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tee-time-schedule-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-details-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournaments-request-dto.dart';
@@ -14,6 +17,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-respo
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-tee-time-schedules-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tee-time-schedules-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-details-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
@@ -193,6 +198,48 @@ class LookupController extends ILookupController {
         Get.snackbar("Failed", response.reasonPhrase!);
         return LookupPaymentChannelsResponseDto(
             message: response.reasonPhrase!, data: null);
+    }
+  }
+
+  @override
+  Future<LookupTeeTimeScheduleResponse> lookupTeeTimeSchedules(
+      LookupTeeTimeScheduleRequest payload) async {
+    var endpoint = "$controller/tee-time-schedules";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupTeeTimeScheduleResponse.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return LookupTeeTimeScheduleResponse.fromJson(
+            jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupTeeTimeScheduleResponse(
+            message: response.reasonPhrase!, data: null);
+    }
+  }
+
+  @override
+  Future<LookupPlayerTeeTimeScheduleResponse> lookupPlayerTeeTimeSchedules(
+      LookupPlayerTeeTimeScheduleRequest payload) async {
+    var endpoint = "$controller/player-tee-time-schedules";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupPlayerTeeTimeScheduleResponse.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return LookupPlayerTeeTimeScheduleResponse.fromJson(
+            jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupPlayerTeeTimeScheduleResponse(
+            message: response.reasonPhrase!, data: null, playerId: 0);
     }
   }
 }

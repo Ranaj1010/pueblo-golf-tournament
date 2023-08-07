@@ -61,14 +61,15 @@ namespace pueblo_golf_tournament_api.Services.TeeTimeSchedules
             if (existingData == null) return null;
 
             existingData.IsFull = entity.IsFull;
-            existingData.IsDisabled = entity.IsDisabled;
+            existingData.IsEnabled = entity.IsEnabled;
+            existingData.IsSelected = entity.IsSelected;
             existingData.TournamentId = entity.TournamentId;
 
             _dbContext.TeeTimeSchedules.Update(existingData);
 
             await _dbContext.SaveChangesAsync();
 
-            return entity;
+            return existingData;
         }
     }
 }

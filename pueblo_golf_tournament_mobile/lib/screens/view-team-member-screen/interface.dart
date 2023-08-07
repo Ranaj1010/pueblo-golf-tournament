@@ -5,4 +5,6 @@ abstract class IViewTeamMemberScreenController extends GetxController {
   void goBack();
   void edit();
   void editProfile(PlayerProfile profile);
+  void initialize(PlayerProfile profile);
+  void loadScheduls();
 }

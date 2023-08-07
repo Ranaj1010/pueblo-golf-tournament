@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/add-team-member-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/add-tournament-schedule-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/book-team-schedule/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/landing-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/manage-schedules-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-new-player-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/screen.dart';
@@ -13,6 +16,7 @@ import 'package:pueblo_golf_tournament_mobile/screens/setup-player-profile-scree
 import 'package:pueblo_golf_tournament_mobile/screens/sign-in-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/sign-up-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/tournament-details-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/tournaments-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/update-member-details-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/view-team-member-screen/screen.dart';
 
@@ -59,7 +63,10 @@ class App extends StatelessWidget {
         "/member-details": (context) => ViewTeamMemberScreen(),
         "/update-profile": (context) => UpdateMemberDetailsScreen(),
         "/pay-registration": (context) => PayRegistrationScreen(),
-        "/select-payment-method": (context) => SelectPaymentMethodScreen()
+        "/select-payment-method": (context) => SelectPaymentMethodScreen(),
+        "/tournaments": (context) => TournamentScreen(),
+        "/manage-schedules": (context) => const ManageSchedulesScreen(),
+        "/add-tournament-schedule": (context) => AddTournamentScheduleScreen(),
       },
     );
   }

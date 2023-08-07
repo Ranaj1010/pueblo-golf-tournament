@@ -60,10 +60,37 @@ namespace pueblo_golf_tournament_api.Modules.Setup
         {
             var response = new SetupTournamentSchedulesResponseDto();
 
-            for (int time = 5; time < 13; time++)
+            var teeTimeSchedules = new List<TeeTimeSchedule>();
+
+            foreach (var schedule in dto.Schedules)
             {
-                //TODO code here...
+                foreach (var time in schedule.TimeSeries)
+                {
+                    teeTimeSchedules.Add(new TeeTimeSchedule
+                    {
+                        TournamentId = dto.TournamentId,
+                        DateTimeSlot = time.TimeSeriesSlot,
+                        IsSelected = time.IsSelected,
+                        IsFull = false,
+                        IsEnabled = time.IsEnabled,
+                        Active = true
+                    });
+                }
             }
+
+            var data = await _teeTimeScheduleService.AddRangeAsync(teeTimeSchedules);
+
+            if (data.Count > 0)
+            {
+                response.Message = "Schedules are now available to be book by the players.";
+                response.Success = true;
+            }
+
+            if (data.Count == 0)
+            {
+                response.Message = "No Schedules added. Please try again.";
+                response.Success = false;
+            }   
 
             return response;
         }

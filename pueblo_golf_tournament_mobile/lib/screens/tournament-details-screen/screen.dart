@@ -75,6 +75,7 @@ class TournamentDetailScreen extends StatelessWidget {
                                 subtitle: const Text("Registration fee"),
                                 leading: const Icon(Icons.money),
                               ),
+                              const Divider(),
                               ListTile(
                                 title: Text(
                                   controller
@@ -89,6 +90,31 @@ class TournamentDetailScreen extends StatelessWidget {
                               ),
                             ]),
                       ),
+                      const Padding(padding: EdgeInsets.only(top: 5)),
+                      dataContextController.authenticatedData.value!.account!
+                                  .accountType ==
+                              1
+                          ? Wrap(
+                              children: [
+                                const Text(
+                                  "Settings",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                const Padding(padding: EdgeInsets.all(15)),
+                                Card(
+                                  elevation: 10,
+                                  child: InkWell(
+                                    onTap: () =>
+                                        controller.gotoManageSchedules(),
+                                    child: const ListTile(
+                                      trailing: Icon(Icons.chevron_right),
+                                      title: Text("Manage Schedules"),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          : const Padding(padding: EdgeInsets.all(0)),
                       const Padding(padding: EdgeInsets.all(10)),
                       controller.registeredTeams.isEmpty
                           ? BrandElevatedButton(
