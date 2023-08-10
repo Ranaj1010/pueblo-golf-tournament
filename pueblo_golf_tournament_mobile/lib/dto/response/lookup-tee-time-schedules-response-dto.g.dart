@@ -30,11 +30,13 @@ TournamentScheduleDate _$TournamentScheduleDateFromJson(
           ?.map((e) => TeeTimeScheduleDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       date: DateTime.parse(json['date'] as String),
+      holeType: json['holeType'] as int,
     );
 
 Map<String, dynamic> _$TournamentScheduleDateToJson(
         TournamentScheduleDate instance) =>
     <String, dynamic>{
+      'holeType': instance.holeType,
       'date': instance.date.toIso8601String(),
       'timeSchedules': instance.timeSchedules,
     };

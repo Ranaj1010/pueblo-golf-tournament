@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/api/setup/setup-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/model/tee-time-schedule-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/setup-player-schedules-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/book-team-schedule/interface.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/book-team-schedule/widgets.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/screen.dart';
 
@@ -17,7 +19,10 @@ class BookTeamScheduleScreenController
     extends IBookTeamScheduleScreenController {
   var teeTimeSchedules = <TournamentScheduleDate>[].obs;
   var selectedSchedules = <TeeTimeScheduleDto>[].obs;
+  var selectedDateSchedules = <DateTime>[].obs;
+  var selectedScheduleHoleType = <int>[].obs;
   var selectedPlayerProfile = Rxn<PlayerProfile>();
+  var selectedPage = Rxn<Widget>();
   var isLoadingSchedules = false.obs;
   var isBookingSchedules = false.obs;
   var isInitializing = false.obs;
@@ -31,23 +36,31 @@ class BookTeamScheduleScreenController
   void loadTeamSchedules() async {
     teeTimeSchedules.clear();
     isLoadingSchedules(true);
+
     var response = await lookupController.lookupTeeTimeSchedules(
         LookupTeeTimeScheduleRequest(
             tournamentId:
                 tournamentDetailsController.selectedTournament.value!.id));
     if (response.data != null) {
       teeTimeSchedules.addAll(response.data!);
-      for (var schedule in response.data!) {
-        selectedSchedules.add(schedule.timeSchedules![0]);
+      for (var i = 0; i < response.data!.length; i++) {
+        selectedSchedules.add(response.data![i].timeSchedules![0]);
+        selectedScheduleHoleType.add(0);
       }
+
+      mountSelectDateSchedules();
     }
+
     isLoadingSchedules(false);
   }
 
   @override
   void initialize(PlayerProfile playerProfile) {
-    selectedPlayerProfile(playerProfile);
     isInitializing(true);
+    selectedPlayerProfile(playerProfile);
+    teeTimeSchedules.clear();
+    selectedDateSchedules.clear();
+    selectedScheduleHoleType.clear();
     loadTeamSchedules();
     isInitializing(false);
   }
@@ -60,21 +73,102 @@ class BookTeamScheduleScreenController
   @override
   void bookSchedules() async {
     isBookingSchedules(true);
-    var response = await setupController.setupPlayerSchedules(
-        SetupPlayerSchedulesRequestDto(
-            playerId: selectedPlayerProfile.value!.player.id,
-            teeTimeSchedules: selectedSchedules));
 
-    if (response.message.isNotEmpty) {
-      Get.back();
-      Get.snackbar("Booking Success",
-          "You have successfully booked your tee time schedules.");
+    var teeTimeSchedules = <TeeTimeSchedulesRequestDto>[];
+
+    for (var i = 0; i < selectedSchedules.length; i++) {
+      teeTimeSchedules.add(TeeTimeSchedulesRequestDto(
+          holeType: i, teeTimeSchedule: selectedSchedules[i]));
     }
 
-    if (response.message.isNotEmpty) {
-      Get.snackbar("Booking Failed",
-          "Failed to book your schedules. Please try again later.");
+    try {
+      var response = await setupController.setupPlayerSchedules(
+          SetupPlayerSchedulesRequestDto(
+              tournamentId: registeredTeamDetailsScreenController
+                  .registeredTeam.value!.registration.tournamentId,
+              playerId: selectedPlayerProfile.value!.player.id,
+              teeTimeSchedules: selectedDateSchedules
+                  .map((date) => teeTimeSchedules.elementAt(
+                      teeTimeSchedules.indexWhere((schedule) =>
+                          date ==
+                          DateTime(
+                              schedule.teeTimeSchedule.dateTimeSlot.year,
+                              schedule.teeTimeSchedule.dateTimeSlot.month,
+                              schedule.teeTimeSchedule.dateTimeSlot.day))))
+                  .toList()));
+
+      if (response.data.isNotEmpty) {
+        Get.back();
+        Get.snackbar("Booking Success",
+            "You have successfully booked your tee time schedules.");
+      }
+
+      if (response.data.isEmpty) {
+        Get.snackbar("Booking Failed", response.message);
+      }
+    } catch (e) {
+      Get.snackbar("Booking Failed", "Something happened. Please Try again");
     }
+
     isBookingSchedules(false);
+  }
+
+  @override
+  void updateHoleType(int index, int value) {
+    selectedScheduleHoleType[index] = value;
+  }
+
+  @override
+  void addToSelectedDateSchedule(DateTime dateTimes) {
+    selectedDateSchedules.add(dateTimes);
+  }
+
+  @override
+  void removeToSelectedDateSchedule(DateTime dateTimes) {
+    selectedDateSchedules.remove(dateTimes);
+  }
+
+  @override
+  void back() {
+    mountSelectDateSchedules();
+  }
+
+  @override
+  void continueBookSchedule() {
+    mountSelectTimeSchedules();
+  }
+
+  @override
+  void mountSelectDateSchedules() {
+    selectedPage(Obx(
+      () => SelectAvailableDatesWidget(
+          onClickContinue: () => continueBookSchedule(),
+          addToSelectedDateSchedule: (index) =>
+              addToSelectedDateSchedule(index),
+          removeToSelectedDateSchedule: (index) =>
+              removeToSelectedDateSchedule(index),
+          teeTimeSchedules: teeTimeSchedules.value,
+          selectedSchedules: selectedSchedules.value,
+          selectedDateSchedules: selectedDateSchedules.value),
+    ));
+  }
+
+  @override
+  void mountSelectTimeSchedules() {
+    selectedPage(Obx(
+      () => PlottingScheduleWidget(
+          back: () => back(),
+          tabLength: teeTimeSchedules.value.length,
+          isBookingSchedules: isBookingSchedules.value,
+          isTabBarScrollable: teeTimeSchedules.value.length >= 5,
+          bookSchedules: () => bookSchedules(),
+          updateHoleType: (index, value) => updateHoleType(index, value),
+          selectTimeSlot: (index, value) => selectTimeSlot(index, value),
+          teeTimeSchedules: teeTimeSchedules
+              .where((element) => selectedDateSchedules.contains(element.date))
+              .toList(),
+          selectedSchedules: selectedSchedules.value,
+          selectedScheduleHoleType: selectedScheduleHoleType.value),
+    ));
   }
 }

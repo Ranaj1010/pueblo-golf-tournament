@@ -49,7 +49,8 @@ class SetupController extends ISetupController {
         return SetupPlayerSchedulesResponseDto.fromJson(
             jsonDecode(response.body));
       default:
-        return SetupPlayerSchedulesResponseDto(message: response.reasonPhrase!);
+        return SetupPlayerSchedulesResponseDto(
+            message: response.reasonPhrase!, data: []);
     }
   }
 }

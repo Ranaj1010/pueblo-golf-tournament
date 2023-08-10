@@ -180,18 +180,21 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                 var data = await _dbContext.PlayerTeeTimeSchedules
                 .Where(t => t.PlayerId == payload.PlayerId)
                 .Join(_dbContext.TeeTimeSchedules, (playerSchedule) => playerSchedule.TeeTimeScheduleId, (teeTimeSchedule) => teeTimeSchedule.Id, (playerSchedule, teeTimeSchedule)
-                => teeTimeSchedule ).ToListAsync();
+                => new { playerSchedule, teeTimeSchedule} ).ToListAsync();
 
                 var scheduleDates = new List<TournamentScheduleDate>();
 
                 response.PlayerId = player.Id;
 
-                foreach (var schedule in data.DistinctBy(x => x.DateTimeSlot.Date))
+                foreach (var schedule in data.DistinctBy(x => x.teeTimeSchedule.DateTimeSlot.Date))
                 {
+                    var timeSchedules = data.Where(x => x.teeTimeSchedule.DateTimeSlot.Date == schedule.teeTimeSchedule.DateTimeSlot.Date).Select(e => e.teeTimeSchedule).OrderBy(o => o.DateTimeSlot).ToList();
+                    
                     scheduleDates.Add(new TournamentScheduleDate
                     {
-                        Date = schedule.DateTimeSlot.Date,
-                        TimeSchedules = _mapper.Map<List<TeeTimeScheduleDto>>(data.Where(x => x.DateTimeSlot.Date == schedule.DateTimeSlot.Date).OrderBy(o => o.DateTimeSlot).ToList())
+                        Date = schedule.teeTimeSchedule.DateTimeSlot.Date,
+                        HoleType = schedule.playerSchedule.HoleType,
+                        TimeSchedules = _mapper.Map<List<TeeTimeScheduleDto>>(timeSchedules)
                     });
                 }
                 
