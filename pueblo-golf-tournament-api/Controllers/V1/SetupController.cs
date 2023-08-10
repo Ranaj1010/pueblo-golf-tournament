@@ -30,7 +30,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
         {
             var response = await _setupModule.SetupPlayerTournamentSchedules(payload);
 
-            return response.Data != null ? Ok(response) : BadRequest(response);
+            return response.Data.Count != 0 ? Ok(response) : BadRequest(response);
         }
     }
 }

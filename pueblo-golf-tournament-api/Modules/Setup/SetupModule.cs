@@ -1,10 +1,14 @@
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Internal;
 using pueblo_golf_tournament_api.Dto;
 using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
 using pueblo_golf_tournament_api.Entities;
+using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
+using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
+using pueblo_golf_tournament_api.Services.TournamentPlayers;
 
 namespace pueblo_golf_tournament_api.Modules.Setup
 {
@@ -13,39 +17,62 @@ namespace pueblo_golf_tournament_api.Modules.Setup
         private readonly IMapper _mapper;
         private readonly ITeeTimeScheduleService _teeTimeScheduleService;
         private readonly IPlayerTeeTimeScheduleService _iPlayerTeeTimeScheduleService;
-        public SetupModule(IMapper mapper, ITeeTimeScheduleService teeTimeScheduleService, IPlayerTeeTimeScheduleService iPlayerTeeTimeScheduleService)
+        private readonly IRegistrationService _registrationService;
+        private readonly IPlayerService _playerService;
+        private readonly ITournamentPlayerService _tournamentPlayerService;
+        public SetupModule(IMapper mapper, ITeeTimeScheduleService teeTimeScheduleService, ITournamentPlayerService tournamentPlayerService, IRegistrationService registrationService, IPlayerService playerService, IPlayerTeeTimeScheduleService iPlayerTeeTimeScheduleService)
         {
             _mapper = mapper;
             _teeTimeScheduleService = teeTimeScheduleService;
             _iPlayerTeeTimeScheduleService = iPlayerTeeTimeScheduleService;
+            _registrationService = registrationService;
+            _tournamentPlayerService = tournamentPlayerService;
+            _playerService = playerService;
         }
 
         public async Task<SetupPlayerTeeTimeScheduleResponseDto> SetupPlayerTournamentSchedules(SetupPlayerTeeTimeScheduleRequestDto dto)
         {
+
             var response = new SetupPlayerTeeTimeScheduleResponseDto();
 
+            if (dto.TeeTimeSchedules.Count == 0)
+            {
+                response.Message = "No schedules were selected. Please try again.";
+                return response;
+            }
+
+            var tournamentPlayer = await _tournamentPlayerService.GetAsync(player => player.PlayerId == dto.PlayerId && player.TournamentId == dto.TournamentId && player.PlayerType == Utilities.Enums.PlayerTypeEnum.Member);
+
             var playerTeeTimeSchedules = new List<PlayerTeeTimeSchedule>();
-            var availableSlots = new List<TeeTimeSchedule>();
-            var unavailableSlots = new List<TeeTimeSchedule>();
 
             foreach (var teeTimeSchedule in dto.TeeTimeSchedules)
             {
-                var plottedSchedules = await _teeTimeScheduleService.ListAsync(schedule => schedule.Id == teeTimeSchedule.Id);
+                var plottedSchedules = await _iPlayerTeeTimeScheduleService.ListAsync(schedule => schedule.TeeTimeScheduleId == teeTimeSchedule.TeeTimeSchedule.Id);
 
-                if (plottedSchedules.Count > 1)
+                if (plottedSchedules.Count == 8)
                 {
-                    unavailableSlots.Add(_mapper.Map<TeeTimeSchedule>(teeTimeSchedule));
+                    response.Message = $"Schedule for {teeTimeSchedule.TeeTimeSchedule.DateTimeSlot.ToShortDateString()} at {teeTimeSchedule.TeeTimeSchedule.DateTimeSlot.ToShortTimeString()} is already full.";
+                    return response;
                 }
 
-                if (plottedSchedules.Count < 2)
+                var playersInSchedule = plottedSchedules.Join(await _tournamentPlayerService.ListAsync(s => s.TournamentId == tournamentPlayer.TournamentId), plotted => plotted.PlayerId, player => player.PlayerId, (plotted, player) => player)
+                                                        .Where(player => player.TeamId == tournamentPlayer.TeamId)
+                                                        .ToList();
+                if (playersInSchedule.Count == 2)
                 {
-                    availableSlots.Add(_mapper.Map<TeeTimeSchedule>(teeTimeSchedule));
-                    playerTeeTimeSchedules.Add(new PlayerTeeTimeSchedule
-                    {
-                        TeeTimeScheduleId = teeTimeSchedule.Id,
-                        PlayerId = dto.PlayerId
-                    });
+                    response.Message = $"Schedule for {teeTimeSchedule.TeeTimeSchedule.DateTimeSlot.ToShortDateString()} at {teeTimeSchedule.TeeTimeSchedule.DateTimeSlot.ToShortTimeString()} is already taken by your team mates.";
+                    return response;
                 }
+            }
+
+            foreach (var teeTimeSchedule in dto.TeeTimeSchedules)
+            {
+                playerTeeTimeSchedules.Add(new PlayerTeeTimeSchedule
+                {
+                    TeeTimeScheduleId = teeTimeSchedule.TeeTimeSchedule.Id,
+                    PlayerId = dto.PlayerId,
+                    HoleType = teeTimeSchedule.HoleType,
+                });
             }
 
             var data = await _iPlayerTeeTimeScheduleService.AddRangeAsync(playerTeeTimeSchedules);
@@ -90,7 +117,7 @@ namespace pueblo_golf_tournament_api.Modules.Setup
             {
                 response.Message = "No Schedules added. Please try again.";
                 response.Success = false;
-            }   
+            }
 
             return response;
         }

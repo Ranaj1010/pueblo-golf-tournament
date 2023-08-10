@@ -7,5 +7,12 @@ abstract class IBookTeamScheduleScreenController extends GetxController {
   void loadTeamSchedules();
   void initialize(PlayerProfile playerProfile);
   void selectTimeSlot(int index, TeeTimeScheduleDto scheduleDto);
+  void addToSelectedDateSchedule(DateTime dateTimes);
+  void removeToSelectedDateSchedule(DateTime dateTimes);
+  void updateHoleType(int index, int value);
   void bookSchedules();
+  void continueBookSchedule();
+  void back();
+  void mountSelectDateSchedules();
+  void mountSelectTimeSchedules();
 }

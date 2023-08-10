@@ -223,7 +223,7 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                               crossAxisAlignment: WrapCrossAlignment.start,
                               children: [
                                 const Text(
-                                  "Tee Time Schedules",
+                                  "Tee Time",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16),
@@ -231,12 +231,33 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                                 Card(
                                   child: ListView.separated(
                                       shrinkWrap: true,
+                                      padding: const EdgeInsets.all(0),
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, index) => ListTile(
                                             leading: const CircleAvatar(
                                               child: Icon(Icons.date_range),
                                             ),
+                                            trailing: controller
+                                                        .playerSchedules[index]
+                                                        .holeType ==
+                                                    0
+                                                ? Text(
+                                                    "Front 9",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  )
+                                                : Text(
+                                                    "Back 9",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                  ),
                                             title: Text(
                                               DateFormat("E, MMMM dd, yyyy")
                                                   .format(controller
@@ -253,7 +274,7 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                                                     .dateTimeSlot)),
                                           ),
                                       separatorBuilder: (context, index) =>
-                                          Divider(),
+                                          const Divider(),
                                       itemCount:
                                           controller.playerSchedules.length),
                                 )

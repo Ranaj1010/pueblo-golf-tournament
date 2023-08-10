@@ -17,11 +17,13 @@ class LookupTeeTimeScheduleResponse extends BaseResponse {
 
 @JsonSerializable()
 class TournamentScheduleDate {
+  final int holeType;
   final DateTime date;
   final List<TeeTimeScheduleDto>? timeSchedules;
   TournamentScheduleDate({
     required this.timeSchedules,
     required this.date,
+    required this.holeType,
   });
 
   factory TournamentScheduleDate.fromJson(Map<String, dynamic> json) =>
