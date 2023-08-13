@@ -25,6 +25,14 @@ namespace pueblo_golf_tournament_api.Controllers.V1
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
+        [HttpPost("tournament/holes")]
+        public async Task<ActionResult<SetupTournamentHolesResponseDto>> SetupTournamentHoles(SetupTournamentHolesRequestDto payload)
+        {
+            var response = await _setupModule.SetupTournamentHoles(payload);
+
+            return response.Data.Count != 0 ? Ok(response) : BadRequest(response);
+        }
+
         [HttpPost("player/schedules")]
         public async Task<ActionResult<SetupPlayerTeeTimeScheduleResponseDto>> SetupPlayerTournamentSchedules(SetupPlayerTeeTimeScheduleRequestDto payload)
         {

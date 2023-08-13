@@ -18,6 +18,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-det
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 
+import '../../dto/response/lookup-tournament-holes-response-dto.dart';
+
 abstract class ILookupController extends GetxController {
   Future<LookupTournamentResponseDto> lookupTournaments(
       LookupTournamentsRequestDto payload);
@@ -39,4 +41,6 @@ abstract class ILookupController extends GetxController {
       LookupTeeTimeScheduleRequest payload);
   Future<LookupPlayerTeeTimeScheduleResponse> lookupPlayerTeeTimeSchedules(
       LookupPlayerTeeTimeScheduleRequest payload);
+  Future<LookupTournamentHolesResponseDto> lookupTournamentHoles(
+      LookupTournamentDetailsRequestDto payload);
 }

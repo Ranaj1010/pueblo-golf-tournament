@@ -78,4 +78,9 @@ class TournamentDetailsScreenController
   void gotoManageSchedules() {
     Get.toNamed("/manage-schedules");
   }
+
+  @override
+  void gotoSetupHoles() {
+    Get.toNamed("/setup-tournament-holes");
+  }
 }

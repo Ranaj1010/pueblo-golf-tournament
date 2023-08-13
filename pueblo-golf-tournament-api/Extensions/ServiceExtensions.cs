@@ -22,6 +22,7 @@ using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
+using pueblo_golf_tournament_api.Services.TournamentHoles;
 using pueblo_golf_tournament_api.Services.TournamentPlayers;
 using pueblo_golf_tournament_api.Services.Tournaments;
 
@@ -75,6 +76,7 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<ITournamentPlayerService, TournamentPlayerService>();
             services.AddTransient<ITeeTimeScheduleService, TeeTimeScheduleService>();
             services.AddTransient<IPlayerTeeTimeScheduleService, PlayerTeeTimeScheduleService>();
+            services.AddTransient<ITournamentHolesService, TournamentHolesService>();
             #endregion
 
             #region Modules

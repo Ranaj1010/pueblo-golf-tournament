@@ -4,9 +4,9 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-tea
 
 abstract class ITournamentDetailsScreenController extends GetxController {
   void loadTournamentDetails();
-  void loadTeamRegistration();
   void registerTeam();
   void selectTournament(TournamentDto tournament);
   void selectRegisteredTeam(RegisteredTeam team);
   void gotoManageSchedules();
+  void gotoSetupHoles();
 }

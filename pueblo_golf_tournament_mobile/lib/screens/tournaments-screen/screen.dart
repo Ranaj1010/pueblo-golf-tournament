@@ -25,10 +25,10 @@ class TournamentScreenState extends State<TournamentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tournaments"),
+        title: const Text("Tournaments"),
         actions: [],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Center(child: Text("Tournaments")),
       ),
     );

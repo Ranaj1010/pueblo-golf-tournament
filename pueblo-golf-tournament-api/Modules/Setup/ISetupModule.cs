@@ -7,5 +7,6 @@ namespace pueblo_golf_tournament_api.Modules.Setup
     {
         Task<SetupTournamentSchedulesResponseDto> SetupTournamentSchedules(SetupTournamentSchedulesRequestDto dto);
         Task<SetupPlayerTeeTimeScheduleResponseDto> SetupPlayerTournamentSchedules(SetupPlayerTeeTimeScheduleRequestDto dto);
+        Task<SetupTournamentHolesResponseDto> SetupTournamentHoles(SetupTournamentHolesRequestDto dto);
     }
 }

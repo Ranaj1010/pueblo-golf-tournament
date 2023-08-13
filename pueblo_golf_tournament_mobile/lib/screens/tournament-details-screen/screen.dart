@@ -108,7 +108,17 @@ class TournamentDetailScreen extends StatelessWidget {
                                         controller.gotoManageSchedules(),
                                     child: const ListTile(
                                       trailing: Icon(Icons.chevron_right),
-                                      title: Text("Manage Schedules"),
+                                      title: Text("Schedules"),
+                                    ),
+                                  ),
+                                ),
+                                Card(
+                                  elevation: 10,
+                                  child: InkWell(
+                                    onTap: () => controller.gotoSetupHoles(),
+                                    child: const ListTile(
+                                      trailing: Icon(Icons.chevron_right),
+                                      title: Text("Tournament Holes"),
                                     ),
                                   ),
                                 )

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/setup-tournament-holes-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/setup-tournament-schedules-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/setup-tournament-holes-response-dto.dart';
 
 import 'package:pueblo_golf_tournament_mobile/dto/response/setup-tournament-schedules-response-dto.dart';
 
@@ -50,6 +52,26 @@ class SetupController extends ISetupController {
             jsonDecode(response.body));
       default:
         return SetupPlayerSchedulesResponseDto(
+            message: response.reasonPhrase!, data: []);
+    }
+  }
+
+  @override
+  Future<SetupTournamentHolesResponseDto> setupTournamentHoles(
+      SetupTournamentHolesRequestDto payload) async {
+    var endpoint = "$controller/tournament/holes";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return SetupTournamentHolesResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return SetupTournamentHolesResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        return SetupTournamentHolesResponseDto(
             message: response.reasonPhrase!, data: []);
     }
   }
