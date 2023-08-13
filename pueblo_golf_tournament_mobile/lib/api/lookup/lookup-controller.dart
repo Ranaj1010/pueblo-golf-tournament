@@ -20,6 +20,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-tee-time-schedules-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tee-time-schedules-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-details-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-holes-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
 
@@ -240,6 +241,30 @@ class LookupController extends ILookupController {
         Get.snackbar("Failed", response.reasonPhrase!);
         return LookupPlayerTeeTimeScheduleResponse(
             message: response.reasonPhrase!, data: null, playerId: 0);
+    }
+  }
+
+  @override
+  Future<LookupTournamentHolesResponseDto> lookupTournamentHoles(
+      LookupTournamentDetailsRequestDto payload) async {
+    var endpoint = "$controller/tournament-holes";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupTournamentHolesResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return LookupTournamentHolesResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupTournamentHolesResponseDto(
+          message: response.reasonPhrase!,
+          data: [],
+          tournamentId: 0,
+        );
     }
   }
 }

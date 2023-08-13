@@ -8,7 +8,9 @@ using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
+using pueblo_golf_tournament_api.Services.TournamentHoles;
 using pueblo_golf_tournament_api.Services.TournamentPlayers;
+using pueblo_golf_tournament_api.Services.Tournaments;
 
 namespace pueblo_golf_tournament_api.Modules.Setup
 {
@@ -20,14 +22,18 @@ namespace pueblo_golf_tournament_api.Modules.Setup
         private readonly IRegistrationService _registrationService;
         private readonly IPlayerService _playerService;
         private readonly ITournamentPlayerService _tournamentPlayerService;
-        public SetupModule(IMapper mapper, ITeeTimeScheduleService teeTimeScheduleService, ITournamentPlayerService tournamentPlayerService, IRegistrationService registrationService, IPlayerService playerService, IPlayerTeeTimeScheduleService iPlayerTeeTimeScheduleService)
+        private readonly ITournamentHolesService _tournamentHolesService;
+        private readonly ITournamentService _tournamentService;
+        public SetupModule(IMapper mapper, ITeeTimeScheduleService teeTimeScheduleService, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, ITournamentPlayerService tournamentPlayerService, IRegistrationService registrationService, IPlayerService playerService, IPlayerTeeTimeScheduleService iPlayerTeeTimeScheduleService)
         {
             _mapper = mapper;
             _teeTimeScheduleService = teeTimeScheduleService;
             _iPlayerTeeTimeScheduleService = iPlayerTeeTimeScheduleService;
             _registrationService = registrationService;
             _tournamentPlayerService = tournamentPlayerService;
+            _tournamentHolesService = tournamentHolesService;
             _playerService = playerService;
+            _tournamentService = tournamentService;
         }
 
         public async Task<SetupPlayerTeeTimeScheduleResponseDto> SetupPlayerTournamentSchedules(SetupPlayerTeeTimeScheduleRequestDto dto)
@@ -79,6 +85,58 @@ namespace pueblo_golf_tournament_api.Modules.Setup
 
             response.Data = _mapper.Map<List<PlayerTeeTimeScheduleDto>>(data);
             response.Message = "Successfully created tee time schedules.";
+
+            return response;
+        }
+
+        public async Task<SetupTournamentHolesResponseDto> SetupTournamentHoles(SetupTournamentHolesRequestDto dto)
+        {
+            var response = new SetupTournamentHolesResponseDto();
+
+
+            if (dto.Holes.Count != 18)
+            {
+                response.Message = "Invalid Hole count. Holes length must be 18.";
+
+                return response;
+            }
+
+            foreach (var hole in dto.Holes)
+            {
+                if (hole.MaximumStrokes == 0)
+                {
+                    response.Message = $"Invalid maximum stroke count for hole {hole.HoleNumber}.";
+
+                    return response;
+                }
+            }
+
+            var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == dto.TournamentId);
+
+            if (tournament == null)
+            {
+                response.Message = $"Tournament not found.";
+
+                return response;
+            }
+
+            var holes = new List<TournamentHole>();
+
+            foreach (var hole in dto.Holes)
+            {
+                holes.Add(new TournamentHole
+                {
+                    HoleNumber = hole.HoleNumber,
+                    MaximumStrokes = hole.MaximumStrokes,
+                    TournamentId = dto.TournamentId
+                });
+            }
+
+            var data = await _tournamentHolesService.AddRangeAsync(holes);
+
+            response.Data = _mapper.Map<List<TournamentHoleDto>>(data);
+            
+            response.Message = $"Holes are successfully created.";
 
             return response;
         }

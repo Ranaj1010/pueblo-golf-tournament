@@ -41,6 +41,7 @@ namespace pueblo_golf_tournament_api.Extensions
             CreateMap<HomeClub, RegisterHomeClubDto>().ReverseMap();
             CreateMap<TeeTimeSchedule, TeeTimeScheduleDto>().ReverseMap();
             CreateMap<PlayerTeeTimeSchedule, PlayerTeeTimeScheduleDto>().ReverseMap();
+            CreateMap<TournamentHole, TournamentHoleDto>().ReverseMap();
         }
     }
 }

@@ -17,6 +17,7 @@ using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
+using pueblo_golf_tournament_api.Services.TournamentHoles;
 using pueblo_golf_tournament_api.Services.Tournaments;
 
 namespace pueblo_golf_tournament_api.Modules.Lookups
@@ -34,10 +35,11 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly ITeamService _teamService;
         private readonly ITeeTimeScheduleService _teeTimeScheduleService;
         private readonly IPlayerTeeTimeScheduleService _playerTeeTimeScheduleService;
+        private readonly ITournamentHolesService _tournamentHolesService;
 
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -52,6 +54,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _paymentChannelAccountService = paymentChannelAccountService;
             _teeTimeScheduleService = teeTimeScheduleService;
             _playerTeeTimeScheduleService = playerTeeTimeScheduleService;
+            _tournamentHolesService = tournamentHolesService;
         }
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
@@ -180,7 +183,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                 var data = await _dbContext.PlayerTeeTimeSchedules
                 .Where(t => t.PlayerId == payload.PlayerId)
                 .Join(_dbContext.TeeTimeSchedules, (playerSchedule) => playerSchedule.TeeTimeScheduleId, (teeTimeSchedule) => teeTimeSchedule.Id, (playerSchedule, teeTimeSchedule)
-                => new { playerSchedule, teeTimeSchedule} ).ToListAsync();
+                => new { playerSchedule, teeTimeSchedule }).ToListAsync();
 
                 var scheduleDates = new List<TournamentScheduleDate>();
 
@@ -189,7 +192,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                 foreach (var schedule in data.DistinctBy(x => x.teeTimeSchedule.DateTimeSlot.Date))
                 {
                     var timeSchedules = data.Where(x => x.teeTimeSchedule.DateTimeSlot.Date == schedule.teeTimeSchedule.DateTimeSlot.Date).Select(e => e.teeTimeSchedule).OrderBy(o => o.DateTimeSlot).ToList();
-                    
+
                     scheduleDates.Add(new TournamentScheduleDate
                     {
                         Date = schedule.teeTimeSchedule.DateTimeSlot.Date,
@@ -197,7 +200,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                         TimeSchedules = _mapper.Map<List<TeeTimeScheduleDto>>(timeSchedules)
                     });
                 }
-                
+
                 response.Data = scheduleDates.OrderBy(date => date.Date).ToList();
                 response.Message = data.Count > 0 ? $"Schedules found for Player {player.PlayerExternalId}" : "No Schedules found.";
 
@@ -249,13 +252,32 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
 
             if (data == null)
             {
-
                 response.Tournament = null;
                 response.Message = "Tournament not found.";
             }
 
             response.Tournament = _mapper.Map<TournamentDto>(data);
             response.Message = "Tournament found.";
+
+            return response;
+        }
+
+        public async Task<LookupTournamentHolesResponseDto> LookupTournamentHoles(long tournamentId)
+        {
+            var response = new LookupTournamentHolesResponseDto();
+
+            var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == tournamentId);
+
+            if (tournament == null)
+            {
+                response.Message = "Tournament not found.";
+            }
+
+            var data = await _tournamentHolesService.ListAsync(hole => hole.TournamentId == tournamentId);
+            
+            response.TournamentId = tournamentId;
+            response.Data = _mapper.Map<List<TournamentHoleDto>>(data);
+            response.Message = data.Count > 0 ? $"{data.Count} holes found." : "No holes found.";
 
             return response;
         }

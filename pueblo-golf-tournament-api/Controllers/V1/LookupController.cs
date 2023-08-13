@@ -105,5 +105,12 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+        [HttpPost("tournament-holes")]
+        public async Task<ActionResult<LookupTeamsForCaptainResponseDto>> LookupTournamentHoles(LookupTournamentDetailsDto payload)
+        {
+            var response = await _lookupModule.LookupTournamentHoles(payload.TournamentId);
+
+            return Ok(response);
+        }
     }
 }
