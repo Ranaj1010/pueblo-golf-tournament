@@ -47,7 +47,7 @@ namespace pueblo_golf_tournament_api.Modules.Setup
                 return response;
             }
 
-            var tournamentPlayer = await _tournamentPlayerService.GetAsync(player => player.PlayerId == dto.PlayerId && player.TournamentId == dto.TournamentId && player.PlayerType == Utilities.Enums.PlayerTypeEnum.Member);
+            var tournamentPlayer = await _tournamentPlayerService.GetAsync(player => player.PlayerId == dto.PlayerId && player.TournamentId == dto.TournamentId);
 
             var playerTeeTimeSchedules = new List<PlayerTeeTimeSchedule>();
 
