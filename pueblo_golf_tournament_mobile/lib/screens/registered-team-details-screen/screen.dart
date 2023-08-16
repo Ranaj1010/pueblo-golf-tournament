@@ -6,9 +6,25 @@ import 'package:pueblo_golf_tournament_mobile/data/context.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/registered-team-details-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/widgets/brand-elevated-button.dart';
 
-class RegisteredTeamDetailsScreen extends StatelessWidget {
+class RegisteredTeamDetailsScreen extends StatefulWidget {
+  const RegisteredTeamDetailsScreen({super.key});
+
+  @override
+  State<RegisteredTeamDetailsScreen> createState() =>
+      _RegisteredTeamDetailsScreenState();
+}
+
+class _RegisteredTeamDetailsScreenState
+    extends State<RegisteredTeamDetailsScreen> {
   final controller = Get.find<RegisteredTeamDetailsScreenController>();
   final dataContextController = Get.find<DataContextController>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.initialize();
+  }
 
   Widget status(int value) {
     switch (value) {
@@ -88,6 +104,52 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                   ),
                   subtitle: status(
                       controller.registeredTeam.value!.registration.status),
+                  trailing: dataContextController
+                              .authenticatedData.value!.account!.accountType !=
+                          3
+                      ? PopupMenuButton<int>(
+                          initialValue: 0,
+                          // Callback that sets the selected popup menu item.
+                          onSelected: (int item) {
+                            if (item == 1) {
+                              controller.editTeamName();
+                            }
+
+                            if (item == 2) {
+                              controller.assignToDivision();
+                            }
+                          },
+                          itemBuilder: (BuildContext context) =>
+                              <PopupMenuEntry<int>>[
+                            const PopupMenuItem<int>(
+                              value: 1,
+                              child: Text('Edit Name'),
+                            ),
+                            PopupMenuItem<int>(
+                              enabled: dataContextController.authenticatedData
+                                          .value!.account!.accountType ==
+                                      1 &&
+                                  controller.registeredTeam.value!.division ==
+                                      null,
+                              value: 2,
+                              child: const Text('Assign Division'),
+                            ),
+                          ],
+                        )
+                      : null,
+                ),
+              ),
+              const Text(
+                "Division",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Card(
+                child: ListTile(
+                  trailing: const Icon(Icons.golf_course),
+                  title: Text(
+                    controller.registeredTeam.value!.division!.name,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
               ),
               const Text(
@@ -95,24 +157,14 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               Card(
-                child: ListView(
-                  padding: EdgeInsets.all(0),
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: [
-                    ListTile(
-                      trailing: Icon(Icons.date_range),
-                      title: Text(
-                        DateFormat("MMMM dd yyyy").format(controller
-                            .registeredTeam
-                            .value!
-                            .registration
-                            .registrationDate),
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                      ),
-                      subtitle: Text("Registration Date"),
-                    ),
-                  ],
+                child: ListTile(
+                  trailing: Icon(Icons.date_range),
+                  title: Text(
+                    DateFormat("MMMM dd yyyy").format(controller
+                        .registeredTeam.value!.registration.registrationDate),
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  subtitle: Text("Registration Date"),
                 ),
               ),
               controller.registeredTeam.value!.registration.isPayed
@@ -125,24 +177,16 @@ class RegisteredTeamDetailsScreen extends StatelessWidget {
                   ? Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       semanticContainer: true,
-                      child: ListView(
-                        padding: EdgeInsets.all(0),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: [
-                          ListTile(
-                            onTap: () => controller.previewPaymentImage(),
-                            trailing: Icon(Icons.chevron_right),
-                            title: Text(
-                              "Ref: ${controller.registeredTeam.value!.payment!.referrenceId}",
-                              style: TextStyle(fontWeight: FontWeight.w700),
-                            ),
-                            subtitle: Text(
-                                "via ${controller.registeredTeam.value!.payment!.paymentMethod} (${DateFormat("MMMM dd yyyy").format(controller.registeredTeam.value!.payment!.paymentDate)})"),
-                          ),
-                        ],
-                      ),
-                    )
+                      child: ListTile(
+                        onTap: () => controller.previewPaymentImage(),
+                        trailing: Icon(Icons.chevron_right),
+                        title: Text(
+                          "Ref: ${controller.registeredTeam.value!.payment!.referrenceId}",
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        subtitle: Text(
+                            "via ${controller.registeredTeam.value!.payment!.paymentMethod} (${DateFormat("MMMM dd yyyy").format(controller.registeredTeam.value!.payment!.paymentDate)})"),
+                      ))
                   : const Padding(padding: EdgeInsets.all(0)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

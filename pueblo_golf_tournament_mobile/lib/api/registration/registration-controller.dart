@@ -8,6 +8,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/register-account-reque
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-person-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-player-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-player-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-request-dto.dart';
@@ -16,6 +17,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/register-division-res
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-payment-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-person-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-player-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-division-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-response-dto.dart';
 
@@ -228,6 +230,26 @@ class RegistrationController extends IRegistrationController {
       default:
         return RegisterTournamentPlayerResponseDto(
             message: response.reasonPhrase!, playerProfile: null);
+    }
+  }
+
+  @override
+  Future<RegisterTeamDivisionResponseDto> registerTeamDivision(
+      RegisterTeamDivisionRequestDto payload) async {
+    var endpoint = "$controller/team-division";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return RegisterTeamDivisionResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return RegisterTeamDivisionResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        return RegisterTeamDivisionResponseDto(
+            message: response.reasonPhrase!, data: null);
     }
   }
 }

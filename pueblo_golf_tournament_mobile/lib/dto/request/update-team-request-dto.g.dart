@@ -9,11 +9,11 @@ part of 'update-team-request-dto.dart';
 UpdateTeamRequestDto _$UpdateTeamRequestDtoFromJson(
         Map<String, dynamic> json) =>
     UpdateTeamRequestDto(
-      person: TeamDto.fromJson(json['person'] as Map<String, dynamic>),
+      team: TeamDto.fromJson(json['team'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$UpdateTeamRequestDtoToJson(
         UpdateTeamRequestDto instance) =>
     <String, dynamic>{
-      'person': instance.person,
+      'team': instance.team,
     };

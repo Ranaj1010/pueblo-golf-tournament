@@ -13,5 +13,6 @@ namespace pueblo_golf_tournament_api.Dto
         public long TeeTimeScheduleId { get; set; }
         public int ActualStrokes { get; set; }
         public int MolaveScore { get; set; }
+        public long ScorerId { get; set; }
     }
 }

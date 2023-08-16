@@ -41,12 +41,16 @@ RegisteredTeam _$RegisteredTeamFromJson(Map<String, dynamic> json) =>
       payment: json['payment'] == null
           ? null
           : PaymentDto.fromJson(json['payment'] as Map<String, dynamic>),
+      division: json['division'] == null
+          ? null
+          : DivisionDto.fromJson(json['division'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$RegisteredTeamToJson(RegisteredTeam instance) =>
     <String, dynamic>{
       'registration': instance.registration,
       'team': instance.team,
+      'division': instance.division,
       'captainProfile': instance.captainProfile,
       'payment': instance.payment,
       'memberProfiles': instance.memberProfiles,

@@ -27,6 +27,7 @@ import '../screens/setup-player-profile-screen/controller.dart';
 import '../screens/setup-tournament-holes-screen/controller.dart';
 import '../screens/sign-in-screen/controller.dart';
 import '../screens/sign-up-screen/controller.dart';
+import '../screens/tee-time-screen/controller.dart';
 import '../screens/tournament-details-screen/controller.dart';
 import '../screens/tournaments-screen/controller.dart';
 import '../screens/view-team-member-screen/controller.dart';
@@ -67,6 +68,7 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => AddTournamentScheduleScreenController());
     Get.lazyPut(() => BookTeamScheduleScreenController());
     Get.lazyPut(() => SetupTournamentHolesScreenController());
+    Get.lazyPut(() => TeeTimeScreenController());
 
     // PAGES Controllers
     Get.lazyPut(() => DashboardPageController());

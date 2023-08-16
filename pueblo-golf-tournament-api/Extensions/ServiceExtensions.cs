@@ -8,6 +8,7 @@ using pueblo_golf_tournament_api.Modules.Authentications;
 using pueblo_golf_tournament_api.Modules.Lookups;
 using pueblo_golf_tournament_api.Modules.Manage;
 using pueblo_golf_tournament_api.Modules.Registrations;
+using pueblo_golf_tournament_api.Modules.Save;
 using pueblo_golf_tournament_api.Modules.Setup;
 using pueblo_golf_tournament_api.Modules.Uploads;
 using pueblo_golf_tournament_api.Services.Accounts;
@@ -20,12 +21,16 @@ using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
+using pueblo_golf_tournament_api.Services.Scorers;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.TournamentHoles;
 using pueblo_golf_tournament_api.Services.TournamentPlayers;
 using pueblo_golf_tournament_api.Services.TournamentPlayerScores;
 using pueblo_golf_tournament_api.Services.Tournaments;
+using pueblo_golf_tournament_api.Services.TournamentScorers;
+using pueblo_golf_tournament_api.Services.TournamentTeamDivisions;
+using pueblo_golf_tournament_api.Services.TournamentTournamentScorers;
 
 namespace pueblo_golf_tournament_api.Extensions
 {
@@ -79,6 +84,9 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<IPlayerTeeTimeScheduleService, PlayerTeeTimeScheduleService>();
             services.AddTransient<ITournamentHolesService, TournamentHolesService>();
             services.AddTransient<ITournamentPlayerScoreService, TournamentPlayerScoreService>();
+            services.AddTransient<IScorerService, ScorerService>();
+            services.AddTransient<ITournamentScorerService, TournamentScorerService>();
+            services.AddTransient<ITournamentTeamDivisionService, TournamentTeamDivisionService>();
             #endregion
 
             #region Modules
@@ -88,6 +96,7 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<IUploadModule, UploadModule>();
             services.AddTransient<IManageModule, ManageModule>();
             services.AddTransient<ISetupModule, SetupModule>();
+            services.AddTransient<ISaveModule, SaveModule>();
             #endregion
         }
 

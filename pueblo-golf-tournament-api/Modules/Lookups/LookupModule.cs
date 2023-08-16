@@ -15,10 +15,12 @@ using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
+using pueblo_golf_tournament_api.Services.Scorers;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.TournamentHoles;
 using pueblo_golf_tournament_api.Services.Tournaments;
+using pueblo_golf_tournament_api.Services.TournamentScorers;
 
 namespace pueblo_golf_tournament_api.Modules.Lookups
 {
@@ -36,10 +38,12 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly ITeeTimeScheduleService _teeTimeScheduleService;
         private readonly IPlayerTeeTimeScheduleService _playerTeeTimeScheduleService;
         private readonly ITournamentHolesService _tournamentHolesService;
+        private readonly ITournamentScorerService _tournamentScorerService;
+        private readonly IScorerService _scorerService;
 
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, IScorerService scorerService, ITournamentScorerService tournamentScorerService, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -55,6 +59,8 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _teeTimeScheduleService = teeTimeScheduleService;
             _playerTeeTimeScheduleService = playerTeeTimeScheduleService;
             _tournamentHolesService = tournamentHolesService;
+            _tournamentScorerService = tournamentScorerService;
+            _scorerService = scorerService;
         }
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
@@ -209,6 +215,29 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             return response;
         }
 
+        public async Task<LookupScorerProfilesResponseDto> LookupScorerProfiles(LookupScorerProfilesRequestDto payload)
+        {
+            var response = new LookupScorerProfilesResponseDto();
+
+            var tournamentScorers = await _tournamentScorerService.ListAsync(scorer => scorer.TournamentId == payload.TournamentId);
+
+            var scorers = tournamentScorers.Join(await _scorerService.ListAsync(), tournament => tournament.ScorerId, scorer => scorer.Id, (tournament, scorer) => new { Tournament = tournament, Scorer = scorer });
+
+            foreach (var scorer in scorers)
+            {
+                var person = await _personService.GetAsync(person => person.Id == scorer.Scorer.PersonId);
+                response.Data.Add(new ScorerProfile
+                {
+                     Person = _mapper.Map<PersonDto>(person),
+                     Scorer = _mapper.Map<ScorerDto>(scorer),
+                });
+            }
+
+            response.Message = $"{scorers.Count()} scorers found.";
+
+            return response;
+        }
+
         public async Task<LookupTeamsForCaptainResponseDto> LookupTeamsForCaptain(LookupTeamsForCaptainRequestDto payload)
         {
             var response = new LookupTeamsForCaptainResponseDto();
@@ -274,7 +303,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             }
 
             var data = await _tournamentHolesService.ListAsync(hole => hole.TournamentId == tournamentId);
-            
+
             response.TournamentId = tournamentId;
             response.Data = _mapper.Map<List<TournamentHoleDto>>(data);
             response.Message = data.Count > 0 ? $"{data.Count} holes found." : "No holes found.";
@@ -297,8 +326,6 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         public async Task<LookupTournamentTeamResponseDto> LookupTournamentTeam(long tournamentId, long teamCaptainId)
         {
             var response = new LookupTournamentTeamResponseDto();
-            Console.WriteLine($"TEAM CAPTAIN: {teamCaptainId}");
-            Console.WriteLine($"TOURNAMENT : {tournamentId}");
             var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == tournamentId);
             var registrations = teamCaptainId == 0 ? await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId) : await _registrationService.ListAsync(registration => registration.TournamentId == tournamentId && registration.TeamCaptainId == teamCaptainId);
 
@@ -338,15 +365,16 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                     });
 
                     var payment = await _dbContext.Payments.SingleOrDefaultAsync(payment => payment.Id == registration.PaymentId);
-
+                    var division = await _dbContext.TournamentTeamDivisions.Where(tournamentDivision => tournamentDivision.TeamId == team.Id).Join(_dbContext.Divisions, td => td.DivisionId, d => d.Id, (td, d) => d).SingleOrDefaultAsync(); 
+                    
                     response.RegisteredTeams.Add(new RegisteredTeam
                     {
                         Registration = _mapper.Map<RegistrationDto>(registration),
                         Team = _mapper.Map<TeamDto>(team),
                         CaptainProfile = teamCaptainProfile!,
                         MemberProfiles = memberProfiles.ToList(),
-                        Payment = _mapper.Map<PaymentDto>(payment)
-
+                        Payment = _mapper.Map<PaymentDto>(payment),
+                        Division = _mapper.Map<DivisionDto>(division)
                     });
                 }
 

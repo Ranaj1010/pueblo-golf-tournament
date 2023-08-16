@@ -48,6 +48,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
+        
         [HttpPost("tournament-team")]
         public async Task<ActionResult<LookupTournamentTeamResponseDto>> LookupTournamentTeam(LookupTournamentTeamRequestDto payload)
         {
@@ -55,6 +56,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("player-profile")]
         public async Task<ActionResult<LookupPlayerProfileResponseDto>> LookupPlayerProfile(LookupPlayerProfileRequestDto payload)
         {
@@ -62,6 +64,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("player-profile-by-person")]
         public async Task<ActionResult<LookupPlayerProfileResponseDto>> LookupPlayerProfileByPersonId(LookupPlayerProfileByPersonIdRequestDto payload)
         {
@@ -69,6 +72,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("payment-channels")]
         public async Task<ActionResult<LookupPaymentChannelsResponseDto>> LookupPaymentChannels(LookupPaymentChannelsRequestDto payload)
         {
@@ -84,6 +88,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("tee-time-schedules")]
         public async Task<ActionResult<LookupTeeTimeSchedulesResponseDto>> LookupTeeTimeSchedules(LookupTeeTimeSchedulesRequestDto payload)
         {
@@ -91,6 +96,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("player-tee-time-schedules")]
         public async Task<ActionResult<LookupPlayerScheduleResponseDto>> LookupPlayerSchedule(LookupPlayerScheduleRequestDto payload)
         {
@@ -98,6 +104,7 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("team-captain-teams")]
         public async Task<ActionResult<LookupTeamsForCaptainResponseDto>> LookupTeamsForCaptain(LookupTeamsForCaptainRequestDto payload)
         {
@@ -105,10 +112,19 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+
         [HttpPost("tournament-holes")]
         public async Task<ActionResult<LookupTeamsForCaptainResponseDto>> LookupTournamentHoles(LookupTournamentDetailsDto payload)
         {
             var response = await _lookupModule.LookupTournamentHoles(payload.TournamentId);
+
+            return Ok(response);
+        }
+
+        [HttpPost("scorer-profiles")]
+        public async Task<ActionResult<LookupScorerProfilesResponseDto>> LookupScorerProfiles(LookupScorerProfilesRequestDto payload)
+        {
+            var response = await _lookupModule.LookupScorerProfiles(payload);
 
             return Ok(response);
         }

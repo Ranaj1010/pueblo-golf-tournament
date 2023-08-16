@@ -76,7 +76,10 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                               .registeredTeam.value!.registration.isPayed &&
                           registeredTeamScreenController
                                   .registeredTeam.value!.registration.status ==
-                              1
+                              1 &&
+                          dataContextController.authenticatedData.value!
+                                  .account!.accountType !=
+                              3
                       ? Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
@@ -235,6 +238,9 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       itemBuilder: (context, index) => ListTile(
+                                            onTap: () => controller.goToTeeTime(
+                                                controller
+                                                    .playerSchedules[index]),
                                             leading: const CircleAvatar(
                                               child: Icon(Icons.date_range),
                                             ),
@@ -248,7 +254,8 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Theme.of(context)
-                                                            .primaryColor),
+                                                            .primaryColor,
+                                                        fontSize: 14),
                                                   )
                                                 : Text(
                                                     "Back 9",
@@ -256,7 +263,8 @@ class _ViewTeamMemberScreenState extends State<ViewTeamMemberScreen> {
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Theme.of(context)
-                                                            .primaryColor),
+                                                            .primaryColor,
+                                                        fontSize: 14),
                                                   ),
                                             title: Text(
                                               DateFormat("E, MMMM dd, yyyy")

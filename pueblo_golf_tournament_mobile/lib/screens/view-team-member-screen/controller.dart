@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:pueblo_golf_tournament_mobile/api/lookup/lookup-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-team-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/tee-time-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/update-member-details-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/view-team-member-screen/interface.dart';
 
@@ -19,6 +20,7 @@ class ViewTeamMemberScreenController extends IViewTeamMemberScreenController {
   var playerProfile = Rxn<PlayerProfile>();
   var isLoadingSchedules = false.obs;
   var playerSchedules = <TournamentScheduleDate>[].obs;
+  var selectedTournamentScheduleDate = Rxn<TournamentScheduleDate>();
 
   @override
   void edit() {
@@ -61,5 +63,11 @@ class ViewTeamMemberScreenController extends IViewTeamMemberScreenController {
     if (response.data!.isNotEmpty) {
       playerSchedules.addAll(response.data!);
     }
+  }
+
+  @override
+  void goToTeeTime(TournamentScheduleDate schedule) {
+    selectedTournamentScheduleDate(schedule);
+    Get.toNamed("/tee-time");
   }
 }

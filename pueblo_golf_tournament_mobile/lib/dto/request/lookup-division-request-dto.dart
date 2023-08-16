@@ -5,7 +5,7 @@ part 'lookup-division-request-dto.g.dart';
 @JsonSerializable()
 class LookupDivisionRequestDto {
   final String filterName;
-  final String tournamentId;
+  final int tournamentId;
 
   LookupDivisionRequestDto(
       {required this.filterName, required this.tournamentId});

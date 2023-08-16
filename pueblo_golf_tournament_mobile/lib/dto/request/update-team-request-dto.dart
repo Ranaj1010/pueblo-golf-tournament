@@ -5,9 +5,9 @@ part 'update-team-request-dto.g.dart';
 
 @JsonSerializable()
 class UpdateTeamRequestDto {
-  final TeamDto person;
+  final TeamDto team;
 
-  UpdateTeamRequestDto({required this.person});
+  UpdateTeamRequestDto({required this.team});
 
   factory UpdateTeamRequestDto.fromJson(Map<String, dynamic> json) =>
       _$UpdateTeamRequestDtoFromJson(json);

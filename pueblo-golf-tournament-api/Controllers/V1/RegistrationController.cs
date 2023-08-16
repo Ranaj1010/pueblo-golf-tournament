@@ -105,5 +105,27 @@ namespace pueblo_golf_tournament_api.Controllers.V1
             return response.Data != null ? Ok(response) : BadRequest(response);
         }
 
+        [HttpPost("scorer")]
+        public async Task<ActionResult<RegisteredScorerDto>> RegisterScorer(RegisterScorerRequestDto payload)
+        {
+            var response = await _registrationModule.RegisterScorer(payload);
+
+            return response.Data != null ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpPost("tournament-scorer")]
+        public async Task<ActionResult<RegisteredTournamentScorerDto>> RegisterTournamentScorer(RegisterTournamentScorerDto payload)
+        {
+            var response = await _registrationModule.RegisterTournamentScorer(payload);
+
+            return response.Success ? Ok(response) : BadRequest(response);
+        }
+        [HttpPost("team-division")]
+        public async Task<ActionResult<RegisteredTeamDivisionDto>> RegisterTournamentTeamDivision(RegisterTeamDivisionDto payload)
+        {
+            var response = await _registrationModule.RegisterTournamentTeamDivision(payload);
+
+            return response.Data != null ? Ok(response) : BadRequest(response);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace pueblo_golf_tournament_api.Entities
         public long TournamentHoleId { get; set; }
         public int ActualStrokes { get; set; }
         public int MolaveScore { get; set; }
+        public long ScorerId { get; set; }
     }
 }
