@@ -18,5 +18,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         Task<LookupTeamsForCaptainResponseDto> LookupTeamsForCaptain(LookupTeamsForCaptainRequestDto payload);
         Task<LookupPlayerScheduleResponseDto> LookupPlayerSchedule(LookupPlayerScheduleRequestDto payload);
         Task<LookupTournamentHolesResponseDto> LookupTournamentHoles(long tournamentId);
+        Task<LookupScorerProfilesResponseDto> LookupScorerProfiles(LookupScorerProfilesRequestDto payload);
+
     }
 }

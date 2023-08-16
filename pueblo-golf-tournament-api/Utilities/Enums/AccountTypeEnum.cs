@@ -4,6 +4,7 @@ namespace pueblo_golf_tournament_api.Utilities.Enums
     {
         SuperAdministrator,
         Administrator,
-        User
+        User,
+        Scorer
     }
 }

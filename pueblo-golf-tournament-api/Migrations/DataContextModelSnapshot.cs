@@ -407,6 +407,31 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.ToTable("Registrations");
                 });
 
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Scorer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("PersonId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Scorers");
+                });
+
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Team", b =>
                 {
                     b.Property<long>("Id")
@@ -605,6 +630,114 @@ namespace pueblo_golf_tournament_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TournamentPlayers");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.TournamentPlayerScore", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("ActualStrokes")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("MolaveScore")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("PlayerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PlayerTeeTimeScheduleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("RegistrationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ScorerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TournamentHoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TournamentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentPlayerScores");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.TournamentScorer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("ScorerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TournamentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentScorers");
+                });
+
+            modelBuilder.Entity("pueblo_golf_tournament_api.Entities.TournamentTeamDivision", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseSerialColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ArchivedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("DivisionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TournamentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TournamentTeamDivisions");
                 });
 
             modelBuilder.Entity("pueblo_golf_tournament_api.Entities.Account", b =>

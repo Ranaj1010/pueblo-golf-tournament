@@ -20,9 +20,12 @@ using pueblo_golf_tournament_api.Services.Payments;
 using pueblo_golf_tournament_api.Services.Persons;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.Registrations;
+using pueblo_golf_tournament_api.Services.Scorers;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TournamentPlayers;
 using pueblo_golf_tournament_api.Services.Tournaments;
+using pueblo_golf_tournament_api.Services.TournamentScorers;
+using pueblo_golf_tournament_api.Services.TournamentTeamDivisions;
 using pueblo_golf_tournament_api.Utilities.Enums;
 
 namespace pueblo_golf_tournament_api.Modules.Registrations
@@ -41,10 +44,13 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
         private readonly ITeamService _teamService;
         private readonly ITournamentPlayerService _tournamentPlayerService;
         private readonly IAccountService _accountService;
+        private readonly IScorerService _scorerService;
+        private readonly ITournamentScorerService _tournamentScorerService;
+        private readonly ITournamentTeamDivisionService _tournamentTeamDivisionService;
         private readonly IUploadModule _uploadModule;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public RegisterationModule(IMapper mapper, DataContext dbContext, IPaymentChannelService paymentChannelService, IPaymentChannelAccountService paymentChannelAccountService, IUploadModule uploadModule, ITournamentService tournamentService, ITournamentPlayerService tournamentPlayerService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
+        public RegisterationModule(IMapper mapper, DataContext dbContext, ITournamentTeamDivisionService tournamentTeamDivisionService, ITournamentScorerService tournamentScorerService, IScorerService scorerService, IPaymentChannelService paymentChannelService, IPaymentChannelAccountService paymentChannelAccountService, IUploadModule uploadModule, ITournamentService tournamentService, ITournamentPlayerService tournamentPlayerService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IPaymentService paymentService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -61,6 +67,9 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             _uploadModule = uploadModule;
             _paymentChannelService = paymentChannelService;
             _paymentChannelAccountService = paymentChannelAccountService;
+            _scorerService = scorerService;
+            _tournamentScorerService = tournamentScorerService;
+            _tournamentTeamDivisionService = tournamentTeamDivisionService;
         }
         public async Task<RegisteredAccountDto> RegisterAccount(RegisterAccountDto payload)
         {
@@ -467,6 +476,108 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
             return response;
         }
 
+        public async Task<RegisteredScorerDto> RegisterScorer(RegisterScorerRequestDto payload)
+        {
+            var response = new RegisteredScorerDto();
+
+            if (payload.Person == null)
+            {
+                response.Message = "Invalid request. Please complete the form";
+                return response;
+            }
+
+            var registeredPerson = await RegisterPerson(payload.Person);
+
+            if (registeredPerson == null)
+            {
+                response.Message = "Failed to register scorer. Person not registered.";
+                return response;
+            }
+
+            var existingUsername = await _accountService.GetAsync(account => account.Username.Equals(payload.Account!.Username));
+
+            if (existingUsername != null)
+            {
+                response.Data = null;
+                response.Message = "Invalid Input. Username already exists.";
+                return response;
+            }
+
+            if (String.IsNullOrWhiteSpace(payload.Person!.FirstName))
+            {
+                response.Data = null;
+                response.Message = "Invalid Input. First Name is required.";
+                return response;
+            }
+
+            if (String.IsNullOrWhiteSpace(payload.Person!.LastName))
+            {
+                response.Data = null;
+                response.Message = "Invalid Input. Last Name is required.";
+                return response;
+            }
+
+            if (!ValidatorExtensions.ValidMobileNumber(payload.Person.ContactNumber!))
+            {
+                response.Data = null;
+                response.Message = "Invalid Mobile Number.";
+                return response;
+            }
+
+            if (!ValidatorExtensions.ValidUsername(payload.Account!.Username!))
+            {
+                response.Data = null;
+                response.Message = "Invalid Username. Please use another username instead.";
+                return response;
+            }
+
+            if (!ValidatorExtensions.ValidPassword(payload.Account!.Password!))
+            {
+                response.Data = null;
+                response.Message = "Invalid Password. Make sure not to use any special characters.";
+                return response;
+            }
+
+            var person = await _personService.AddAsync(_mapper.Map<Person>(payload.Person));
+
+            if (person.Id == 0)
+            {
+                response.Data = null;
+                response.Message = "Failed to register. Please try again";
+                return response;
+            }
+
+            var account = _mapper.Map<Account>(payload.Account);
+            
+            account.PersonId = person.Id;
+            account.Password = HashExtensions.GetHash(account.Password!);
+            account.AccounType = AccountTypeEnum.Scorer;
+
+            var registeredAccount = await _accountService.AddAsync(account);
+
+            if (registeredAccount.Id == 0)
+            {
+                response.Data = null;
+                response.Message = "Failed to register scorer's account. Please try again";
+                return response;
+            }
+
+            var registeredScorer = _scorerService.AddAsync(new Scorer
+            {
+                PersonId = registeredPerson.Data.Id,
+            });
+
+            response.Data = new ScorerData
+            {
+                Scorer = _mapper.Map<ScorerDto>(registeredScorer),
+                Person = registeredPerson.Data
+            };
+
+            response.Message = "Scorer has successfully registered.";
+
+            return response;
+        }
+
         public async Task<RegisteredTeamDto> RegisterTeam(RegisterTeamDto payload)
         {
             var response = new RegisteredTeamDto();
@@ -617,6 +728,71 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
 
             response.Data = tournament.Id != 0 ? _mapper.Map<TournamentDto>(tournament) : null;
             response.Message = tournament.Id != 0 ? "Tournament is successfully Registered" : "Failed to register tournament";
+
+            return response;
+        }
+
+        public async Task<RegisteredTournamentScorerDto> RegisterTournamentScorer(RegisterTournamentScorerDto payload)
+        {
+            var response = new RegisteredTournamentScorerDto();
+
+            var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == payload.TournamentId);
+
+            if(tournament == null) 
+            {
+                response.Success = false;
+                response.Message = "Tournament not found.";
+                return response;
+            }
+
+            var scorer = await _scorerService.GetAsync(scorer => scorer.Id == payload.ScorerId);
+
+            if(tournament == null) 
+            {
+                response.Success = false;
+                response.Message = "Scorer not found.";
+                return response;
+            }
+
+            var registeredTournamentScorer = await _tournamentScorerService.AddAsync(new TournamentScorer
+            {
+                ScorerId = payload.ScorerId,
+                TournamentId = payload.TournamentId,
+            });
+
+            response.Success = true;
+            response.Message = "Scorer is now assigned to Tournament.";
+
+            return response;
+        }
+
+        public async Task<RegisteredTeamDivisionDto> RegisterTournamentTeamDivision(RegisterTeamDivisionDto payload)
+        {
+            var response = new RegisteredTeamDivisionDto();
+
+            var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == payload.TournamentId);
+
+            if (tournament == null)
+            {
+                response.Message = "Tournament not found.";
+                return response;
+            }
+           
+            var team = await _teamService.GetAsync(team => team.Id == payload.TeamId);
+
+            if (tournament == null)
+            {
+                response.Message = "Team not found.";
+                return response;
+            }
+
+            var teamDivision = await _tournamentTeamDivisionService.AddAsync(new TournamentTeamDivision{
+                TournamentId = payload.TournamentId,
+                TeamId = payload.TeamId,
+                DivisionId = payload.DivisionId,
+            });
+
+            response.Data = _mapper.Map<TournamentTeamDivisionDto>(teamDivision);
 
             return response;
         }

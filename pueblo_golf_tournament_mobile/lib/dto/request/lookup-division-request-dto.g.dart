@@ -10,7 +10,7 @@ LookupDivisionRequestDto _$LookupDivisionRequestDtoFromJson(
         Map<String, dynamic> json) =>
     LookupDivisionRequestDto(
       filterName: json['filterName'] as String,
-      tournamentId: json['tournamentId'] as String,
+      tournamentId: json['tournamentId'] as int,
     );
 
 Map<String, dynamic> _$LookupDivisionRequestDtoToJson(

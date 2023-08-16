@@ -7,6 +7,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/model/team-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/model/tournament-dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../model/division-dto.dart';
+
 part 'lookup-tournament-team-response-dto.g.dart';
 
 @JsonSerializable()
@@ -30,6 +32,7 @@ class LookupTournamentTeamResponseDto extends BaseResponse {
 class RegisteredTeam {
   final RegistrationDto registration;
   final TeamDto team;
+  final DivisionDto? division;
   final PlayerProfile captainProfile;
   final PaymentDto? payment;
   final List<PlayerProfile>? memberProfiles;
@@ -39,6 +42,7 @@ class RegisteredTeam {
     required this.memberProfiles,
     required this.team,
     this.payment,
+    this.division,
   });
   factory RegisteredTeam.fromJson(Map<String, dynamic> json) =>
       _$RegisteredTeamFromJson(json);

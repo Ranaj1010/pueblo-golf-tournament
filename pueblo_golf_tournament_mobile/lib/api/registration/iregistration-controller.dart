@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-payment-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-player-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-account-response-dto.dart';
@@ -15,6 +16,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-r
 import '../../dto/request/register-account-request-dto.dart';
 import '../../dto/request/register-person-request-dto.dart';
 import '../../dto/request/register-tournament-player-request-dto.dart';
+import '../../dto/response/register-team-division-response-dto.dart';
 import '../../dto/response/register-tournament-player-response-dto.dart';
 
 abstract class IRegistrationController extends GetxController {
@@ -35,4 +37,6 @@ abstract class IRegistrationController extends GetxController {
       RegisterPaymentRequestDto payload);
   Future<RegisterPaymentResponseDto> registerPaymentWeb(
       RegisterPaymentWebRequestDto payload);
+  Future<RegisterTeamDivisionResponseDto> registerTeamDivision(
+      RegisterTeamDivisionRequestDto payload);
 }
