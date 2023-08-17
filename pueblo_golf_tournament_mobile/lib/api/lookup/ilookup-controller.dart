@@ -1,5 +1,6 @@
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-leader-board-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
@@ -11,6 +12,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-deta
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournaments-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-leader-board-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
@@ -51,4 +53,6 @@ abstract class ILookupController extends GetxController {
       LookupScorerProfilesRequestDto payload);
   Future<LookupPlayerScoresResponse> lookupPlayerScores(
       LookupPlayerScoresRequest payload);
+  Future<LookupLeaderBoardResponseDto> lookupLeaderBoard(
+      LookupLeaderBoardRequestDto payload);
 }

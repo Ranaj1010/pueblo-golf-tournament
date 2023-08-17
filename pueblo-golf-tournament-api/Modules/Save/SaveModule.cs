@@ -3,6 +3,7 @@ using pueblo_golf_tournament_api.Dto;
 using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
 using pueblo_golf_tournament_api.Entities;
+using pueblo_golf_tournament_api.Modules.Monitor;
 using pueblo_golf_tournament_api.Services.Players;
 using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
@@ -23,8 +24,9 @@ namespace pueblo_golf_tournament_api.Modules.Save
         private readonly ITeamService _teamService;
         private readonly ITournamentHolesService _tournamentHoleService;
         private readonly IPlayerTeeTimeScheduleService _playerTeeTimeScheduleService;
+        private readonly IMonitorModule _monitorModule;
         private readonly IMapper _mapper;
-        public SaveModule(IMapper mapper, ITournamentPlayerScoreService tournamentPlayerScoreService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITournamentService tournamentService, IPlayerService playerService, IRegistrationService registrationService, ITeamService teamService, ITournamentHolesService tournamentHoleService)
+        public SaveModule(IMapper mapper, IMonitorModule monitorModule, ITournamentPlayerScoreService tournamentPlayerScoreService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITournamentService tournamentService, IPlayerService playerService, IRegistrationService registrationService, ITeamService teamService, ITournamentHolesService tournamentHoleService)
         {
             _tournamentPlayerScoreService = tournamentPlayerScoreService;
             _tournamentService = tournamentService;
@@ -34,6 +36,7 @@ namespace pueblo_golf_tournament_api.Modules.Save
             _mapper = mapper;
             _tournamentHoleService = tournamentHoleService;
             _playerTeeTimeScheduleService = playerTeeTimeScheduleService;
+            _monitorModule = monitorModule;
         }
         public async Task<SavedTournamentPlayerScoreDto> SavedTournamentPlayerScore(SaveTournamentPlayerScoreDto payload)
         {
@@ -90,6 +93,8 @@ namespace pueblo_golf_tournament_api.Modules.Save
 
             response.Data = _mapper.Map<TournamentPlayerScoreDto>(playerScore);
             response.Message = "Score was successfully saved.";
+
+            await _monitorModule.MonitorLeaderBoard(tournament.Id);
 
             return response;
         }

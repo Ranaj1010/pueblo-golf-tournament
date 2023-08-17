@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore.Internal;
 using pueblo_golf_tournament_api.Configurations;
 using pueblo_golf_tournament_api.Data;
 using pueblo_golf_tournament_api.Entities;
+using pueblo_golf_tournament_api.Hub;
 using pueblo_golf_tournament_api.Modules.Authentications;
 using pueblo_golf_tournament_api.Modules.Lookups;
 using pueblo_golf_tournament_api.Modules.Manage;
+using pueblo_golf_tournament_api.Modules.Monitor;
 using pueblo_golf_tournament_api.Modules.Registrations;
 using pueblo_golf_tournament_api.Modules.Save;
 using pueblo_golf_tournament_api.Modules.Setup;
@@ -67,6 +69,7 @@ namespace pueblo_golf_tournament_api.Extensions
         public static void ConfigureDependencyInjection(this IServiceCollection services)
         {
 
+
             #region Services
             services.AddTransient<ITournamentService, TournamentService>();
             services.AddTransient<ITeamService, TeamService>();
@@ -87,7 +90,7 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<IScorerService, ScorerService>();
             services.AddTransient<ITournamentScorerService, TournamentScorerService>();
             services.AddTransient<ITournamentTeamDivisionService, TournamentTeamDivisionService>();
-        
+
             #endregion
 
             #region Modules
@@ -98,6 +101,12 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<IManageModule, ManageModule>();
             services.AddTransient<ISetupModule, SetupModule>();
             services.AddTransient<ISaveModule, SaveModule>();
+            services.AddTransient<IMonitorModule, MonitorModule>();
+            #endregion
+
+            #region Hub
+            services.AddSignalR();
+            services.AddTransient<ServiceHub>();
             #endregion
         }
 

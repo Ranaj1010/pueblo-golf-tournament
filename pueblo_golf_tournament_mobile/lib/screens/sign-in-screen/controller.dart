@@ -8,6 +8,8 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/authenticate-request-d
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/sign-in-screen/interface.dart';
 
+import '../../utilities/signalr-controller.dart';
+
 class SignInScreenController extends ISignInScreenController {
   var isPeeked = false.obs;
   var isLoading = false.obs;
@@ -20,10 +22,10 @@ class SignInScreenController extends ISignInScreenController {
   final homeScreenController = Get.find<HomeScreenController>();
   final authenticationController = Get.find<AuthenticateController>();
   final dataContextController = Get.find<DataContextController>();
+  final signalRController = Get.find<SignalRController>();
   final credentialsFormKey = GlobalKey<FormState>();
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
 
     usernameTextController.addListener(() {
@@ -83,6 +85,7 @@ class SignInScreenController extends ISignInScreenController {
           passwordTextController.clear();
           homeScreenController.selectedPageIndex(0);
           homeScreenController.initializePlayerProfile();
+          signalRController.connect();
           Get.toNamed("/home");
         }
 

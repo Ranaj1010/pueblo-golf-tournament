@@ -10,4 +10,5 @@ abstract class ITournamentDetailsScreenController extends GetxController {
   void gotoManageSchedules();
   void gotoSetupHoles();
   void gotoScorers();
+  void gotoLeaderBoard();
 }
