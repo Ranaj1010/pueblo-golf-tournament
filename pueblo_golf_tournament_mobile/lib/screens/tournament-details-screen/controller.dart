@@ -83,4 +83,9 @@ class TournamentDetailsScreenController
   void gotoSetupHoles() {
     Get.toNamed("/setup-tournament-holes");
   }
+
+  @override
+  void gotoScorers() {
+    Get.toNamed("/manage-scorers");
+  }
 }

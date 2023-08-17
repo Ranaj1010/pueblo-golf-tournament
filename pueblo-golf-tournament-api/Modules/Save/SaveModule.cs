@@ -4,6 +4,7 @@ using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
 using pueblo_golf_tournament_api.Entities;
 using pueblo_golf_tournament_api.Services.Players;
+using pueblo_golf_tournament_api.Services.PlayerTeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.Registrations;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TournamentHoles;
@@ -21,8 +22,9 @@ namespace pueblo_golf_tournament_api.Modules.Save
         private readonly IRegistrationService _registrationService;
         private readonly ITeamService _teamService;
         private readonly ITournamentHolesService _tournamentHoleService;
+        private readonly IPlayerTeeTimeScheduleService _playerTeeTimeScheduleService;
         private readonly IMapper _mapper;
-        public SaveModule(IMapper mapper, ITournamentPlayerScoreService tournamentPlayerScoreService, ITournamentService tournamentService, IPlayerService playerService, IRegistrationService registrationService, ITeamService teamService, ITournamentHolesService tournamentHoleService)
+        public SaveModule(IMapper mapper, ITournamentPlayerScoreService tournamentPlayerScoreService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITournamentService tournamentService, IPlayerService playerService, IRegistrationService registrationService, ITeamService teamService, ITournamentHolesService tournamentHoleService)
         {
             _tournamentPlayerScoreService = tournamentPlayerScoreService;
             _tournamentService = tournamentService;
@@ -31,6 +33,7 @@ namespace pueblo_golf_tournament_api.Modules.Save
             _teamService = teamService;
             _mapper = mapper;
             _tournamentHoleService = tournamentHoleService;
+            _playerTeeTimeScheduleService = playerTeeTimeScheduleService;
         }
         public async Task<SavedTournamentPlayerScoreDto> SavedTournamentPlayerScore(SaveTournamentPlayerScoreDto payload)
         {
@@ -69,6 +72,8 @@ namespace pueblo_golf_tournament_api.Modules.Save
             }
 
             var molaveScore = ScoringHelper.GetMolaveScore(tournamentHole.MaximumStrokes, payload.ActualStrokes);
+            
+            var playerTeeTimeSchedule = await _playerTeeTimeScheduleService.GetAsync(schedule => schedule.TeeTimeScheduleId == payload.TeeTimeScheduleId && schedule.PlayerId == payload.PlayerId);
 
             var playerScore = await _tournamentPlayerScoreService.AddAsync(new TournamentPlayerScore
             {
@@ -80,7 +85,7 @@ namespace pueblo_golf_tournament_api.Modules.Save
                 RegistrationId = payload.RegistrationId,
                 TeamId = payload.TeamId,
                 TournamentHoleId = payload.TournamentHoleId,
-                PlayerTeeTimeScheduleId = payload.PlayerTeeTimeScheduleId,
+                PlayerTeeTimeScheduleId = playerTeeTimeSchedule.Id,
             });
 
             response.Data = _mapper.Map<TournamentPlayerScoreDto>(playerScore);

@@ -8,7 +8,9 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-reques
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-scores-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-tee-time-schedule-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-scorer-profile-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tee-time-schedule-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-details-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
@@ -17,7 +19,9 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-respo
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-scores-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-tee-time-schedules-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-scorer-profile-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tee-time-schedules-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-details-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-holes-response-dto.dart';
@@ -264,6 +268,50 @@ class LookupController extends ILookupController {
           message: response.reasonPhrase!,
           data: [],
           tournamentId: 0,
+        );
+    }
+  }
+
+  @override
+  Future<LookupScorerProfileResponseDto> lookupScorerProfile(
+      LookupScorerProfilesRequestDto payload) async {
+    var endpoint = "$controller/scorer-profiles";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupScorerProfileResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return LookupScorerProfileResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupScorerProfileResponseDto(
+          message: response.reasonPhrase!,
+          data: [],
+        );
+    }
+  }
+
+  @override
+  Future<LookupPlayerScoresResponse> lookupPlayerScores(
+      LookupPlayerScoresRequest payload) async {
+    var endpoint = "$controller/player-scores";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupPlayerScoresResponse.fromJson(jsonDecode(response.body));
+      case 400:
+        return LookupPlayerScoresResponse.fromJson(jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupPlayerScoresResponse(
+          message: response.reasonPhrase!,
+          data: [],
         );
     }
   }

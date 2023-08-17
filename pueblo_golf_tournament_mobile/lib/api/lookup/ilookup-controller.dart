@@ -3,7 +3,9 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-reques
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-scores-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-tee-time-schedule-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-scorer-profile-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tee-time-schedule-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-details-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
@@ -12,7 +14,9 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-respo
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-scores-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-tee-time-schedules-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-scorer-profile-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tee-time-schedules-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-details-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-response-dto.dart';
@@ -43,4 +47,8 @@ abstract class ILookupController extends GetxController {
       LookupPlayerTeeTimeScheduleRequest payload);
   Future<LookupTournamentHolesResponseDto> lookupTournamentHoles(
       LookupTournamentDetailsRequestDto payload);
+  Future<LookupScorerProfileResponseDto> lookupScorerProfile(
+      LookupScorerProfilesRequestDto payload);
+  Future<LookupPlayerScoresResponse> lookupPlayerScores(
+      LookupPlayerScoresRequest payload);
 }

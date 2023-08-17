@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/add-team-member-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/add-tournament-schedule-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/add-tournament-scorer-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/book-team-schedule/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/landing-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/manage-schedules-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/manage-scorers-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-new-player-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/register-team-screen/screen.dart';
@@ -71,6 +73,8 @@ class App extends StatelessWidget {
         "/add-tournament-schedule": (context) => AddTournamentScheduleScreen(),
         "/setup-tournament-holes": (context) => SetupTournamentHolesScreen(),
         "/tee-time": (context) => TeeTimeScreen(),
+        "/manage-scorers": (context) => ManageScorersScreen(),
+        "/add-tournament-scorer": (context) => AddTournamentScorerScreen(),
       },
     );
   }

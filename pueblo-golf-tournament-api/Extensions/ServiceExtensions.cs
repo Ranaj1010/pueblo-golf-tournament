@@ -87,6 +87,7 @@ namespace pueblo_golf_tournament_api.Extensions
             services.AddTransient<IScorerService, ScorerService>();
             services.AddTransient<ITournamentScorerService, TournamentScorerService>();
             services.AddTransient<ITournamentTeamDivisionService, TournamentTeamDivisionService>();
+        
             #endregion
 
             #region Modules

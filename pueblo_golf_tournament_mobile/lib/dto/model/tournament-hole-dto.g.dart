@@ -11,10 +11,12 @@ TournamentHoleDto _$TournamentHoleDtoFromJson(Map<String, dynamic> json) =>
       tournamentId: json['tournamentId'] as int,
       holeNumber: json['holeNumber'] as int,
       maximumStrokes: json['maximumStrokes'] as int,
+      id: json['id'] as int,
     );
 
 Map<String, dynamic> _$TournamentHoleDtoToJson(TournamentHoleDto instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'tournamentId': instance.tournamentId,
       'holeNumber': instance.holeNumber,
       'maximumStrokes': instance.maximumStrokes,

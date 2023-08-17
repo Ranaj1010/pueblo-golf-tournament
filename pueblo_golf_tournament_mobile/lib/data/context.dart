@@ -6,6 +6,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-tournament-tea
 class DataContextController extends IDataContextController {
   var authenticatedData = Rxn<AuthenticatedUserData?>();
   var playerProfile = Rxn<PlayerProfile?>();
+
   @override
   void saveAuthenticatedUserData(AuthenticatedUserData data) {
     print(data.account!.accountType);

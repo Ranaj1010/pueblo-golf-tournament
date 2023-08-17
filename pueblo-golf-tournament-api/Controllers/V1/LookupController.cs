@@ -128,5 +128,12 @@ namespace pueblo_golf_tournament_api.Controllers.V1
 
             return Ok(response);
         }
+        [HttpPost("player-scores")]
+        public async Task<ActionResult<LookupTournamentPlayerScoresResponseDto>> LookupTournamentPlayerScorers(LookupTournamentPlayerScoresRequestDto payload)
+        {
+            var response = await _lookupModule.LookupTournamentPlayerScorers(payload);
+
+            return Ok(response);
+        }
     }
 }
