@@ -1,4 +1,5 @@
 using pueblo_golf_tournament_api.Extensions;
+using pueblo_golf_tournament_api.Hub;
 
 var builder = WebApplication.CreateBuilder(args);
 var allowedOrigin = "AllowedOrigin";
@@ -33,6 +34,8 @@ if (app.Environment.IsDevelopment())
 
     app.UseCors(allowedOrigin);
 
+    app.MapHub<ServiceHub>("/serviceHub");
+
     app.Run(builder.Configuration.GetSection("BaseUrl").Value);
 }
 
@@ -51,6 +54,8 @@ if (!app.Environment.IsDevelopment())
     app.MapControllers();
 
     app.UseCors(allowedOrigin);
+
+    app.MapHub<ServiceHub>("/serviceHub");
 
     app.Run();
 }

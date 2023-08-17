@@ -7,6 +7,7 @@ import 'package:pueblo_golf_tournament_mobile/screens/add-tournament-scorer-scre
 import 'package:pueblo_golf_tournament_mobile/screens/book-team-schedule/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/landing-screen/screen.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/leader-board-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/manage-schedules-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/manage-scorers-screen/screen.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/pay-registration-screen/screen.dart';
@@ -75,6 +76,7 @@ class App extends StatelessWidget {
         "/tee-time": (context) => TeeTimeScreen(),
         "/manage-scorers": (context) => ManageScorersScreen(),
         "/add-tournament-scorer": (context) => AddTournamentScorerScreen(),
+        "/leader-board": (context) => LeaderBoardScreen(),
       },
     );
   }

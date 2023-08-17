@@ -6,6 +6,7 @@ class DevFlavorConfig {
   startSetup() {
     var variables = {
       "baseUrl": "127.0.0.1:5001",
+      "signalRHubApi": "http://127.0.0.1:5001/serviceHub"
     };
 
     return FlavorConfig(
@@ -20,7 +21,8 @@ class AlphaFlavorConfig {
   AlphaFlavorConfig();
   startSetup() {
     var variables = {
-      "baseUrl": "172.104.102.236:5064",
+      "baseUrl": "172.104.102.236:5065",
+      "signalRHubApi": "http://172.104.102.236:5065/serviceHub"
     };
 
     return FlavorConfig(
@@ -35,7 +37,8 @@ class BetaFlavorConfig {
   BetaFlavorConfig();
   startSetup() {
     var variables = {
-      "baseUrl": "172.104.102.236:5064",
+      "baseUrl": "172.104.102.236:5065",
+      "signalRHubApi": "http://172.104.102.236:5065/serviceHub"
     };
 
     return FlavorConfig(
@@ -51,6 +54,7 @@ class ProdFlavorConfig {
   startSetup() {
     var variables = {
       "baseUrl": "172.104.102.236:5064",
+      "signalRHubApi": "http://172.104.102.236:5064/serviceHub"
     };
 
     return FlavorConfig(

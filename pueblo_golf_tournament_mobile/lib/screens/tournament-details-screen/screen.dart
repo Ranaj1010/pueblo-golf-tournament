@@ -205,6 +205,11 @@ class TournamentDetailScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => controller.gotoLeaderBoard(),
+        label: const Text("View Leader Board"),
+        icon: const Icon(Icons.score),
+      ),
     );
   }
 }

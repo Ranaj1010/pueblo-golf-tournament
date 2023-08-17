@@ -20,6 +20,7 @@ import '../screens/add-team-member-screen/controller.dart';
 import '../screens/add-tournament-schedule-screen/controller.dart';
 import '../screens/book-team-schedule/controller.dart';
 import '../screens/landing-screen/controller.dart';
+import '../screens/leader-board-screen/controller.dart';
 import '../screens/manage-schedules-screen/controller.dart';
 import '../screens/pay-registration-screen/controller.dart';
 import '../screens/register-new-player-screen/controller.dart';
@@ -35,12 +36,14 @@ import '../screens/tournament-details-screen/controller.dart';
 import '../screens/tournaments-screen/controller.dart';
 import '../screens/view-team-member-screen/controller.dart';
 import '../utilities/http-controller.dart';
+import '../utilities/signalr-controller.dart';
 
 class AppBindings implements Bindings {
   @override
   void dependencies() {
     // UTILITIES Controllers
     Get.lazyPut(() => HttpController());
+    Get.lazyPut(() => SignalRController());
     Get.lazyPut(() => DataContextController());
 
     // API Controllers
@@ -75,6 +78,7 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => TeeTimeScreenController());
     Get.lazyPut(() => ManageScorersScreenController());
     Get.lazyPut(() => AddTournamentScorerScreenController());
+    Get.lazyPut(() => LeaderBoardScreenController());
 
     // PAGES Controllers
     Get.lazyPut(() => DashboardPageController());

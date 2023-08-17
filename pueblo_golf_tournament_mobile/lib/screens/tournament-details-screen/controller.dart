@@ -37,7 +37,7 @@ class TournamentDetailsScreenController
                       2
                   ? dataContextController.playerProfile.value!.player.id
                   : 0));
-      print(jsonEncode(response));
+
       if (response.registeredTeams.isNotEmpty) {
         registeredTeams.addAll(response.registeredTeams);
       }
@@ -87,5 +87,10 @@ class TournamentDetailsScreenController
   @override
   void gotoScorers() {
     Get.toNamed("/manage-scorers");
+  }
+
+  @override
+  void gotoLeaderBoard() {
+    Get.toNamed("/leader-board");
   }
 }

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using pueblo_golf_tournament_api.Dto.Incoming;
 using pueblo_golf_tournament_api.Dto.Outgoing;
+using pueblo_golf_tournament_api.Hub;
 using pueblo_golf_tournament_api.Modules.Lookups;
 
 namespace pueblo_golf_tournament_api.Controllers.V1
@@ -10,11 +12,13 @@ namespace pueblo_golf_tournament_api.Controllers.V1
     [Route("api/v{version:apiVersion}/lookup")]
     public class LookupController : ControllerBase
     {
+        private readonly IHubContext<ServiceHub, IServiceHub> _serviceHub;
         private readonly ILookupModule _lookupModule;
 
-        public LookupController(ILookupModule lookupModule)
+        public LookupController(ILookupModule lookupModule, IHubContext<ServiceHub, IServiceHub> serviceHub)
         {
             _lookupModule = lookupModule;
+            _serviceHub = serviceHub;
         }
 
         [HttpPost("tournament")]
@@ -134,6 +138,19 @@ namespace pueblo_golf_tournament_api.Controllers.V1
             var response = await _lookupModule.LookupTournamentPlayerScorers(payload);
 
             return Ok(response);
+        }
+        [HttpPost("leader-board")]
+        public async Task<ActionResult<LookupLeaderBoardResponseDto>> LookupLeaderBoard(LookupLeaderBoardRequestDto payload)
+        {
+            var response = await _lookupModule.LookupLeaderBoard(payload);
+
+            return Ok(response);
+        }
+        [HttpPost("test-hub")]
+        public async Task<ActionResult> TestMessage()
+        {
+            await _serviceHub.Clients.All.ReceiveTestMessage("Test Message");
+            return Ok();
         }
     }
 }

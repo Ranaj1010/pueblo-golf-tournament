@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:pueblo_golf_tournament_mobile/api/lookup/ilookup-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-division-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-leader-board-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channel-accounts-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-payment-channels-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-player-profile-request-dto.dart';
@@ -16,6 +17,7 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-deta
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournament-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/lookup-tournaments-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-division-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-leader-board-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channel-accounts-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-payment-channels-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/lookup-player-profile-response-dto.dart';
@@ -310,6 +312,27 @@ class LookupController extends ILookupController {
       default:
         Get.snackbar("Failed", response.reasonPhrase!);
         return LookupPlayerScoresResponse(
+          message: response.reasonPhrase!,
+          data: [],
+        );
+    }
+  }
+
+  @override
+  Future<LookupLeaderBoardResponseDto> lookupLeaderBoard(
+      LookupLeaderBoardRequestDto payload) async {
+    var endpoint = "$controller/leader-board";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return LookupLeaderBoardResponseDto.fromJson(jsonDecode(response.body));
+      case 400:
+        return LookupLeaderBoardResponseDto.fromJson(jsonDecode(response.body));
+      default:
+        Get.snackbar("Failed", response.reasonPhrase!);
+        return LookupLeaderBoardResponseDto(
           message: response.reasonPhrase!,
           data: [],
         );

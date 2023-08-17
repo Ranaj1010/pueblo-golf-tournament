@@ -70,9 +70,7 @@ namespace pueblo_golf_tournament_api.Modules.Manage
                         response.Registration = _mapper.Map<RegistrationDto>(registration);
                         response.Payment = _mapper.Map<PaymentDto>(existingPayment);
                     }
-
                 }
-
             }
 
             return response;

@@ -6,9 +6,6 @@ namespace pueblo_golf_tournament_api.Dto
     {
         public string? Name { get; set; }
         public long TournamentId { get; set; }
-
-
-        public virtual TournamentDto? Tournament { get; set; }
     }
     public class DivisionRawDto
     {

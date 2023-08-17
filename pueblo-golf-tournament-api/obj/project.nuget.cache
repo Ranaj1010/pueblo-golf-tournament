@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "HmJqA43aiqamXZaXm+xkgH6Sg4z3rJNhgnanmoeF8J39m+hOAkz4UCDRtcczINo8hfrg8brznU3IkilXSU1Nng==",
+  "dgSpecHash": "DFuCL1pa3SRARebUTQlxMxFihYy0q77uVWeqzIQp88IkKZvs/FlstfH1pcbsmZhy/Lr1S1oJja7Sei3V0rZDfw==",
   "success": true,
   "projectFilePath": "/Users/evemichaeljaysonselmo/Documents/cubeworks/pueblo-golf-tournament/pueblo-golf-tournament-api/pueblo-golf-tournament-api.csproj",
   "expectedPackageFiles": [
@@ -8,9 +8,17 @@
     "/Users/evemichaeljaysonselmo/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/12.0.0/automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/geojson.net/1.2.19/geojson.net.1.2.19.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnet.signalr.core/2.4.3/microsoft.aspnet.signalr.core.2.4.3.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.connections.abstractions/7.0.10/microsoft.aspnetcore.connections.abstractions.7.0.10.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.http.connections.client/7.0.10/microsoft.aspnetcore.http.connections.client.7.0.10.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.http.connections.common/7.0.10/microsoft.aspnetcore.http.connections.common.7.0.10.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.mvc.versioning/5.0.0/microsoft.aspnetcore.mvc.versioning.5.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.mvc.versioning.apiexplorer/5.0.0/microsoft.aspnetcore.mvc.versioning.apiexplorer.5.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.openapi/7.0.4/microsoft.aspnetcore.openapi.7.0.4.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.signalr.client/7.0.10/microsoft.aspnetcore.signalr.client.7.0.10.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.signalr.client.core/7.0.10/microsoft.aspnetcore.signalr.client.core.7.0.10.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.signalr.common/7.0.10/microsoft.aspnetcore.signalr.common.7.0.10.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.aspnetcore.signalr.protocols.json/7.0.10/microsoft.aspnetcore.signalr.protocols.json.7.0.10.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.entityframeworkcore/7.0.4/microsoft.entityframeworkcore.7.0.4.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.entityframeworkcore.abstractions/7.0.4/microsoft.entityframeworkcore.abstractions.7.0.4.nupkg.sha512",
@@ -26,13 +34,16 @@
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.dependencyinjection/7.0.0/microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/7.0.0/microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.dependencymodel/7.0.0/microsoft.extensions.dependencymodel.7.0.0.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.features/7.0.10/microsoft.extensions.features.7.0.10.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.logging/7.0.0/microsoft.extensions.logging.7.0.0.nupkg.sha512",
-    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.logging.abstractions/7.0.0/microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
-    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.options/7.0.0/microsoft.extensions.options.7.0.0.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.logging.abstractions/7.0.1/microsoft.extensions.logging.abstractions.7.0.1.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.options/7.0.1/microsoft.extensions.options.7.0.1.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.extensions.primitives/7.0.0/microsoft.extensions.primitives.7.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.netcore.platforms/1.1.0/microsoft.netcore.platforms.1.1.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.owin/2.1.0/microsoft.owin.2.1.0.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.owin.security/2.1.0/microsoft.owin.security.2.1.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/microsoft.win32.primitives/4.3.0/microsoft.win32.primitives.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/mono.texttemplating/2.2.1/mono.texttemplating.2.2.1.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/netstandard.library/1.6.1/netstandard.library.1.6.1.nupkg.sha512",
@@ -47,6 +58,7 @@
     "/Users/evemichaeljaysonselmo/.nuget/packages/npgsql.entityframeworkcore.postgresql.nettopologysuite/7.0.3/npgsql.entityframeworkcore.postgresql.nettopologysuite.7.0.3.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/npgsql.geojson/7.0.2/npgsql.geojson.7.0.2.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/npgsql.nettopologysuite/7.0.2/npgsql.nettopologysuite.7.0.2.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/owin/1.0.0/owin.1.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl/4.3.0/runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl/4.3.0/runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl/4.3.0/runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
@@ -91,6 +103,7 @@
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.io.compression.zipfile/4.3.0/system.io.compression.zipfile.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.io.filesystem/4.3.0/system.io.filesystem.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.io.filesystem.primitives/4.3.0/system.io.filesystem.primitives.4.3.0.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/system.io.pipelines/7.0.0/system.io.pipelines.7.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.linq/4.3.0/system.linq.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.linq.expressions/4.3.0/system.linq.expressions.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.memory/4.5.4/system.memory.4.5.4.nupkg.sha512",
@@ -127,6 +140,7 @@
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.text.json/7.0.0/system.text.json.7.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.text.regularexpressions/4.3.0/system.text.regularexpressions.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.threading/4.3.0/system.threading.4.3.0.nupkg.sha512",
+    "/Users/evemichaeljaysonselmo/.nuget/packages/system.threading.channels/7.0.0/system.threading.channels.7.0.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.threading.tasks/4.3.0/system.threading.tasks.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.threading.tasks.extensions/4.3.0/system.threading.tasks.extensions.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.threading.timer/4.3.0/system.threading.timer.4.3.0.nupkg.sha512",
@@ -134,5 +148,46 @@
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.xml.xdocument/4.3.0/system.xml.xdocument.4.3.0.nupkg.sha512",
     "/Users/evemichaeljaysonselmo/.nuget/packages/system.xml.xmldocument/4.3.0/system.xml.xmldocument.4.3.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.SignalR.Core 2.4.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.SignalR.Core",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Owin 2.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Owin",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.Owin.Security 2.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.Owin.Security",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Owin 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Owin",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

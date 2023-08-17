@@ -22,6 +22,7 @@ using pueblo_golf_tournament_api.Services.TournamentHoles;
 using pueblo_golf_tournament_api.Services.TournamentPlayerScores;
 using pueblo_golf_tournament_api.Services.Tournaments;
 using pueblo_golf_tournament_api.Services.TournamentScorers;
+using pueblo_golf_tournament_api.Services.TournamentTeamDivisions;
 
 namespace pueblo_golf_tournament_api.Modules.Lookups
 {
@@ -41,10 +42,11 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly ITournamentHolesService _tournamentHolesService;
         private readonly ITournamentScorerService _tournamentScorerService;
         private readonly ITournamentPlayerScoreService _tournamentPlayerScoreService;
+        private readonly ITournamentTeamDivisionService _tournamentTeamDivisionService;
         private readonly IScorerService _scorerService;
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, IScorerService scorerService, ITournamentPlayerScoreService tournamentPlayerScoreService, ITournamentScorerService tournamentScorerService, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, ITournamentTeamDivisionService tournamentTeamDivisionService, IScorerService scorerService, ITournamentPlayerScoreService tournamentPlayerScoreService, ITournamentScorerService tournamentScorerService, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -63,6 +65,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _tournamentScorerService = tournamentScorerService;
             _scorerService = scorerService;
             _tournamentPlayerScoreService = tournamentPlayerScoreService;
+            _tournamentTeamDivisionService = tournamentTeamDivisionService;
         }
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
@@ -93,6 +96,43 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             response.Data = _mapper.Map<List<HomeClubDto>>(data);
             response.Message = $"{data.Count} items found.";
 
+            return response;
+        }
+
+        public async Task<LookupLeaderBoardResponseDto> LookupLeaderBoard(LookupLeaderBoardRequestDto payload)
+        {
+            var response = new LookupLeaderBoardResponseDto();
+            var playerScores = await _tournamentPlayerScoreService.ListAsync();
+
+            var tournamentDivisions = await _tournamentTeamDivisionService.ListAsync(division => division.TournamentId == payload.TournamentId);
+
+            var leaderBoardsPerDivision = new List<DivisionLeaderBoard>();
+
+            foreach (var tournamentDivision in tournamentDivisions)
+            {
+                var leaderBoards = new List<LeaderboardDto>();
+                var division = await _divisionService.GetAsync(d => d.Id == tournamentDivision.Id);
+                var teamsPerDivision = playerScores.DistinctBy(score => score.TeamId).ToList();
+
+                foreach (var teamDivision in teamsPerDivision)
+                {
+                    var team = await _teamService.GetAsync(t => t.Id == teamDivision.TeamId);
+                    leaderBoards.Add(new LeaderboardDto
+                    {
+                        Team = _mapper.Map<TeamDto>(team),
+                        Score = playerScores.Where(score => score.TeamId == teamDivision.TeamId).Sum(e => e.MolaveScore)
+                    });
+                }
+
+                leaderBoardsPerDivision.Add(new DivisionLeaderBoard
+                {
+                    Division = _mapper.Map<DivisionDto>(division),
+                    LeaderBoard = leaderBoards.OrderByDescending(r => r.Score).Take(4).ToList()
+                });
+            }
+
+            response.Data = leaderBoardsPerDivision.ToList();
+            response.Message = $"{leaderBoardsPerDivision.Count()} found.";
             return response;
         }
 
