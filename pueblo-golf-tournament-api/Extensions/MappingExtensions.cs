@@ -45,6 +45,7 @@ namespace pueblo_golf_tournament_api.Extensions
             CreateMap<Scorer, ScorerDto>().ReverseMap();
             CreateMap<TournamentScorer, TourmamentScorerDto>().ReverseMap();
             CreateMap<TournamentTeamDivision, TournamentTeamDivisionDto>().ReverseMap();
+            CreateMap<TournamentPlayerScore, TournamentPlayerScoreDto>().ReverseMap();
         }
     }
 }

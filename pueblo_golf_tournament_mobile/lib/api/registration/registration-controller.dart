@@ -8,18 +8,22 @@ import 'package:pueblo_golf_tournament_mobile/dto/request/register-account-reque
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-person-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-player-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-scorer-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-division-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-team-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-player-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-request-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/request/register-tournament-scorer-request-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-account-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-division-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-payment-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-person-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-player-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/register-scorer-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-division-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-team-response-dto.dart';
 import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-response-dto.dart';
+import 'package:pueblo_golf_tournament_mobile/dto/response/register-tournament-scorer-response-dto.dart';
 
 import '../../dto/request/register-payment-request-dto.dart';
 import '../../dto/response/register-tournament-player-response-dto.dart';
@@ -250,6 +254,46 @@ class RegistrationController extends IRegistrationController {
       default:
         return RegisterTeamDivisionResponseDto(
             message: response.reasonPhrase!, data: null);
+    }
+  }
+
+  @override
+  Future<ReqisterTournamentScorerResponseDto> registerTournamentScorer(
+      ReqisterTournamentScorerRequestDto payload) async {
+    var endpoint = "$controller/tournament-scorer";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return ReqisterTournamentScorerResponseDto.fromJson(
+            jsonDecode(response.body));
+      case 400:
+        return ReqisterTournamentScorerResponseDto.fromJson(
+            jsonDecode(response.body));
+      default:
+        return ReqisterTournamentScorerResponseDto(
+            message: response.reasonPhrase!, success: false);
+    }
+  }
+
+  @override
+  Future<RegisterScorerResponseDto> registerScorer(
+      RegisterScorerRequestDto payload) async {
+    var endpoint = "$controller/scorer";
+    var response =
+        await httpController.post(endpoint, jsonEncode(payload.toJson()));
+
+    switch (response.statusCode) {
+      case 200:
+        return RegisterScorerResponseDto.fromJson(jsonDecode(response.body));
+      case 400:
+        return RegisterScorerResponseDto.fromJson(jsonDecode(response.body));
+      default:
+        return RegisterScorerResponseDto(
+          message: response.reasonPhrase!,
+          data: null,
+        );
     }
   }
 }

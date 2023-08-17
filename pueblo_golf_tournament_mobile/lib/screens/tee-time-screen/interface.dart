@@ -7,6 +7,7 @@ import 'package:pueblo_golf_tournament_mobile/utilities/enums.dart';
 abstract class ITeeTimeScreenController extends GetxController {
   void initializeTeeTime(TournamentScheduleDate scheduleDate);
   void loadScores();
-  void saveScore(PlayerTeeTimeScheduleDto time, TournamentHoleDto hole,
-      MolaveScoresEnum score);
+  void loadHoles();
+  void saveScore();
+  void addScore();
 }

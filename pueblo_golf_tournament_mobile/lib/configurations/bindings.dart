@@ -7,9 +7,12 @@ import 'package:pueblo_golf_tournament_mobile/api/manage/manage-controller.dart'
 import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/api/upload/upload-controller.dart';
 import 'package:pueblo_golf_tournament_mobile/pages/menu/controller.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/add-tournament-scorer-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/home-screen/controller.dart';
+import 'package:pueblo_golf_tournament_mobile/screens/manage-scorers-screen/controller.dart';
 import 'package:pueblo_golf_tournament_mobile/screens/update-member-details-screen/controller.dart';
 
+import '../api/save/save-controller.dart';
 import '../api/setup/setup-controller.dart';
 import '../data/context.dart';
 import '../pages/dashboard-page/controller.dart';
@@ -47,6 +50,7 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => ManageController());
     Get.lazyPut(() => UploadController());
     Get.lazyPut(() => SetupController());
+    Get.lazyPut(() => SaveController());
 
     // SCREENS Controlllers
     Get.lazyPut(() => LandingScreenController());
@@ -69,6 +73,8 @@ class AppBindings implements Bindings {
     Get.lazyPut(() => BookTeamScheduleScreenController());
     Get.lazyPut(() => SetupTournamentHolesScreenController());
     Get.lazyPut(() => TeeTimeScreenController());
+    Get.lazyPut(() => ManageScorersScreenController());
+    Get.lazyPut(() => AddTournamentScorerScreenController());
 
     // PAGES Controllers
     Get.lazyPut(() => DashboardPageController());

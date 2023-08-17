@@ -4,6 +4,6 @@ namespace pueblo_golf_tournament_api.Dto
 {
     public class ScorerDto : BaseDto
     {
-        
+        public long PersonId { get; set; }
     }
 }

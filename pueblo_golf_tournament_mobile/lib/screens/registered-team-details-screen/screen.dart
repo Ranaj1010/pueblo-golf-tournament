@@ -139,19 +139,27 @@ class _RegisteredTeamDetailsScreenState
                       : null,
                 ),
               ),
-              const Text(
-                "Division",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Card(
-                child: ListTile(
-                  trailing: const Icon(Icons.golf_course),
-                  title: Text(
-                    controller.registeredTeam.value!.division!.name,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
+              controller.registeredTeam.value!.division != null
+                  ? Wrap(
+                      runSpacing: 10,
+                      children: [
+                        const Text(
+                          "Division",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Card(
+                          child: ListTile(
+                            trailing: const Icon(Icons.golf_course),
+                            title: Text(
+                              controller.registeredTeam.value!.division!.name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : const Padding(padding: EdgeInsets.all(0)),
               const Text(
                 "Registration",
                 style: TextStyle(fontWeight: FontWeight.bold),

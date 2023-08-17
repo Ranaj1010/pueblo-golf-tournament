@@ -102,6 +102,7 @@ class TournamentDetailScreen extends StatelessWidget {
                                 ),
                                 const Padding(padding: EdgeInsets.all(15)),
                                 Card(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                                   elevation: 10,
                                   child: InkWell(
                                     onTap: () =>
@@ -113,6 +114,7 @@ class TournamentDetailScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Card(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                                   elevation: 10,
                                   child: InkWell(
                                     onTap: () => controller.gotoSetupHoles(),
@@ -121,7 +123,18 @@ class TournamentDetailScreen extends StatelessWidget {
                                       title: Text("Tournament Holes"),
                                     ),
                                   ),
-                                )
+                                ),
+                                Card(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  elevation: 10,
+                                  child: InkWell(
+                                    onTap: () => controller.gotoScorers(),
+                                    child: const ListTile(
+                                      trailing: Icon(Icons.chevron_right),
+                                      title: Text("Scorers"),
+                                    ),
+                                  ),
+                                ),
                               ],
                             )
                           : const Padding(padding: EdgeInsets.all(0)),

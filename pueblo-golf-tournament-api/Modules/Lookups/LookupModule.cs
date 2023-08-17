@@ -19,6 +19,7 @@ using pueblo_golf_tournament_api.Services.Scorers;
 using pueblo_golf_tournament_api.Services.Teams;
 using pueblo_golf_tournament_api.Services.TeeTimeSchedules;
 using pueblo_golf_tournament_api.Services.TournamentHoles;
+using pueblo_golf_tournament_api.Services.TournamentPlayerScores;
 using pueblo_golf_tournament_api.Services.Tournaments;
 using pueblo_golf_tournament_api.Services.TournamentScorers;
 
@@ -39,11 +40,11 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
         private readonly IPlayerTeeTimeScheduleService _playerTeeTimeScheduleService;
         private readonly ITournamentHolesService _tournamentHolesService;
         private readonly ITournamentScorerService _tournamentScorerService;
+        private readonly ITournamentPlayerScoreService _tournamentPlayerScoreService;
         private readonly IScorerService _scorerService;
-
         private readonly DataContext _dbContext;
         private readonly IMapper _mapper;
-        public LookupModule(IMapper mapper, DataContext dbContext, IScorerService scorerService, ITournamentScorerService tournamentScorerService, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
+        public LookupModule(IMapper mapper, DataContext dbContext, IScorerService scorerService, ITournamentPlayerScoreService tournamentPlayerScoreService, ITournamentScorerService tournamentScorerService, ITournamentService tournamentService, ITournamentHolesService tournamentHolesService, IPlayerTeeTimeScheduleService playerTeeTimeScheduleService, ITeeTimeScheduleService teeTimeScheduleService, IPaymentChannelAccountService paymentChannelAccountService, IPaymentChannelService paymentChannelService, IDivisionService divisionService, IHomeClubService homeClubService, IRegistrationService registrationService, IPlayerService playerService, ITeamService teamService, IPersonService personService, IAccountService accountService)
         {
             _mapper = mapper;
             _dbContext = dbContext;
@@ -61,6 +62,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             _tournamentHolesService = tournamentHolesService;
             _tournamentScorerService = tournamentScorerService;
             _scorerService = scorerService;
+            _tournamentPlayerScoreService = tournamentPlayerScoreService;
         }
 
         public async Task<LookupDivisionsDto> LookupDivisions(LookupDivisionRequestDto payload)
@@ -229,7 +231,7 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
                 response.Data.Add(new ScorerProfile
                 {
                      Person = _mapper.Map<PersonDto>(person),
-                     Scorer = _mapper.Map<ScorerDto>(scorer),
+                     Scorer = _mapper.Map<ScorerDto>(scorer.Scorer),
                 });
             }
 
@@ -307,6 +309,43 @@ namespace pueblo_golf_tournament_api.Modules.Lookups
             response.TournamentId = tournamentId;
             response.Data = _mapper.Map<List<TournamentHoleDto>>(data);
             response.Message = data.Count > 0 ? $"{data.Count} holes found." : "No holes found.";
+
+            return response;
+        }
+
+        public async Task<LookupTournamentPlayerScoresResponseDto> LookupTournamentPlayerScorers(LookupTournamentPlayerScoresRequestDto payload)
+        {
+            var response = new LookupTournamentPlayerScoresResponseDto();
+
+            var tournament = await _tournamentService.GetAsync(tournament => tournament.Id == payload.TournamentId);
+
+            if (tournament == null)
+            {
+                response.Message = "Tournament not found.";
+                return response;
+            }
+            
+            var team = await _teamService.GetAsync(team => team.Id == payload.TeamId);
+
+            if (team == null)
+            {
+                response.Message = "Team not found.";
+                return response;
+            }
+
+            var playerTeeTimeSchedule = await _playerTeeTimeScheduleService.GetAsync(schedule => schedule.TeeTimeScheduleId == payload.TeeTimeScheduleId && schedule.PlayerId == payload.PlayerId);
+
+            Console.WriteLine(playerTeeTimeSchedule.Id);
+            if (playerTeeTimeSchedule == null)
+            {
+                response.Message = "Tee Time Schedule not found.";
+                return response;
+            }
+
+            var scores = await _tournamentPlayerScoreService.ListAsync(score => score.TournamentId == payload.TournamentId && score.TeamId == payload.TeamId && score.PlayerId == payload.PlayerId && score.PlayerTeeTimeScheduleId == playerTeeTimeSchedule.Id);
+
+            response.Data = _mapper.Map<List<TournamentPlayerScoreDto>>(scores);
+            response.Message = $"{scores.Count()} scores found.";
 
             return response;
         }

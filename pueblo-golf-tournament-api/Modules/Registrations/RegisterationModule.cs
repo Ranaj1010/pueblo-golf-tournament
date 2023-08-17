@@ -562,7 +562,7 @@ namespace pueblo_golf_tournament_api.Modules.Registrations
                 return response;
             }
 
-            var registeredScorer = _scorerService.AddAsync(new Scorer
+            var registeredScorer = await _scorerService.AddAsync(new Scorer
             {
                 PersonId = registeredPerson.Data.Id,
             });
