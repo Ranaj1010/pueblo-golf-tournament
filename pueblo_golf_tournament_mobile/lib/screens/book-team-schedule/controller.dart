@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:pueblo_golf_tournament_mobile/api/registration/registration-controller.dart';
@@ -36,7 +38,6 @@ class BookTeamScheduleScreenController
   void loadTeamSchedules() async {
     teeTimeSchedules.clear();
     isLoadingSchedules(true);
-
     var response = await lookupController.lookupTeeTimeSchedules(
         LookupTeeTimeScheduleRequest(
             tournamentId:
@@ -45,7 +46,6 @@ class BookTeamScheduleScreenController
       teeTimeSchedules.addAll(response.data!);
       for (var i = 0; i < response.data!.length; i++) {
         selectedSchedules.add(response.data![i].timeSchedules![0]);
-        selectedScheduleHoleType.add(0);
       }
 
       mountSelectDateSchedules();
@@ -77,8 +77,10 @@ class BookTeamScheduleScreenController
     var teeTimeSchedules = <TeeTimeSchedulesRequestDto>[];
 
     for (var i = 0; i < selectedSchedules.length; i++) {
+      var value = selectedScheduleHoleType.indexOf(i);
+      print(value);
       teeTimeSchedules.add(TeeTimeSchedulesRequestDto(
-          holeType: i, teeTimeSchedule: selectedSchedules[i]));
+          holeType: value, teeTimeSchedule: selectedSchedules[i]));
     }
 
     try {
@@ -87,15 +89,16 @@ class BookTeamScheduleScreenController
               tournamentId: registeredTeamDetailsScreenController
                   .registeredTeam.value!.registration.tournamentId,
               playerId: selectedPlayerProfile.value!.player.id,
-              teeTimeSchedules: selectedDateSchedules
-                  .map((date) => teeTimeSchedules.elementAt(
-                      teeTimeSchedules.indexWhere((schedule) =>
-                          date ==
-                          DateTime(
-                              schedule.teeTimeSchedule.dateTimeSlot.year,
-                              schedule.teeTimeSchedule.dateTimeSlot.month,
-                              schedule.teeTimeSchedule.dateTimeSlot.day))))
-                  .toList()));
+              teeTimeSchedules: selectedDateSchedules.map((date) {
+                var index = teeTimeSchedules.indexWhere((schedule) =>
+                    date ==
+                    DateTime(
+                        schedule.teeTimeSchedule.dateTimeSlot.year,
+                        schedule.teeTimeSchedule.dateTimeSlot.month,
+                        schedule.teeTimeSchedule.dateTimeSlot.day));
+                var teeTimeSchedule = teeTimeSchedules.elementAt(index);
+                return teeTimeSchedule;
+              }).toList()));
 
       if (response.data.isNotEmpty) {
         Get.back();
@@ -115,7 +118,9 @@ class BookTeamScheduleScreenController
 
   @override
   void updateHoleType(int index, int value) {
+    print(value);
     selectedScheduleHoleType[index] = value;
+    print(jsonEncode(selectedScheduleHoleType));
   }
 
   @override
@@ -155,6 +160,8 @@ class BookTeamScheduleScreenController
 
   @override
   void mountSelectTimeSchedules() {
+    selectedScheduleHoleType.add(0);
+    selectedScheduleHoleType.add(0);
     selectedPage(Obx(
       () => PlottingScheduleWidget(
           back: () => back(),

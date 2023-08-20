@@ -135,9 +135,7 @@ class TeeTimeScreenState extends State<TeeTimeScreen> {
                                         subtitle: Text(
                                             "PAR: ${controller.tournamentHoles.firstWhere((element) => element.id == controller.tournamentPlayerScores[index].tournamentHoleId).maximumStrokes}"),
                                         trailing: Text(
-                                          getMolaveScore(controller
-                                              .tournamentPlayerScores[index]
-                                              .actualStrokes),
+                                          "${controller.tournamentPlayerScores[index].actualStrokes} strokes",
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 16,
